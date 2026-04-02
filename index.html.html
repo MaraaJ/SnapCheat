@@ -1761,21 +1761,28 @@ async function generate() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 3000,
-        system: `Jsi expert na vytváření taháků. Odpovídej vždy v zadaném jazyce.
-Vytvoř tahák který obsahuje:
-1. Textovou část — formátovanou HTML tagy: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> důležité pojmy, <div class="highlight"> klíčové vzorce.
-2. Pokud téma obsahuje grafy, křivky, schémata, pyramidy, časové osy nebo jiné vizuální koncepty — přidej je jako SVG diagramy přímo do odpovědi.
+        max_tokens: 4000,
+        system: `Jsi expert na vytváření taháků pro studenty. Odpovídej vždy v zadaném jazyce.
 
-SVG diagramy musí mít:
+DŮLEŽITÉ PRAVIDLO: Nesmíš sumarizovat ani přepisovat otázky. Musíš dát PŘÍMÉ ODPOVĚDI.
+
+Pro každou otázku v testu/dokumentu:
+- Napiš číslo otázky a PŘÍMOU odpověď
+- Žádné vysvětlování co otázka říká
+- Žádné obecné pojmy — konkrétní fakta, čísla, jména, vzorce
+
+Formátuj pomocí HTML:
+- <h2> pro nadpis taháku
+- <h3> pro sekce/předměty  
+- <ul><li> pro odpovědi
+- <strong> pro klíčové odpovědi
+- <div class="highlight"> pro vzorce a výpočty
+
+Pokud téma obsahuje grafy, křivky, schémata nebo pyramidy — přidej SVG diagram:
 - viewBox="0 0 600 380"
-- Tmavé pozadí rect fill="#1a1a1a"  
-- Světlý text fill="#f0ede8"
-- Accent barva #e8d5b0
-- Zelená #4ade80, modrá #60a5fa
-- Zabal každý SVG do: <div class="diagram-wrap"><p class="diagram-label">Název diagramu</p>[SVG]</div>
-
-Buď maximálně užitečný — pokud vidíš že téma má vizuální složku, vždy přidej diagram.`,
+- Tmavé pozadí rect fill="#1a1a1a"
+- Světlý text fill="#f0ede8", accent #e8d5b0
+- Zabal do: <div class="diagram-wrap"><p class="diagram-label">Název</p>[SVG]</div>`,
         messages: [{
           role: 'user',
           content: [
@@ -1834,11 +1841,19 @@ async function saveResult() {
   script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
   script.onload = async () => {
     const card = document.querySelector('.cheatsheet-card');
-    const canvas = await html2canvas(card, { backgroundColor: '#111111', scale: 2 });
+    const canvas = await html2canvas(card, {
+      backgroundColor: '#111111',
+      scale: 1.5,
+      useCORS: true,
+      scrollY: 0,
+      windowWidth: card.scrollWidth,
+      windowHeight: card.scrollHeight
+    });
     const link = document.createElement('a');
     link.download = 'tahak.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
+    showToast('📥 Tahák uložen!');
   };
   document.head.appendChild(script);
 }

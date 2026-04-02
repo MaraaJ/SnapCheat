@@ -48,8 +48,8 @@ body::before {
 }
 
 /* SCREENS */
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; }
+.screen { display: none; min-height: 100vh; flex-direction: column; }
+.screen.active { display: flex; }
 
 /* ==================== AUTH SCREEN ==================== */
 #screen-auth {
@@ -1160,14 +1160,14 @@ body::before {
       <div>
         <div class="label">CENA GENEROVÁNÍ</div>
       </div>
-      <div class="cost">20 <span>kreditů = 20 Kč</span></div>
+      <div class="cost">20 <span>kreditů za tahák</span></div>
     </div>
 
     <div id="drop-zone" ondragover="handleDrag(event)" ondragleave="handleDragLeave()" ondrop="handleDrop(event)">
-      <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)">
+      <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)" id="file-input">
       <span id="drop-icon">📸</span>
       <h2>Vyfoť nebo nahraj test</h2>
-      <p>Klikni nebo přetáhni obrázek</p>
+      <p>Klikni pro fotoaparát nebo přetáhni obrázek</p>
     </div>
 
     <div id="preview-wrap">
@@ -1388,19 +1388,19 @@ body::before {
         <div class="pkg-tahaky">~5 taháků</div>
       </div>
 
-      <div class="package-card" onclick="selectPackage(250, 229)">
+      <div class="package-card" onclick="selectPackage(250, 199)">
         <div class="pkg-credits">250</div>
         <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">229 Kč</div>
-        <div class="pkg-per">0,92 Kč/kr</div>
+        <div class="pkg-price">199 Kč</div>
+        <div class="pkg-per">0,80 Kč/kr</div>
         <div class="pkg-tahaky">~12 taháků</div>
       </div>
 
-      <div class="package-card" onclick="selectPackage(500, 399)">
+      <div class="package-card" onclick="selectPackage(500, 369)">
         <div class="pkg-credits">500</div>
         <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">399 Kč</div>
-        <div class="pkg-per">0,80 Kč/kr</div>
+        <div class="pkg-price">369 Kč</div>
+        <div class="pkg-per">0,74 Kč/kr</div>
         <div class="pkg-tahaky">~25 taháků</div>
       </div>
     </div>
@@ -1589,20 +1589,18 @@ function logout() {
 
 // ==================== SCREENS ====================
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const screen = document.getElementById('screen-' + id);
+  screen.classList.add('active');
+  screen.style.display = 'flex';
   document.getElementById('profile-menu').classList.remove('open');
   if (id === 'credits') {
     updateCreditsScreen();
-    // Make sure packages are visible
-    const grid = document.querySelector('.packages-grid');
-    if (grid) grid.style.display = 'grid';
-    // Scroll to top
-    const content = document.querySelector('.credits-content');
-    if (content) content.scrollTop = 0;
   }
   if (id === 'main') {
-    // Reset tab to main
     document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
     const tabMain = document.getElementById('tab-main');
     if (tabMain) tabMain.style.display = 'block';

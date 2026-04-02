@@ -1848,37 +1848,64 @@ async function saveResult() {
 
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  await new Promise(r => setTimeout(r, 800));
 
   try {
-    const card = document.querySelector('.cheatsheet-card');
-    const canvas = await html2canvas(card, {
+    const card = document.getElementById('result-content');
+    if (!card || !card.innerHTML.trim()) {
+      showToast('❌ Nejprve vygeneruj tahák!');
+      return;
+    }
+
+    // Create a clean off-screen div for rendering
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = `
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 794px;
+      background: #111111;
+      color: #f0ede8;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      padding: 40px;
+      box-sizing: border-box;
+    `;
+    wrapper.innerHTML = card.innerHTML;
+    document.body.appendChild(wrapper);
+
+    await new Promise(r => setTimeout(r, 300));
+
+    const canvas = await html2canvas(wrapper, {
       backgroundColor: '#111111',
       scale: 1.5,
       useCORS: true,
       allowTaint: true,
-      logging: false
+      logging: false,
+      width: 794,
+      height: wrapper.scrollHeight
     });
+
+    document.body.removeChild(wrapper);
 
     const imgData = canvas.toDataURL('image/png');
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pageW = pdf.internal.pageSize.getWidth();
     const pageH = pdf.internal.pageSize.getHeight();
-    const ratio = canvas.width / canvas.height;
     const imgW = pageW;
-    const imgH = imgW / ratio;
+    const imgH = (canvas.height * imgW) / canvas.width;
 
     if (imgH <= pageH) {
       pdf.addImage(imgData, 'PNG', 0, 0, imgW, imgH);
     } else {
       let y = 0;
-      let remaining = imgH;
       let page = 0;
-      while (remaining > 0) {
+      while (y < imgH) {
         if (page > 0) pdf.addPage();
         pdf.addImage(imgData, 'PNG', 0, -y, imgW, imgH);
         y += pageH;
-        remaining -= pageH;
         page++;
       }
     }

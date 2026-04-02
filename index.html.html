@@ -1080,7 +1080,7 @@ body::before {
 <body>
 
 <!-- ==================== AUTH SCREEN ==================== -->
-<div class="screen active" id="screen-auth">
+<div class="screen" id="screen-auth" style="display:flex">
   <div class="auth-box">
     <div class="auth-logo">Snap<span>Cheat</span></div>
     <div class="auth-tagline">AI tahák z fotky za sekundy</div>
@@ -2039,6 +2039,22 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+// ==================== INIT ====================
+(function init() {
+  // Ensure all screens are hidden except auth
+  document.querySelectorAll('.screen').forEach(s => {
+    s.style.display = 'none';
+    s.classList.remove('active');
+  });
+  const auth = document.getElementById('screen-auth');
+  if (auth) {
+    auth.style.display = 'flex';
+    auth.classList.add('active');
+  }
+  // Load wardrobe if exists
+  if (typeof renderWardrobe === 'function') renderWardrobe();
+})();
 
 // Close stripe on backdrop
 document.getElementById('stripe-modal').addEventListener('click', function(e) {

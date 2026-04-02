@@ -1592,7 +1592,21 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
   document.getElementById('profile-menu').classList.remove('open');
-  if (id === 'credits') updateCreditsScreen();
+  if (id === 'credits') {
+    updateCreditsScreen();
+    // Make sure packages are visible
+    const grid = document.querySelector('.packages-grid');
+    if (grid) grid.style.display = 'grid';
+    // Scroll to top
+    const content = document.querySelector('.credits-content');
+    if (content) content.scrollTop = 0;
+  }
+  if (id === 'main') {
+    // Reset tab to main
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+    const tabMain = document.getElementById('tab-main');
+    if (tabMain) tabMain.style.display = 'block';
+  }
 }
 
 function toggleProfileMenu() {

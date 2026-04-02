@@ -581,7 +581,80 @@ body::before {
   font-size: 0.82rem;
 }
 
-/* SETTINGS PANEL */
+.cheatsheet-card .diagram-wrap {
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cheatsheet-card .diagram-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  margin: 0;
+}
+
+.cheatsheet-card .diagram-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* EXAMPLE CHIPS */
+.example-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.example-chip:hover { border-color: var(--accent2); color: var(--accent); }
+
+/* BOTTOM NAV */
+#bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.bnav-item span:first-child { font-size: 1.3rem; }
+.bnav-item.active { color: var(--accent); }
+
+.tab-content { padding-bottom: 80px; }
+
+/* END BOTTOM NAV */
+
 .settings-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1067,6 +1140,9 @@ body::before {
     </div>
   </div>
 
+  <!-- BOTTOM NAV - removed, single page now -->
+
+
   <!-- PROFILE MENU -->
   <div id="profile-menu">
     <div class="profile-menu-email" id="profile-email">—</div>
@@ -1167,12 +1243,106 @@ body::before {
           <button class="btn-sm" onclick="saveResult()">Uložit PNG</button>
         </div>
       </div>
+  <!-- TAB CONTENTS -->
+  <div id="tab-main" class="tab-content active">
+
+    <div id="drop-zone-wrap">
+      <div id="drop-zone" ondragover="handleDrag(event)" ondragleave="handleDragLeave()" ondrop="handleDrop(event)">
+        <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)">
+        <span id="drop-icon">📸</span>
+        <h2>Vyfoť nebo nahraj test</h2>
+        <p>Klikni nebo přetáhni obrázek</p>
+      </div>
+    </div>
+
+    <div id="preview-wrap2" style="display:none;position:relative;margin-bottom:16px">
+      <img id="preview-img2" src="" alt="" style="width:100%;border-radius:12px;border:1px solid var(--border);max-height:300px;object-fit:cover">
+      <button onclick="removeImage()" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text);cursor:pointer">✕</button>
+    </div>
+
+    <div id="no-credits" style="display:none;background:#1a1505;border:1px solid #4a3a10;border-radius:10px;padding:14px 18px;font-size:0.8rem;color:var(--gold);margin-bottom:16px;text-align:center">
+      🪙 Nemáš dost kreditů! <span style="text-decoration:underline;cursor:pointer" onclick="showScreen('credits')">Koupit kredity →</span>
+    </div>
+
+    <button id="generate-btn" onclick="generate()">
+      ⚡ VYGENEROVAT TAHÁK
+      <span class="btn-cost">−20 kr</span>
+    </button>
+
+    <div class="error-box" id="gen-error"></div>
+
+    <div class="loading-wrap" id="gen-loading">
+      <div class="spinner"></div>
+      <p>AI analyzuje test...</p>
+    </div>
+
+    <div id="result-wrap" style="display:none;margin-bottom:32px">
+      <div class="result-header">
+        <span class="tag">✓ Tahák připraven</span>
+        <div class="result-actions">
+          <button class="btn-sm" onclick="copyResult()">Kopírovat</button>
+          <button class="btn-sm" onclick="saveResult()">Uložit PNG</button>
+        </div>
+      </div>
       <div class="cheatsheet-card">
         <div id="result-content"></div>
       </div>
     </div>
+  </div>
+
+  <!-- DIAGRAM TAB -->
+  <div id="tab-diagram" class="tab-content" style="display:none">
+
+    <div style="margin-bottom:20px">
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px">Nakresli diagram <span style="color:var(--accent)">AI</span></h2>
+      <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.6">Popiš co chceš nakreslit a AI vygeneruje diagram, graf nebo schéma.</p>
+    </div>
+
+    <!-- EXAMPLES -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px">Příklady</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <button class="example-chip" onclick="setDiagramPrompt('Ebinghausova křivka zapomínání')">Ebinghausova křivka</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Maslowova pyramida potřeb')">Maslowova pyramida</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Fotosyntéza - schéma procesu')">Fotosyntéza</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Graf lineární funkce y=2x+1')">Lineární funkce</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Časová osa první světové války')">Časová osa</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Buněčné dělení - mitóza')">Mitóza</button>
+        <button class="example-chip" onclick="setDiagramPrompt('Koloběh vody v přírodě')">Koloběh vody</button>
+      </div>
+    </div>
+
+    <!-- INPUT -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px">Tvůj diagram</div>
+      <textarea id="diagram-prompt" placeholder="Nakresli Ebinghausovu křivku zapomínání se osami a popisky..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);resize:none;height:90px;outline:none;line-height:1.6;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent2)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+
+    <button onclick="generateDiagram()" style="width:100%;background:var(--accent);color:#0a0a0a;border:none;border-radius:12px;padding:16px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px" id="diagram-btn">
+      🎨 VYGENEROVAT DIAGRAM
+      <span style="background:rgba(0,0,0,0.15);border-radius:100px;padding:3px 10px;font-size:0.72rem">−10 kr</span>
+    </button>
+
+    <div class="error-box" id="diagram-error"></div>
+
+    <div class="loading-wrap" id="diagram-loading">
+      <div class="spinner"></div>
+      <p>AI kreslí diagram...</p>
+    </div>
+
+    <div id="diagram-result" style="display:none;margin-bottom:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <span style="font-size:0.7rem;color:var(--green);letter-spacing:0.1em;text-transform:uppercase">✓ Diagram připraven</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn-sm" onclick="saveDiagram()">Uložit PNG</button>
+        </div>
+      </div>
+      <div id="diagram-output" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;overflow:auto"></div>
+    </div>
 
   </div>
+
+</div>
 </div>
 
 <!-- ==================== CREDITS SCREEN ==================== -->
@@ -1590,14 +1760,27 @@ async function generate() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-opus-4-5',
-        max_tokens: 1500,
-        system: 'Jsi asistent který vytváří stručné taháky. Odpovídej vždy v češtině. Formátuj pomocí HTML tagů: <h2> pro nadpis, <h3> pro sekce, <ul><li> pro odrážky, <strong> pro důležité pojmy, <div class="highlight"> pro klíčové vzorce. Buď maximálně stručný.',
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 3000,
+        system: `Jsi expert na vytváření taháků. Odpovídej vždy v zadaném jazyce.
+Vytvoř tahák který obsahuje:
+1. Textovou část — formátovanou HTML tagy: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> důležité pojmy, <div class="highlight"> klíčové vzorce.
+2. Pokud téma obsahuje grafy, křivky, schémata, pyramidy, časové osy nebo jiné vizuální koncepty — přidej je jako SVG diagramy přímo do odpovědi.
+
+SVG diagramy musí mít:
+- viewBox="0 0 600 380"
+- Tmavé pozadí rect fill="#1a1a1a"  
+- Světlý text fill="#f0ede8"
+- Accent barva #e8d5b0
+- Zelená #4ade80, modrá #60a5fa
+- Zabal každý SVG do: <div class="diagram-wrap"><p class="diagram-label">Název diagramu</p>[SVG]</div>
+
+Buď maximálně užitečný — pokud vidíš že téma má vizuální složku, vždy přidej diagram.`,
         messages: [{
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-            { type: 'text', text: prompt }
+            { type: 'text', text: buildPrompt() }
           ]
         }]
       })
@@ -1654,6 +1837,109 @@ async function saveResult() {
     const canvas = await html2canvas(card, { backgroundColor: '#111111', scale: 2 });
     const link = document.createElement('a');
     link.download = 'tahak.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+  document.head.appendChild(script);
+}
+
+// ==================== TABS ====================
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.bnav-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = 'block';
+  el.classList.add('active');
+}
+
+// ==================== DIAGRAM ====================
+function setDiagramPrompt(text) {
+  document.getElementById('diagram-prompt').value = text;
+}
+
+async function generateDiagram() {
+  const prompt = document.getElementById('diagram-prompt').value.trim();
+  if (!prompt) { showDiagramError('Napiš co chceš nakreslit!'); return; }
+  if (credits < 10) {
+    showDiagramError('Nemáš dost kreditů! Potřebuješ 10 kreditů.');
+    return;
+  }
+
+  const btn = document.getElementById('diagram-btn');
+  btn.disabled = true;
+  document.getElementById('diagram-loading').style.display = 'flex';
+  document.getElementById('diagram-result').style.display = 'none';
+  document.getElementById('diagram-error').style.display = 'none';
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        system: `Jsi expert na vytváření SVG diagramů a grafů. 
+Vždy odpovídej POUZE čistým SVG kódem — žádný jiný text, žádné vysvětlení, žádné markdown bloky.
+SVG musí být:
+- viewBox="0 0 600 400" 
+- Tmavé pozadí #1a1a1a
+- Bílý nebo světlý text #f0ede8
+- Accent barva #e8d5b0 pro důležité prvky
+- Zelená #4ade80 pro pozitivní hodnoty
+- Čistý, přehledný, profesionální design
+- Všechny texty v češtině
+- Fonty: font-family="system-ui, sans-serif"`,
+        messages: [{
+          role: 'user',
+          content: `Nakresli SVG diagram: ${prompt}`
+        }]
+      })
+    });
+
+    const data = await res.json();
+    const svg = data.content?.map(b => b.text || '').join('') || '';
+
+    if (!svg || !svg.includes('<svg')) throw new Error('AI nevygenerovala platný diagram');
+
+    // Deduct credits
+    credits -= 10;
+    history.push({
+      type: 'minus',
+      label: 'Generování diagramu',
+      amount: '-10 kr',
+      date: new Date().toLocaleDateString('cs')
+    });
+    saveUserData();
+    updateCreditsUI();
+
+    document.getElementById('diagram-output').innerHTML = svg;
+    document.getElementById('diagram-result').style.display = 'block';
+    document.getElementById('diagram-result').scrollIntoView({ behavior: 'smooth' });
+    showToast('🎨 Diagram vygenerován! −10 kreditů');
+
+  } catch(e) {
+    showDiagramError('Chyba: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('diagram-loading').style.display = 'none';
+  }
+}
+
+function showDiagramError(msg) {
+  const box = document.getElementById('diagram-error');
+  box.textContent = msg;
+  box.style.display = 'block';
+  document.getElementById('diagram-loading').style.display = 'none';
+  document.getElementById('diagram-btn').disabled = false;
+}
+
+async function saveDiagram() {
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+  script.onload = async () => {
+    const el = document.getElementById('diagram-output');
+    const canvas = await html2canvas(el, { backgroundColor: '#1a1a1a', scale: 2 });
+    const link = document.createElement('a');
+    link.download = 'diagram.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   };

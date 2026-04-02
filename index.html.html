@@ -4,2062 +4,547 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SnapCheat</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0a0a;
-  --surface: #111111;
-  --surface2: #1a1a1a;
-  --surface3: #222222;
-  --border: #2a2a2a;
-  --border2: #333333;
-  --text: #f0ede8;
-  --text-muted: #666;
-  --text-dim: #444;
-  --accent: #e8d5b0;
-  --accent2: #c4a96e;
-  --green: #4ade80;
-  --red: #f87171;
-  --gold: #f59e0b;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;
+  --b1:#2a2a2a;--b2:#333;
+  --t1:#f0ede8;--t2:#888;--t3:#444;
+  --ac:#e8d5b0;--ac2:#c4a96e;
+  --gr:#4ade80;--rd:#f87171;--go:#f59e0b;
+  --ff:system-ui,-apple-system,sans-serif;
+  --fm:'Courier New',monospace;
 }
+body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh}
+.hide{display:none!important}
+.screen{min-height:100vh;flex-direction:column;display:none}
+.screen.on{display:flex}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* AUTH */
+#sa{align-items:center;justify-content:center;padding:24px}
+.abox{width:100%;max-width:400px}
+.logo{font-size:2rem;font-weight:800;color:var(--ac);margin-bottom:4px}
+.logo span{color:var(--t2);font-weight:300}
+.tag{font-size:.7rem;color:var(--t2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:36px}
+.atabs{display:flex;border:1px solid var(--b1);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.atab{flex:1;padding:10px;text-align:center;font-size:.75rem;letter-spacing:.08em;cursor:pointer;color:var(--t2);background:none;border:none;transition:.2s}
+.atab.on{background:var(--s2);color:var(--ac)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t2);margin-bottom:6px;font-family:var(--fm)}
+.fg input{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:11px 14px;font-size:.85rem;color:var(--t1);outline:none;font-family:var(--fm)}
+.fg input:focus{border-color:var(--ac2)}
+.fg .hint{font-size:.65rem;color:var(--t3);margin-top:4px}
+.bp{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:10px;padding:14px;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px}
+.bp:hover{opacity:.9}
+.bp:disabled{opacity:.4;cursor:not-allowed}
+.bs{width:100%;background:var(--s2);color:var(--t1);border:1px solid var(--b2);border-radius:10px;padding:14px;font-size:.85rem;cursor:pointer;transition:.2s;margin-top:8px}
+.bs:hover{background:var(--s3)}
+.adiv{text-align:center;font-size:.7rem;color:var(--t3);margin:14px 0}
+.aerr{background:#2a1515;border:1px solid #5a2020;border-radius:8px;padding:10px 14px;color:var(--rd);font-size:.78rem;margin-bottom:14px;display:none;font-family:var(--fm)}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-weight: 300;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+/* TOPBAR */
+.top{background:var(--s1);border-bottom:1px solid var(--b1);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tlogo{font-size:1.1rem;font-weight:800;color:var(--ac)}
+.tright{display:flex;align-items:center;gap:12px}
+.cbadge{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:6px 12px;cursor:pointer}
+.cbadge:hover{border-color:var(--ac2)}
+.cbadge .amt{font-size:.85rem;font-weight:700;color:var(--go)}
+.cbadge .lbl{font-size:.65rem;color:var(--t2)}
+.avbtn{width:32px;height:32px;background:var(--s3);border:1px solid var(--b2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--t1)}
+.avbtn:hover{border-color:var(--ac2)}
 
-/* GRAIN OVERLAY */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.4;
-}
+/* PROFILE MENU */
+#pmenu{display:none;position:fixed;top:60px;right:20px;background:var(--s2);border:1px solid var(--b2);border-radius:12px;padding:8px;z-index:200;min-width:180px;box-shadow:0 12px 48px rgba(0,0,0,.6)}
+#pmenu.on{display:block}
+.pmemail{padding:8px 12px;font-size:.72rem;color:var(--t2);border-bottom:1px solid var(--b1);margin-bottom:6px;word-break:break-all;font-family:var(--fm)}
+.pmitem{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:.78rem;color:var(--t1);cursor:pointer;border-radius:8px}
+.pmitem:hover{background:var(--s3)}
+.pmitem.danger{color:var(--rd)}
 
-/* SCREENS */
-.screen { display: none; min-height: 100vh; flex-direction: column; }
-.screen.active { display: flex; }
+/* MAIN */
+.mc{flex:1;padding:28px 20px;max-width:680px;margin:0 auto;width:100%}
+.hero{margin-bottom:28px}
+.hero h1{font-size:1.8rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.hero h1 span{color:var(--ac)}
+.hero p{font-size:.8rem;color:var(--t2);line-height:1.6}
+.costbar{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.costbar .cl{font-size:.75rem;color:var(--t2);letter-spacing:.06em}
+.costbar .cv{font-size:1rem;font-weight:700;color:var(--go)}
+.costbar .cv span{font-size:.7rem;color:var(--t2);font-weight:300}
 
-/* ==================== AUTH SCREEN ==================== */
-#screen-auth {
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  position: relative;
-}
+/* UPLOAD */
+#dz{border:2px dashed var(--b2);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;background:var(--s1);margin-bottom:16px;position:relative;transition:.2s}
+#dz:hover,#dz.ov{border-color:var(--ac2);background:var(--s2)}
+#dz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+#dz .di{font-size:2.5rem;margin-bottom:12px;display:block}
+#dz h2{font-size:1rem;font-weight:700;margin-bottom:6px}
+#dz p{font-size:.75rem;color:var(--t2)}
+#pw{display:none;position:relative;margin-bottom:16px}
+#pw img{width:100%;border-radius:12px;border:1px solid var(--b1);max-height:300px;object-fit:cover}
+#pw button{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);border:1px solid var(--b2);border-radius:50%;width:30px;height:30px;color:var(--t1);cursor:pointer;font-size:.8rem}
 
-#screen-auth::before {
-  content: '';
-  position: absolute;
-  top: -200px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(232,213,176,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.auth-box {
-  width: 100%;
-  max-width: 400px;
-  animation: fadeUp 0.6s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.auth-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 2.2rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-  color: var(--accent);
-}
-
-.auth-logo span { color: var(--text-muted); font-weight: 400; }
-
-.auth-tagline {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-}
-
-.auth-tabs {
-  display: flex;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.auth-tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
-  transition: all 0.2s;
-}
-
-.auth-tab.active {
-  background: var(--surface2);
-  color: var(--accent);
-}
-
-.input-group {
-  margin-bottom: 14px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.input-group input {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.85rem;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input-group input:focus { border-color: var(--accent2); }
-
-.btn-primary {
-  width: 100%;
-  background: var(--accent);
-  color: #0a0a0a;
-  border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
-  margin-top: 6px;
-}
-.btn-primary:hover { opacity: 0.9; }
-.btn-primary:active { transform: scale(0.99); }
-.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.auth-divider {
-  text-align: center;
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  margin: 16px 0;
-  letter-spacing: 0.08em;
-}
-
-.auth-error {
-  background: #2a1515;
-  border: 1px solid #5a2020;
-  border-radius: 8px;
-  padding: 10px 14px;
-  color: var(--red);
-  font-size: 0.78rem;
-  margin-bottom: 14px;
-  display: none;
-}
-
-/* ==================== MAIN SCREEN ==================== */
-#screen-main {
-  flex-direction: column;
-}
-
-/* TOP BAR */
-.topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 20px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.topbar-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: -0.01em;
-}
-
-.topbar-right { display: flex; align-items: center; gap: 12px; }
-
-.credits-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 100px;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-.credits-badge:hover { border-color: var(--accent2); }
-
-.credits-badge .coin { font-size: 0.85rem; }
-.credits-badge .amount {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--gold);
-}
-.credits-badge .label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-.avatar-btn {
-  width: 32px;
-  height: 32px;
-  background: var(--surface3);
-  border: 1px solid var(--border2);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  transition: border-color 0.2s;
-}
-.avatar-btn:hover { border-color: var(--accent2); }
-
-/* MAIN CONTENT */
-.main-content {
-  flex: 1;
-  padding: 28px 20px;
-  max-width: 680px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* HERO */
-.hero {
-  margin-bottom: 32px;
-  animation: fadeUp 0.5s ease both;
-}
-
-.hero h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: 8px;
-}
-
-.hero h1 span { color: var(--accent); }
-
-.hero p {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-
-/* COST INDICATOR */
-.cost-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  animation: fadeUp 0.5s 0.1s ease both;
-}
-
-.cost-bar .label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.06em; }
-.cost-bar .cost {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--gold);
-}
-.cost-bar .cost span { font-size: 0.7rem; color: var(--text-muted); font-family: 'DM Mono', monospace; font-weight: 300; }
-
-/* UPLOAD ZONE */
-#drop-zone {
-  border: 2px dashed var(--border2);
-  border-radius: 16px;
-  padding: 40px 20px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
-  background: var(--surface);
-  margin-bottom: 16px;
-  animation: fadeUp 0.5s 0.15s ease both;
-}
-
-#drop-zone:hover, #drop-zone.dragover {
-  border-color: var(--accent2);
-  background: var(--surface2);
-}
-
-#drop-zone input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-
-#drop-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
-
-#drop-zone h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-#drop-zone p { font-size: 0.75rem; color: var(--text-muted); }
-
-/* PREVIEW */
-#preview-wrap {
-  display: none;
-  position: relative;
-  margin-bottom: 16px;
-  animation: fadeUp 0.3s ease both;
-}
-
-#preview-img {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  display: block;
-  max-height: 300px;
-  object-fit: cover;
-}
-
-#remove-img {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0,0,0,0.7);
-  border: 1px solid var(--border2);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  color: var(--text);
-  font-size: 0.8rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-}
-
-/* PROMPT */
-.prompt-wrap {
-  margin-bottom: 16px;
-  animation: fadeUp 0.5s 0.2s ease both;
-}
-
-.prompt-wrap label {
-  display: block;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.prompt-wrap textarea {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--text);
-  resize: vertical;
-  min-height: 80px;
-  outline: none;
-  line-height: 1.6;
-  transition: border-color 0.2s;
-}
-
-.prompt-wrap textarea:focus { border-color: var(--accent2); }
+/* SETTINGS */
+.sp{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:18px;margin-bottom:16px}
+.st{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t2);margin-bottom:16px;font-family:var(--fm)}
+.sr{margin-bottom:16px}
+.sl{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);margin-bottom:8px;font-family:var(--fm)}
+.so{display:flex;flex-wrap:wrap;gap:6px}
+.ob{background:var(--s2);border:1px solid var(--b1);border-radius:8px;color:var(--t2);font-size:.72rem;padding:6px 12px;cursor:pointer;transition:.15s;font-family:var(--fm)}
+.ob:hover{border-color:var(--ac2);color:var(--t1)}
+.ob.on{background:var(--s3);border-color:var(--ac2);color:var(--ac)}
+.ep{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;font-family:var(--fm);font-size:.78rem;color:var(--t1);resize:none;height:60px;outline:none;margin-top:6px}
+.ep:focus{border-color:var(--ac2)}
 
 /* GENERATE BTN */
-#generate-btn {
-  width: 100%;
-  background: var(--accent);
-  color: #0a0a0a;
-  border: none;
-  border-radius: 12px;
-  padding: 16px;
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  animation: fadeUp 0.5s 0.25s ease both;
-}
-
-#generate-btn:hover { opacity: 0.9; }
-#generate-btn:active { transform: scale(0.99); }
-#generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.btn-cost {
-  background: rgba(0,0,0,0.15);
-  border-radius: 100px;
-  padding: 3px 10px;
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-/* NO CREDITS WARNING */
-#no-credits {
-  display: none;
-  background: #1a1505;
-  border: 1px solid #4a3a10;
-  border-radius: 10px;
-  padding: 14px 18px;
-  font-size: 0.8rem;
-  color: var(--gold);
-  margin-bottom: 16px;
-  text-align: center;
-}
+#gbtn{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:12px;padding:16px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+#gbtn:hover{opacity:.9}
+#gbtn:disabled{opacity:.4;cursor:not-allowed}
+.bcost{background:rgba(0,0,0,.15);border-radius:100px;padding:3px 10px;font-size:.72rem}
+#nc{display:none;background:#1a1505;border:1px solid #4a3a10;border-radius:10px;padding:14px 18px;font-size:.8rem;color:var(--go);margin-bottom:16px;text-align:center}
+#nc span{text-decoration:underline;cursor:pointer}
+.errb{display:none;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px 16px;color:var(--rd);font-size:.78rem;margin-bottom:16px;font-family:var(--fm)}
 
 /* LOADING */
-.loading-wrap {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 32px;
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--border2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-wrap p {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.lw{display:none;flex-direction:column;align-items:center;gap:14px;padding:32px}
+.sp2{width:36px;height:36px;border:2px solid var(--b2);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lw p{font-size:.75rem;color:var(--t2);letter-spacing:.1em;animation:pulse 1.5s ease-in-out infinite;font-family:var(--fm)}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 
 /* RESULT */
-#result-wrap {
-  display: none;
-  margin-bottom: 32px;
-  animation: fadeUp 0.4s ease both;
-}
+#rw{display:none;margin-bottom:32px}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.rtag{font-size:.7rem;color:var(--gr);letter-spacing:.1em;text-transform:uppercase}
+.ract{display:flex;gap:8px}
+.bsm{background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--t1);font-size:.7rem;padding:7px 12px;cursor:pointer;transition:.2s;font-family:var(--fm)}
+.bsm:hover{background:var(--s3);border-color:var(--ac2)}
+.cc{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:24px;line-height:1.8}
+.cc h2{font-size:1.1rem;font-weight:700;color:var(--ac);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--b1)}
+.cc h3{font-size:.8rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 6px}
+.cc p{font-size:.9rem;color:var(--t1);margin-bottom:8px}
+.cc ul,.cc ol{padding-left:18px;margin-bottom:10px}
+.cc li{font-size:.85rem;color:#ccc;margin-bottom:4px}
+.cc strong{color:var(--ac);font-weight:500}
+.cc .highlight{background:var(--s2);border-left:3px solid var(--ac2);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem}
+.cc .diagram-wrap{margin:20px 0;border:1px solid var(--b1);border-radius:12px;overflow:hidden}
+.cc .diagram-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);padding:10px 16px;border-bottom:1px solid var(--b1);background:var(--s2);margin:0;font-family:var(--fm)}
+.cc .diagram-wrap svg{width:100%;height:auto;display:block}
 
-.result-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.result-header .tag {
-  font-size: 0.7rem;
-  color: var(--green);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.result-actions { display: flex; gap: 8px; }
-
-.btn-sm {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  padding: 7px 12px;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  letter-spacing: 0.04em;
-}
-.btn-sm:hover { background: var(--surface3); border-color: var(--accent2); }
-
-.cheatsheet-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-  line-height: 1.8;
-}
-
-.cheatsheet-card h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.cheatsheet-card h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 16px 0 6px;
-}
-
-.cheatsheet-card p { font-size: 0.85rem; color: var(--text); margin-bottom: 8px; }
-.cheatsheet-card ul, .cheatsheet-card ol { padding-left: 18px; margin-bottom: 10px; }
-.cheatsheet-card li { font-size: 0.83rem; color: #ccc; margin-bottom: 4px; }
-.cheatsheet-card strong { color: var(--accent); font-weight: 500; }
-
-.cheatsheet-card .highlight {
-  background: var(--surface2);
-  border-left: 3px solid var(--accent2);
-  padding: 10px 14px;
-  border-radius: 0 8px 8px 0;
-  margin: 8px 0;
-  font-size: 0.82rem;
-}
-
-.cheatsheet-card .diagram-wrap {
-  margin: 20px 0;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.cheatsheet-card .diagram-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-  margin: 0;
-}
-
-.cheatsheet-card .diagram-wrap svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* EXAMPLE CHIPS */
-.example-chip {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  color: var(--text-muted);
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  padding: 5px 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.example-chip:hover { border-color: var(--accent2); color: var(--accent); }
-
-/* BOTTOM NAV */
-#bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  z-index: 50;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.bnav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 10px;
-  cursor: pointer;
-  color: var(--text-muted);
-  font-size: 0.65rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-
-.bnav-item span:first-child { font-size: 1.3rem; }
-.bnav-item.active { color: var(--accent); }
-
-.tab-content { padding-bottom: 80px; }
-
-/* END BOTTOM NAV */
-
-.settings-panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
-  margin-bottom: 16px;
-  animation: fadeUp 0.5s 0.2s ease both;
-}
-
-.settings-title {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.setting-row {
-  margin-bottom: 16px;
-}
-
-.setting-row:last-child { margin-bottom: 0; }
-
-.setting-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.setting-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.opt-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-family: 'DM Mono', monospace;
-  font-size: 0.72rem;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-  letter-spacing: 0.04em;
-}
-
-.opt-btn:hover { border-color: var(--accent2); color: var(--text); }
-.opt-btn.active {
-  background: var(--surface3);
-  border-color: var(--accent2);
-  color: var(--accent);
-}
-
-/* END SETTINGS */
-
-  display: none;
-  background: #2a1515;
-  border: 1px solid #5a2020;
-  border-radius: 10px;
-  padding: 12px 16px;
-  color: var(--red);
-  font-size: 0.78rem;
-  margin-bottom: 16px;
-}
-
-/* ==================== CREDITS SCREEN ==================== */
-#screen-credits {
-  flex-direction: column;
-}
-
-.credits-content {
-  flex: 1;
-  padding: 28px 20px;
-  max-width: 680px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.back-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  margin-bottom: 24px;
-  transition: color 0.2s;
-  background: none;
-  border: none;
-}
-.back-btn:hover { color: var(--text); }
-
-.credits-balance {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.credits-balance .balance-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.credits-balance .balance-label {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.credits-balance .balance-value {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.credits-balance .balance-value span { color: var(--accent); }
-
-.packages-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: var(--text);
-}
-
-.packages-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
-  margin-bottom: 28px;
-}
-
-.package-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px 16px;
-  cursor: pointer;
-  transition: border-color 0.2s, transform 0.15s;
-  text-align: center;
-  position: relative;
-}
-
-.package-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
-.package-card.popular { border-color: var(--accent2); }
-
-.package-card .popular-tag {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--accent2);
-  color: #0a0a0a;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 700;
-  padding: 2px 10px;
-  border-radius: 100px;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.package-card .pkg-credits {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.package-card .pkg-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
-
-.package-card .pkg-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-.package-card .pkg-per {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-}
-
-.package-card .pkg-tahaky {
-  margin-top: 10px;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  background: var(--surface2);
-  border-radius: 6px;
-  padding: 4px 8px;
-}
-
-.buy-btn {
-  width: 100%;
-  background: var(--accent);
-  color: #0a0a0a;
-  border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  letter-spacing: 0.04em;
-}
-.buy-btn:hover { opacity: 0.9; }
-
-.payment-note {
-  text-align: center;
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  margin-top: 12px;
-  letter-spacing: 0.06em;
-}
-
-/* HISTORY */
-.history-section { margin-top: 32px; }
-
-.history-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 12px;
-}
-
-.history-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.78rem;
-}
-
-.history-item .hi-label { color: var(--text-muted); }
-.history-item .hi-date { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
-.history-item .hi-amount { font-family: 'Syne', sans-serif; font-weight: 700; }
-.history-item .hi-amount.plus { color: var(--green); }
-.history-item .hi-amount.minus { color: var(--red); }
-
-/* ==================== PROFILE DROPDOWN ==================== */
-#profile-menu {
-  display: none;
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 8px;
-  z-index: 200;
-  min-width: 180px;
-  box-shadow: var(--shadow-lg);
-  animation: fadeUp 0.2s ease both;
-}
-
-#profile-menu.open { display: block; }
-
-.profile-menu-email {
-  padding: 8px 12px;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 6px;
-  word-break: break-all;
-}
-
-.profile-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  font-size: 0.78rem;
-  color: var(--text);
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.15s;
-}
-.profile-menu-item:hover { background: var(--surface3); }
-.profile-menu-item.danger { color: var(--red); }
+/* CREDITS SCREEN */
+#scr{display:none;flex-direction:column}
+#scr.on{display:flex}
+.ccon{flex:1;padding:28px 20px;max-width:680px;margin:0 auto;width:100%}
+.backb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--t2);cursor:pointer;margin-bottom:24px;background:none;border:none;color:var(--t2)}
+.backb:hover{color:var(--t1)}
+.cbal{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:28px;text-align:center;margin-bottom:28px}
+.cbal .bnum{font-size:3.5rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:6px}
+.cbal .blbl{font-size:.72rem;color:var(--t2);letter-spacing:.12em;text-transform:uppercase}
+.cbal .bval{margin-top:10px;font-size:.8rem;color:var(--t2)}
+.cbal .bval span{color:var(--ac)}
+.ptitle{font-size:1rem;font-weight:600;margin-bottom:16px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:28px}
+.pcard{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:20px 16px;cursor:pointer;text-align:center;position:relative;transition:.2s}
+.pcard:hover{border-color:var(--ac2);transform:translateY(-2px)}
+.pcard.pop{border-color:var(--ac2)}
+.ptag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--ac2);color:#0a0a0a;font-size:.62rem;font-weight:700;padding:2px 10px;border-radius:100px;white-space:nowrap}
+.pcr{font-size:1.8rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:4px}
+.pclbl{font-size:.65rem;color:var(--t2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ppr{font-size:1rem;font-weight:700;margin-bottom:2px}
+.pper{font-size:.65rem;color:var(--t2)}
+.pth{margin-top:10px;font-size:.7rem;color:var(--t2);background:var(--s2);border-radius:6px;padding:4px 8px}
+.hsec{margin-top:32px}
+.htitle{font-size:.85rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--fm)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b1);font-size:.78rem}
+.hi .hl{color:var(--t2)}
+.hi .hd{font-size:.68rem;color:var(--t3);margin-top:2px}
+.hi .ha{font-weight:700}
+.hi .ha.plus{color:var(--gr)}
+.hi .ha.minus{color:var(--rd)}
 
 /* STRIPE MODAL */
-#stripe-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 300;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  backdrop-filter: blur(4px);
-}
-
-#stripe-modal.open { display: flex; }
-
-.stripe-box {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 20px;
-  padding: 28px;
-  width: 100%;
-  max-width: 380px;
-  box-shadow: var(--shadow-lg);
-  animation: fadeUp 0.3s ease both;
-}
-
-.stripe-box h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.stripe-box .stripe-sub {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 24px;
-}
-
-.stripe-summary {
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.stripe-summary .ss-left .ss-credits {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--gold);
-}
-
-.stripe-summary .ss-left .ss-label {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.stripe-summary .ss-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--text);
-}
-
-.stripe-note {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  text-align: center;
-  margin-top: 14px;
-  line-height: 1.5;
-}
-
-.stripe-note a { color: var(--accent2); text-decoration: none; }
-
-.stripe-btns { display: flex; gap: 10px; margin-top: 20px; }
-
-.btn-cancel {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 10px;
-  padding: 12px 18px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-cancel:hover { background: var(--surface3); }
+#sm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+#sm.on{display:flex}
+.smbox{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:28px;width:100%;max-width:380px}
+.smbox h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.smbox .ssub{font-size:.75rem;color:var(--t2);margin-bottom:24px}
+.ssum{background:var(--s2);border-radius:10px;padding:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.ssum .scr{font-size:1.3rem;font-weight:800;color:var(--go)}
+.ssum .slbl{font-size:.68rem;color:var(--t2);text-transform:uppercase;letter-spacing:.08em}
+.ssum .spr{font-size:1.5rem;font-weight:800}
+.sbtns{display:flex;gap:10px;margin-top:20px}
+.bc{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:12px 18px;font-size:.8rem;color:var(--t2);cursor:pointer}
+.bc:hover{background:var(--s3)}
+.snote{font-size:.72rem;color:var(--t2);text-align:center;margin-top:14px;line-height:1.5}
 
 /* TOAST */
-#toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 100px;
-  padding: 10px 20px;
-  font-size: 0.78rem;
-  color: var(--text);
-  z-index: 400;
-  transition: transform 0.3s ease;
-  white-space: nowrap;
-  box-shadow: var(--shadow);
-}
-
-#toast.show { transform: translateX(-50%) translateY(0); }
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:10px 20px;font-size:.78rem;z-index:400;transition:transform .3s;white-space:nowrap;font-family:var(--fm)}
+#toast.on{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- ==================== AUTH SCREEN ==================== -->
-<div class="screen" id="screen-auth" style="display:flex">
-  <div class="auth-box">
-    <div class="auth-logo">Snap<span>Cheat</span></div>
-    <div class="auth-tagline">AI tahák z fotky za sekundy</div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuthTab('login')">Přihlásit se</button>
-      <button class="auth-tab" onclick="switchAuthTab('register')">Registrovat</button>
+<div class="screen on" id="sa">
+  <div class="abox">
+    <div class="logo">Snap<span>Cheat</span></div>
+    <div class="tag">AI tahák z fotky za sekundy</div>
+    <div class="atabs">
+      <button class="atab on" onclick="atab('login',this)">Přihlásit se</button>
+      <button class="atab" onclick="atab('reg',this)">Registrovat</button>
     </div>
-
-    <div class="auth-error" id="auth-error"></div>
-
-    <div class="input-group">
-      <label>E-mail</label>
-      <input type="email" id="auth-email" placeholder="tvuj@email.cz" autocomplete="email">
-    </div>
-
-    <div class="input-group">
-      <label>Heslo</label>
-      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
-    </div>
-
-    <div class="input-group" id="auth-phone-wrap" style="display:none">
-      <label>Telefonní číslo</label>
-      <input type="tel" id="auth-phone" placeholder="+420 123 456 789" autocomplete="tel">
-      <div style="font-size:0.65rem;color:var(--text-dim);margin-top:4px;letter-spacing:0.06em">Slouží k ověření — jedno číslo = jeden účet</div>
-    </div>
-
-    <div class="input-group" id="auth-confirm-wrap" style="display:none">
-      <label>Potvrdit heslo</label>
-      <input type="password" id="auth-confirm" placeholder="••••••••">
-    </div>
-
-    <button class="btn-primary" id="auth-btn" onclick="handleAuth()">Přihlásit se</button>
-
-    <div class="auth-divider">nebo pokračuj jako host</div>
-
-    <button class="btn-primary" style="background:var(--surface2);color:var(--text);border:1px solid var(--border2)" onclick="loginDemo()">
-      👀 Vyzkoušet demo
-    </button>
+    <div class="aerr" id="aerr"></div>
+    <div class="fg"><label>E-mail</label><input type="email" id="aemail" placeholder="tvuj@email.cz"></div>
+    <div class="fg"><label>Heslo</label><input type="password" id="apass" placeholder="••••••••"></div>
+    <div class="fg hide" id="aphwrap"><label>Telefonní číslo</label><input type="tel" id="aphone" placeholder="+420 123 456 789"><div class="hint">Jedno číslo = jeden účet</div></div>
+    <div class="fg hide" id="acwrap"><label>Potvrdit heslo</label><input type="password" id="aconf" placeholder="••••••••"></div>
+    <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
+    <div class="adiv">nebo pokračuj jako host</div>
+    <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
   </div>
 </div>
 
-<!-- ==================== MAIN SCREEN ==================== -->
-<div class="screen" id="screen-main">
-
-  <div class="topbar">
-    <div class="topbar-logo">SnapCheat</div>
-    <div class="topbar-right">
-      <div class="credits-badge" onclick="showScreen('credits')">
-        <span class="coin">🪙</span>
-        <span class="amount" id="topbar-credits">0</span>
-        <span class="label">kr</span>
+<div class="screen" id="sm2">
+  <div class="top">
+    <div class="tlogo">SnapCheat</div>
+    <div class="tright">
+      <div class="cbadge" onclick="goCredits()">
+        <span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span>
       </div>
-      <div class="avatar-btn" onclick="toggleProfileMenu()">
-        <span id="avatar-letter">?</span>
-      </div>
+      <div class="avbtn" onclick="toggleMenu()" id="avbtn">?</div>
     </div>
   </div>
-
-  <!-- BOTTOM NAV - removed, single page now -->
-
-
-  <!-- PROFILE MENU -->
-  <div id="profile-menu">
-    <div class="profile-menu-email" id="profile-email">—</div>
-    <div class="profile-menu-item" onclick="showScreen('credits')">🪙 Koupit kredity</div>
-    <div class="profile-menu-item danger" onclick="logout()">↩ Odhlásit se</div>
+  <div id="pmenu">
+    <div class="pmemail" id="pmemail">—</div>
+    <div class="pmitem" onclick="goCredits()">🪙 Koupit kredity</div>
+    <div class="pmitem danger" onclick="doLogout()">↩ Odhlásit se</div>
   </div>
-
-  <div class="main-content">
+  <div class="mc">
     <div class="hero">
       <h1>Vyfot test,<br>dostaneš <span>tahák</span></h1>
-      <p>Nahraj fotku testu nebo učebnice a AI vytvoří stručný tahák. Každé generování stojí 20 kreditů.</p>
+      <p>Nahraj fotku testu a AI vytvoří tahák s odpověďmi a diagramy. Každé generování stojí 20 kreditů.</p>
     </div>
-
-    <div class="cost-bar">
-      <div>
-        <div class="label">CENA GENEROVÁNÍ</div>
-      </div>
-      <div class="cost">20 <span>kreditů za tahák</span></div>
+    <div class="costbar">
+      <div class="cl">CENA GENEROVÁNÍ</div>
+      <div class="cv">20 <span>kreditů za tahák</span></div>
     </div>
-
-    <div id="drop-zone" ondragover="handleDrag(event)" ondragleave="handleDragLeave()" ondrop="handleDrop(event)">
-      <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)" id="file-input">
-      <span id="drop-icon">📸</span>
+    <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
+      <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
+      <span class="di">📸</span>
       <h2>Vyfoť nebo nahraj test</h2>
       <p>Klikni pro fotoaparát nebo přetáhni obrázek</p>
     </div>
-
-    <div id="preview-wrap">
-      <img id="preview-img" src="" alt="">
-      <button id="remove-img" onclick="removeImage()">✕</button>
+    <div id="pw">
+      <img id="pimg" src="" alt="">
+      <button onclick="rmImg()">✕</button>
     </div>
-
-    <div class="settings-panel">
-      <div class="settings-title">⚙ Nastavení taháku</div>
-
-      <!-- LANGUAGE -->
-      <div class="setting-row">
-        <div class="setting-label">Jazyk odpovědi</div>
-        <div class="setting-options" id="lang-options">
-          <button class="opt-btn active" onclick="selectOpt('lang', 'česky', this)">🇨🇿 CZ</button>
-          <button class="opt-btn" onclick="selectOpt('lang', 'in English', this)">🇬🇧 EN</button>
-          <button class="opt-btn" onclick="selectOpt('lang', 'auf Deutsch', this)">🇩🇪 DE</button>
-          <button class="opt-btn" onclick="selectOpt('lang', 'en español', this)">🇪🇸 ES</button>
-          <button class="opt-btn" onclick="selectOpt('lang', 'en français', this)">🇫🇷 FR</button>
+    <div class="sp">
+      <div class="st">⚙ Nastavení taháku</div>
+      <div class="sr">
+        <div class="sl">Jazyk odpovědi</div>
+        <div class="so" id="lang-opts">
+          <button class="ob on" onclick="setOpt('lang','česky',this)">🇨🇿 CZ</button>
+          <button class="ob" onclick="setOpt('lang','in English',this)">🇬🇧 EN</button>
+          <button class="ob" onclick="setOpt('lang','auf Deutsch',this)">🇩🇪 DE</button>
+          <button class="ob" onclick="setOpt('lang','en español',this)">🇪🇸 ES</button>
+          <button class="ob" onclick="setOpt('lang','en français',this)">🇫🇷 FR</button>
         </div>
       </div>
-
-      <!-- LENGTH -->
-      <div class="setting-row">
-        <div class="setting-label">Délka odpovědi</div>
-        <div class="setting-options" id="length-options">
-          <button class="opt-btn active" onclick="selectOpt('length', 'Buď maximálně stručný — jen nejdůležitější body, žádné zbytečné věty.', this)">⚡ Stručně</button>
-          <button class="opt-btn" onclick="selectOpt('length', 'Piš středně podrobně — vysvětli klíčové koncepty ale bez zbytečného textu.', this)">📄 Středně</button>
-          <button class="opt-btn" onclick="selectOpt('length', 'Piš podrobně a vyčerpávajícně — zahrň vše důležité, vysvětlení, příklady.', this)">📚 Podrobně</button>
+      <div class="sr">
+        <div class="sl">Délka</div>
+        <div class="so" id="len-opts">
+          <button class="ob on" onclick="setOpt('len','Buď maximálně stručný.',this)">⚡ Stručně</button>
+          <button class="ob" onclick="setOpt('len','Piš středně podrobně.',this)">📄 Středně</button>
+          <button class="ob" onclick="setOpt('len','Piš velmi podrobně se vším.',this)">📚 Podrobně</button>
         </div>
       </div>
-
-      <!-- FORMAT -->
-      <div class="setting-row">
-        <div class="setting-label">Forma odpovědi</div>
-        <div class="setting-options" id="format-options">
-          <button class="opt-btn active" onclick="selectOpt('format', 'Formátuj jako přehledný tahák s odrážkami a sekcemi.', this)">• Tahák</button>
-          <button class="opt-btn" onclick="selectOpt('format', 'Formátuj jako sloh nebo esej — plné věty, odstavce, přirozený text.', this)">✍ Esej/Sloh</button>
-          <button class="opt-btn" onclick="selectOpt('format', 'Formátuj jako tabulku nebo tabulky kde je to možné.', this)">⊞ Tabulka</button>
-          <button class="opt-btn" onclick="selectOpt('format', 'Formátuj jako hierarchický seznam — hlavní body a podbody jako stromová struktura.', this)">🌲 Strom</button>
-          <button class="opt-btn" onclick="selectOpt('format', 'Formátuj jako otázky a odpovědi — každý bod jako Q&A.', this)">❓ Q&A</button>
+      <div class="sr">
+        <div class="sl">Forma</div>
+        <div class="so" id="form-opts">
+          <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Tahák</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako esej nebo sloh.',this)">✍ Esej</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako otázky a odpovědi.',this)">❓ Q&A</button>
         </div>
       </div>
-
-      <!-- EXTRA NOTES -->
-      <div class="setting-row">
-        <div class="setting-label">Vlastní instrukce <span style="color:var(--text-dim)">(volitelné)</span></div>
-        <textarea id="extra-prompt" placeholder="Např: Zaměř se hlavně na vzorce. Nebo: Ignoruj úvod a závěr." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--text);resize:none;height:60px;outline:none;margin-top:6px"></textarea>
+      <div class="sr">
+        <div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
+        <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..."></textarea>
       </div>
     </div>
-
-    <div id="no-credits">
-      🪙 Nemáš dost kreditů! <span style="text-decoration:underline;cursor:pointer" onclick="showScreen('credits')">Koupit kredity →</span>
-    </div>
-
-    <button id="generate-btn" onclick="generate()">
-      ⚡ VYGENEROVAT TAHÁK
-      <span class="btn-cost">−20 kr</span>
-    </button>
-
-    <div class="error-box" id="gen-error"></div>
-
-    <div class="loading-wrap" id="gen-loading">
-      <div class="spinner"></div>
-      <p>AI analyzuje test...</p>
-    </div>
-
-    <div id="result-wrap">
-      <div class="result-header">
-        <span class="tag">✓ Tahák připraven</span>
-        <div class="result-actions">
-          <button class="btn-sm" onclick="copyResult()">Kopírovat</button>
-          <button class="btn-sm" onclick="saveResult()">Uložit PDF</button>
+    <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit kredity →</span></div>
+    <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−20 kr</span></button>
+    <div class="errb" id="gerr"></div>
+    <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
+    <div id="rw">
+      <div class="rh">
+        <span class="rtag">✓ Tahák připraven</span>
+        <div class="ract">
+          <button class="bsm" onclick="doCopy()">Kopírovat</button>
+          <button class="bsm" onclick="doPDF()">Uložit PDF</button>
         </div>
       </div>
-  <!-- TAB CONTENTS -->
-  <div id="tab-main" class="tab-content active">
-
-    <div id="drop-zone-wrap">
-      <div id="drop-zone" ondragover="handleDrag(event)" ondragleave="handleDragLeave()" ondrop="handleDrop(event)">
-        <input type="file" accept="image/*" capture="environment" onchange="handleFile(event)">
-        <span id="drop-icon">📸</span>
-        <h2>Vyfoť nebo nahraj test</h2>
-        <p>Klikni nebo přetáhni obrázek</p>
-      </div>
+      <div class="cc"><div id="rc"></div></div>
     </div>
-
-    <div id="preview-wrap2" style="display:none;position:relative;margin-bottom:16px">
-      <img id="preview-img2" src="" alt="" style="width:100%;border-radius:12px;border:1px solid var(--border);max-height:300px;object-fit:cover">
-      <button onclick="removeImage()" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);border:1px solid var(--border2);border-radius:50%;width:30px;height:30px;color:var(--text);cursor:pointer">✕</button>
-    </div>
-
-    <div id="no-credits" style="display:none;background:#1a1505;border:1px solid #4a3a10;border-radius:10px;padding:14px 18px;font-size:0.8rem;color:var(--gold);margin-bottom:16px;text-align:center">
-      🪙 Nemáš dost kreditů! <span style="text-decoration:underline;cursor:pointer" onclick="showScreen('credits')">Koupit kredity →</span>
-    </div>
-
-    <button id="generate-btn" onclick="generate()">
-      ⚡ VYGENEROVAT TAHÁK
-      <span class="btn-cost">−20 kr</span>
-    </button>
-
-    <div class="error-box" id="gen-error"></div>
-
-    <div class="loading-wrap" id="gen-loading">
-      <div class="spinner"></div>
-      <p>AI analyzuje test...</p>
-    </div>
-
-    <div id="result-wrap" style="display:none;margin-bottom:32px">
-      <div class="result-header">
-        <span class="tag">✓ Tahák připraven</span>
-        <div class="result-actions">
-          <button class="btn-sm" onclick="copyResult()">Kopírovat</button>
-          <button class="btn-sm" onclick="saveResult()">Uložit PDF</button>
-        </div>
-      </div>
-      <div class="cheatsheet-card">
-        <div id="result-content"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DIAGRAM TAB -->
-  <div id="tab-diagram" class="tab-content" style="display:none">
-
-    <div style="margin-bottom:20px">
-      <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px">Nakresli diagram <span style="color:var(--accent)">AI</span></h2>
-      <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.6">Popiš co chceš nakreslit a AI vygeneruje diagram, graf nebo schéma.</p>
-    </div>
-
-    <!-- EXAMPLES -->
-    <div style="margin-bottom:16px">
-      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px">Příklady</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px">
-        <button class="example-chip" onclick="setDiagramPrompt('Ebinghausova křivka zapomínání')">Ebinghausova křivka</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Maslowova pyramida potřeb')">Maslowova pyramida</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Fotosyntéza - schéma procesu')">Fotosyntéza</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Graf lineární funkce y=2x+1')">Lineární funkce</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Časová osa první světové války')">Časová osa</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Buněčné dělení - mitóza')">Mitóza</button>
-        <button class="example-chip" onclick="setDiagramPrompt('Koloběh vody v přírodě')">Koloběh vody</button>
-      </div>
-    </div>
-
-    <!-- INPUT -->
-    <div style="margin-bottom:16px">
-      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px">Tvůj diagram</div>
-      <textarea id="diagram-prompt" placeholder="Nakresli Ebinghausovu křivku zapomínání se osami a popisky..." style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);resize:none;height:90px;outline:none;line-height:1.6;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent2)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-    </div>
-
-    <button onclick="generateDiagram()" style="width:100%;background:var(--accent);color:#0a0a0a;border:none;border-radius:12px;padding:16px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px" id="diagram-btn">
-      🎨 VYGENEROVAT DIAGRAM
-      <span style="background:rgba(0,0,0,0.15);border-radius:100px;padding:3px 10px;font-size:0.72rem">−10 kr</span>
-    </button>
-
-    <div class="error-box" id="diagram-error"></div>
-
-    <div class="loading-wrap" id="diagram-loading">
-      <div class="spinner"></div>
-      <p>AI kreslí diagram...</p>
-    </div>
-
-    <div id="diagram-result" style="display:none;margin-bottom:32px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <span style="font-size:0.7rem;color:var(--green);letter-spacing:0.1em;text-transform:uppercase">✓ Diagram připraven</span>
-        <div style="display:flex;gap:8px">
-          <button class="btn-sm" onclick="saveDiagram()">Uložit PNG</button>
-        </div>
-      </div>
-      <div id="diagram-output" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;overflow:auto"></div>
-    </div>
-
-  </div>
-
-</div>
-</div>
-
-<!-- ==================== CREDITS SCREEN ==================== -->
-<div class="screen" id="screen-credits">
-
-  <div class="topbar">
-    <div class="topbar-logo">SnapCheat</div>
-    <div class="topbar-right">
-      <div class="credits-badge">
-        <span class="coin">🪙</span>
-        <span class="amount" id="credits-topbar2">0</span>
-        <span class="label">kr</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="credits-content">
-    <button class="back-btn" onclick="showScreen('main')">← Zpět</button>
-
-    <div class="credits-balance">
-      <div class="balance-num" id="balance-display">0</div>
-      <div class="balance-label">Tvůj zůstatek kreditů</div>
-      <div class="balance-value">= <span id="balance-kc">0 Kč</span> hodnota</div>
-    </div>
-
-    <div class="packages-title">Koupit kredity</div>
-
-    <div class="packages-grid">
-      <div class="package-card" onclick="selectPackage(50, 49)">
-        <div class="pkg-credits">50</div>
-        <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">49 Kč</div>
-        <div class="pkg-per">0,98 Kč/kr</div>
-        <div class="pkg-tahaky">~2 taháky</div>
-      </div>
-
-      <div class="package-card popular" onclick="selectPackage(100, 89)">
-        <div class="popular-tag">NEJPOPULÁRNĚJŠÍ</div>
-        <div class="pkg-credits">100</div>
-        <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">89 Kč</div>
-        <div class="pkg-per">0,89 Kč/kr</div>
-        <div class="pkg-tahaky">~5 taháků</div>
-      </div>
-
-      <div class="package-card" onclick="selectPackage(250, 199)">
-        <div class="pkg-credits">250</div>
-        <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">199 Kč</div>
-        <div class="pkg-per">0,80 Kč/kr</div>
-        <div class="pkg-tahaky">~12 taháků</div>
-      </div>
-
-      <div class="package-card" onclick="selectPackage(500, 369)">
-        <div class="pkg-credits">500</div>
-        <div class="pkg-label">kreditů</div>
-        <div class="pkg-price">369 Kč</div>
-        <div class="pkg-per">0,74 Kč/kr</div>
-        <div class="pkg-tahaky">~25 taháků</div>
-      </div>
-    </div>
-
-    <div class="history-section">
-      <div class="history-title">Historie transakcí</div>
-      <div id="history-list"></div>
-    </div>
-
   </div>
 </div>
 
-<!-- STRIPE MODAL -->
-<div id="stripe-modal">
-  <div class="stripe-box">
+<div class="screen" id="scr">
+  <div class="top">
+    <div class="tlogo">SnapCheat</div>
+    <div class="tright">
+      <div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div>
+    </div>
+  </div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div class="cbal">
+      <div class="bnum" id="bnum">0</div>
+      <div class="blbl">Tvůj zůstatek kreditů</div>
+      <div class="bval">= <span id="bkc">0 Kč</span> hodnota</div>
+    </div>
+    <div class="ptitle">Koupit kredity</div>
+    <div class="pgrid">
+      <div class="pcard" onclick="buyPkg(50,49)">
+        <div class="pcr">50</div><div class="pclbl">kreditů</div>
+        <div class="ppr">49 Kč</div><div class="pper">0,98 Kč/kr</div>
+        <div class="pth">~2 taháky</div>
+      </div>
+      <div class="pcard pop" onclick="buyPkg(100,89)">
+        <div class="ptag">NEJPOPULÁRNĚJŠÍ</div>
+        <div class="pcr">100</div><div class="pclbl">kreditů</div>
+        <div class="ppr">89 Kč</div><div class="pper">0,89 Kč/kr</div>
+        <div class="pth">~5 taháků</div>
+      </div>
+      <div class="pcard" onclick="buyPkg(250,199)">
+        <div class="pcr">250</div><div class="pclbl">kreditů</div>
+        <div class="ppr">199 Kč</div><div class="pper">0,80 Kč/kr</div>
+        <div class="pth">~12 taháků</div>
+      </div>
+      <div class="pcard" onclick="buyPkg(500,369)">
+        <div class="pcr">500</div><div class="pclbl">kreditů</div>
+        <div class="ppr">369 Kč</div><div class="pper">0,74 Kč/kr</div>
+        <div class="pth">~25 taháků</div>
+      </div>
+    </div>
+    <div class="hsec">
+      <div class="htitle">Historie transakcí</div>
+      <div id="hlist"></div>
+    </div>
+  </div>
+</div>
+
+<div id="sm">
+  <div class="smbox">
     <h3>Koupit kredity</h3>
-    <p class="stripe-sub">Bezpečná platba přes Stripe</p>
-
-    <div class="stripe-summary">
-      <div class="ss-left">
-        <div class="ss-credits" id="modal-credits">100</div>
-        <div class="ss-label">kreditů</div>
-      </div>
-      <div class="ss-price" id="modal-price">89 Kč</div>
+    <p class="ssub">Bezpečná platba přes Stripe</p>
+    <div class="ssum">
+      <div><div class="scr" id="mkcr">100</div><div class="slbl">kreditů</div></div>
+      <div class="spr" id="mkpr">89 Kč</div>
     </div>
-
-    <div class="input-group">
-      <label>Číslo karty</label>
-      <input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)">
-    </div>
-
+    <div class="fg"><label>Číslo karty</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="input-group">
-        <label>Platnost</label>
-        <input type="text" placeholder="MM/RR" maxlength="5">
-      </div>
-      <div class="input-group">
-        <label>CVC</label>
-        <input type="text" placeholder="123" maxlength="3">
-      </div>
+      <div class="fg"><label>Platnost</label><input type="text" placeholder="MM/RR" maxlength="5"></div>
+      <div class="fg"><label>CVC</label><input type="text" placeholder="123" maxlength="3"></div>
     </div>
-
-    <div class="stripe-btns">
-      <button class="btn-cancel" onclick="closeStripe()">Zrušit</button>
-      <button class="btn-primary" style="flex:1;margin-top:0" onclick="processPayment()">Zaplatit</button>
+    <div class="sbtns">
+      <button class="bc" onclick="closeSM()">Zrušit</button>
+      <button class="bp" style="flex:1;margin-top:0" id="paybtn" onclick="doPay()">Zaplatit</button>
     </div>
-
-    <div class="stripe-note">
-      🔒 Platba je šifrována a zabezpečena.<br>
-      Tvoje karta nebude uložena.
-    </div>
+    <div class="snote">🔒 Platba je šifrována a zabezpečena.</div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ==================== STATE ====================
-let currentUser = null;
-let credits = 0;
-let history = [];
-let currentImage = null;
-let selectedPkg = null;
-const COST_PER_CHEAT = 20;
-const WORKER_URL = 'https://satnik-api.marjansta90.workers.dev/';
+const WU='https://satnik-api.marjansta90.workers.dev/';
+const COST=20;
+let user=null,credits=0,history=[],img=null,selPkg=null;
+const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
 
-// ==================== AUTH ====================
-let authMode = 'login';
-
-function switchAuthTab(mode) {
-  authMode = mode;
-  document.querySelectorAll('.auth-tab').forEach((t,i) => {
-    t.classList.toggle('active', (i === 0 && mode === 'login') || (i === 1 && mode === 'register'));
-  });
-  document.getElementById('auth-confirm-wrap').style.display = mode === 'register' ? 'block' : 'none';
-  document.getElementById('auth-phone-wrap').style.display = mode === 'register' ? 'block' : 'none';
-  document.getElementById('auth-btn').textContent = mode === 'login' ? 'Přihlásit se' : 'Registrovat';
-  document.getElementById('auth-error').style.display = 'none';
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='none'});
+  const s=document.getElementById(id);
+  s.style.display='flex';
+  s.classList.add('on');
 }
 
-function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const errorEl = document.getElementById('auth-error');
+function sw(id){show(id)}
 
-  if (!email || !password) {
-    errorEl.textContent = 'Vyplň e-mail a heslo';
-    errorEl.style.display = 'block';
-    return;
-  }
+function atab(m,el){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');
+  document.getElementById('acwrap').classList.toggle('hide',m!=='reg');
+  document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';
+  el._mode=m;
+  window._amode=m;
+}
+window._amode='login';
 
-  if (!email.includes('@')) {
-    errorEl.textContent = 'Zadej platný e-mail';
-    errorEl.style.display = 'block';
-    return;
-  }
-
-  if (authMode === 'register') {
-    const confirm = document.getElementById('auth-confirm').value;
-    const phone = document.getElementById('auth-phone').value.trim().replace(/\s/g, '');
-
-    if (!phone) {
-      errorEl.textContent = 'Zadej telefonní číslo';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    if (phone.length < 9) {
-      errorEl.textContent = 'Zadej platné telefonní číslo';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    if (password !== confirm) {
-      errorEl.textContent = 'Hesla se neshodují';
-      errorEl.style.display = 'block';
-      return;
-    }
-    if (password.length < 6) {
-      errorEl.textContent = 'Heslo musí mít alespoň 6 znaků';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem('sc_users') || '{}');
-    if (users[email]) {
-      errorEl.textContent = 'Tento e-mail je již registrován';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    // Check phone uniqueness
-    const phoneExists = Object.values(users).some(u => u.phone === phone);
-    if (phoneExists) {
-      errorEl.textContent = 'Toto telefonní číslo je již použito';
-      errorEl.style.display = 'block';
-      return;
-    }
-
-    users[email] = { password, phone, credits: 20, history: [
-      { type: 'plus', label: 'Uvítací bonus', amount: '+20 kr', date: new Date().toLocaleDateString('cs') }
-    ]};
-    localStorage.setItem('sc_users', JSON.stringify(users));
-    loginUser(email, 20, users[email].history);
-    showToast('🎉 Účet vytvořen! Dostals 20 kreditů zdarma');
+function doAuth(){
+  const email=document.getElementById('aemail').value.trim();
+  const pass=document.getElementById('apass').value;
+  const err=document.getElementById('aerr');
+  err.style.display='none';
+  if(!email||!email.includes('@')){err.textContent='Zadej platný e-mail';err.style.display='block';return}
+  if(!pass){err.textContent='Zadej heslo';err.style.display='block';return}
+  if(window._amode==='reg'){
+    const phone=document.getElementById('aphone').value.trim().replace(/\s/g,'');
+    const conf=document.getElementById('aconf').value;
+    if(!phone||phone.length<9){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
+    if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
+    if(pass.length<6){err.textContent='Heslo musí mít alespoň 6 znaků';err.style.display='block';return}
+    const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
+    if(us[email]){err.textContent='E-mail již existuje';err.style.display='block';return}
+    if(Object.values(us).some(u=>u.phone===phone)){err.textContent='Toto číslo je již použito';err.style.display='block';return}
+    us[email]={pass,phone,cr:20,hist:[{t:'plus',l:'Uvítací bonus',a:'+20 kr',d:new Date().toLocaleDateString('cs')}]};
+    localStorage.setItem('sc_u',JSON.stringify(us));
+    loginAs(email,20,us[email].hist);
+    toast('🎉 Účet vytvořen! +20 kreditů zdarma');
   } else {
-    const users = JSON.parse(localStorage.getItem('sc_users') || '{}');
-    if (!users[email] || users[email].password !== password) {
-      errorEl.textContent = 'Špatný e-mail nebo heslo';
-      errorEl.style.display = 'block';
-      return;
-    }
-    loginUser(email, users[email].credits, users[email].history || []);
+    const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
+    if(!us[email]||us[email].pass!==pass){err.textContent='Špatný e-mail nebo heslo';err.style.display='block';return}
+    loginAs(email,us[email].cr,us[email].hist||[]);
   }
 }
 
-function loginDemo() {
-  loginUser('demo@snapcheat.cz', 100, [
-    { type: 'plus', label: 'Demo kredity', amount: '+100 kr', date: new Date().toLocaleDateString('cs') }
-  ]);
-  showToast('👋 Vítej v demo módu!');
+function demoLogin(){loginAs('demo@snapcheat.cz',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:new Date().toLocaleDateString('cs')}]);toast('👋 Demo mód!')}
+
+function loginAs(email,cr,hist){
+  user=email;credits=cr;history=hist||[];
+  document.getElementById('avbtn').textContent=email[0].toUpperCase();
+  document.getElementById('pmemail').textContent=email;
+  updCr();show('sm2');
 }
 
-function loginUser(email, cr, hist) {
-  currentUser = email;
-  credits = cr;
-  history = hist || [];
-  updateCreditsUI();
-  document.getElementById('avatar-letter').textContent = email[0].toUpperCase();
-  document.getElementById('profile-email').textContent = email;
-  showScreen('main');
+function doLogout(){user=null;credits=0;history=[];img=null;document.getElementById('rw').style.display='none';document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='block';show('sa')}
+
+function goCredits(){document.getElementById('pmenu').classList.remove('on');updCrScreen();show('scr')}
+function goMain(){show('sm2')}
+
+function toggleMenu(){document.getElementById('pmenu').classList.toggle('on')}
+document.addEventListener('click',e=>{if(!e.target.closest('#pmenu')&&!e.target.closest('#avbtn'))document.getElementById('pmenu').classList.remove('on')});
+
+function updCr(){
+  document.getElementById('tcr').textContent=credits;
+  document.getElementById('tcr2').textContent=credits;
+  document.getElementById('nc').style.display=credits<COST?'block':'none';
 }
 
-function logout() {
-  currentUser = null;
-  credits = 0;
-  history = [];
-  currentImage = null;
-  document.getElementById('profile-menu').classList.remove('open');
-  document.getElementById('result-wrap').style.display = 'none';
-  document.getElementById('preview-wrap').style.display = 'none';
-  document.getElementById('drop-zone').style.display = 'block';
-  showScreen('auth');
+function updCrScreen(){
+  document.getElementById('bnum').textContent=credits;
+  document.getElementById('bkc').textContent=credits+' Kč';
+  const list=document.getElementById('hlist');
+  if(!history.length){list.innerHTML='<div style="font-size:.78rem;color:var(--t3);padding:16px 0">Zatím žádné transakce</div>';return}
+  list.innerHTML=history.slice().reverse().map(h=>`<div class="hi"><div><div class="hl">${h.l}</div><div class="hd">${h.d}</div></div><div class="ha ${h.t}">${h.a}</div></div>`).join('');
 }
 
-// ==================== SCREENS ====================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => {
-    s.classList.remove('active');
-    s.style.display = 'none';
-  });
-  const screen = document.getElementById('screen-' + id);
-  screen.classList.add('active');
-  screen.style.display = 'flex';
-  document.getElementById('profile-menu').classList.remove('open');
-  if (id === 'credits') {
-    updateCreditsScreen();
-  }
-  if (id === 'main') {
-    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-    const tabMain = document.getElementById('tab-main');
-    if (tabMain) tabMain.style.display = 'block';
-  }
+function setOpt(k,v,btn){
+  opts[k]=v;
+  btn.closest('.so').querySelectorAll('.ob').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
 }
 
-function toggleProfileMenu() {
-  document.getElementById('profile-menu').classList.toggle('open');
+function dzOver(e){e.preventDefault();document.getElementById('dz').classList.add('ov')}
+function dzOut(){document.getElementById('dz').classList.remove('ov')}
+function dzDrop(e){e.preventDefault();dzOut();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))loadF(f)}
+function dzFile(e){if(e.target.files[0])loadF(e.target.files[0])}
+function loadF(f){const r=new FileReader();r.onload=e=>{img=e.target.result;document.getElementById('pimg').src=img;document.getElementById('pw').style.display='block';document.getElementById('dz').style.display='none'};r.readAsDataURL(f)}
+function rmImg(){img=null;document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='block';document.getElementById('dz').querySelector('input').value=''}
+
+function buildP(){
+  const ex=document.getElementById('extra').value.trim();
+  return `Vytvoř tahák z tohoto testu/dokumentu.\n\nJazyk: ${opts.lang}\n${opts.len}\n${opts.form}\n${ex?'Instrukce: '+ex:''}\n\nPro každou otázku dej PŘÍMOU ODPOVĚĎ, ne sumarizaci.\nFormátuj pomocí HTML: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> klíčové pojmy, <div class="highlight"> vzorce.\nPokud téma obsahuje grafy nebo diagramy, přidej SVG s viewBox="0 0 600 380", tmavé pozadí #1a1a1a, text #f0ede8. Zabal do <div class="diagram-wrap"><p class="diagram-label">Název</p>[SVG]</div>.`;
 }
 
-document.addEventListener('click', e => {
-  if (!e.target.closest('#profile-menu') && !e.target.closest('.avatar-btn')) {
-    document.getElementById('profile-menu').classList.remove('open');
-  }
-});
-
-// ==================== CREDITS UI ====================
-function updateCreditsUI() {
-  document.getElementById('topbar-credits').textContent = credits;
-  document.getElementById('credits-topbar2').textContent = credits;
-  const noCredits = document.getElementById('no-credits');
-  noCredits.style.display = credits < COST_PER_CHEAT ? 'block' : 'none';
+async function doGen(){
+  if(credits<COST){document.getElementById('nc').style.display='block';return}
+  if(!img){showErr('Nahraj nejdříve fotku testu!');return}
+  document.getElementById('gerr').style.display='none';
+  document.getElementById('gbtn').disabled=true;
+  document.getElementById('glw').style.display='flex';
+  document.getElementById('rw').style.display='none';
+  try{
+    const b64=img.split(',')[1];
+    const mt=img.split(';')[0].split(':')[1];
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      model:'claude-sonnet-4-6',max_tokens:4000,
+      system:`Jsi expert na taháky. Odpovídej v zadaném jazyce. Pro každou otázku dej PŘÍMOU odpověď. Nesmíš sumarizovat. Formátuj HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">. Pro SVG diagramy: viewBox="0 0 600 380", bg #1a1a1a, text #f0ede8, zabal do <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.`,
+      messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]
+    })});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const d=await res.json();
+    const txt=d.content?.map(b=>b.text||'').join('')||'';
+    if(!txt)throw new Error('Prázdná odpověď od AI');
+    credits-=COST;
+    history.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:new Date().toLocaleDateString('cs')});
+    saveU();updCr();
+    document.getElementById('rc').innerHTML=txt;
+    document.getElementById('rw').style.display='block';
+    document.getElementById('rw').scrollIntoView({behavior:'smooth'});
+    toast('✓ Tahák připraven! −'+COST+' kreditů');
+  }catch(e){showErr('Chyba: '+e.message)}
+  finally{document.getElementById('gbtn').disabled=false;document.getElementById('glw').style.display='none'}
 }
 
-function updateCreditsScreen() {
-  document.getElementById('balance-display').textContent = credits;
-  document.getElementById('balance-kc').textContent = credits + ' Kč';
-  const list = document.getElementById('history-list');
-  if (history.length === 0) {
-    list.innerHTML = '<div style="font-size:0.78rem;color:var(--text-dim);padding:16px 0">Zatím žádné transakce</div>';
-    return;
-  }
-  list.innerHTML = history.slice().reverse().map(h => `
-    <div class="history-item">
-      <div>
-        <div class="hi-label">${h.label}</div>
-        <div class="hi-date">${h.date}</div>
-      </div>
-      <div class="hi-amount ${h.type}">${h.amount}</div>
-    </div>
-  `).join('');
+function showErr(m){const b=document.getElementById('gerr');b.textContent=m;b.style.display='block';document.getElementById('glw').style.display='none';document.getElementById('gbtn').disabled=false}
+
+function saveU(){
+  if(!user||user==='demo@snapcheat.cz')return;
+  const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
+  if(us[user]){us[user].cr=credits;us[user].hist=history;localStorage.setItem('sc_u',JSON.stringify(us))}
 }
 
-// ==================== PACKAGES ====================
-function selectPackage(cr, price) {
-  selectedPkg = { credits: cr, price };
-  document.getElementById('modal-credits').textContent = cr;
-  document.getElementById('modal-price').textContent = price + ' Kč';
-  document.getElementById('stripe-modal').classList.add('open');
-}
+function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
 
-function closeStripe() {
-  document.getElementById('stripe-modal').classList.remove('open');
-}
-
-function formatCard(input) {
-  let val = input.value.replace(/\D/g, '').substring(0, 16);
-  input.value = val.replace(/(.{4})/g, '$1 ').trim();
-}
-
-function processPayment() {
-  // In real app this calls Stripe API
-  // For demo we just add credits
-  const btn = document.querySelector('#stripe-modal .btn-primary');
-  btn.textContent = 'Zpracovávám...';
-  btn.disabled = true;
-
-  setTimeout(() => {
-    credits += selectedPkg.credits;
-    history.push({
-      type: 'plus',
-      label: `Nákup ${selectedPkg.credits} kreditů`,
-      amount: `+${selectedPkg.credits} kr`,
-      date: new Date().toLocaleDateString('cs')
-    });
-    saveUserData();
-    updateCreditsUI();
-    updateCreditsScreen();
-    closeStripe();
-    btn.textContent = 'Zaplatit';
-    btn.disabled = false;
-    showToast(`🪙 ${selectedPkg.credits} kreditů přidáno!`);
-  }, 1500);
-}
-
-function saveUserData() {
-  if (!currentUser || currentUser === 'demo@snapcheat.cz') return;
-  const users = JSON.parse(localStorage.getItem('sc_users') || '{}');
-  if (users[currentUser]) {
-    users[currentUser].credits = credits;
-    users[currentUser].history = history;
-    localStorage.setItem('sc_users', JSON.stringify(users));
-  }
-}
-
-// ==================== SETTINGS ====================
-const settings = {
-  lang: 'česky',
-  length: 'Buď maximálně stručný — jen nejdůležitější body, žádné zbytečné věty.',
-  format: 'Formátuj jako přehledný tahák s odrážkami a sekcemi.'
-};
-
-function selectOpt(type, value, btn) {
-  settings[type] = value;
-  const group = btn.closest('.setting-options');
-  group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-function buildPrompt() {
-  const extra = document.getElementById('extra-prompt').value.trim();
-  return `Vytvoř tahák z tohoto testu/dokumentu.
-
-Jazyk odpovědi: ${settings.lang}
-${settings.length}
-${settings.format}
-${extra ? 'Další instrukce: ' + extra : ''}
-
-Formátuj pomocí HTML tagů: <h2> pro nadpis, <h3> pro sekce, <ul><li> pro odrážky, <strong> pro důležité pojmy, <div class="highlight"> pro klíčové vzorce nebo definice. V případě tabulky použij HTML <table>.`;
-}
-
-
-function handleDrag(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('dragover'); }
-function handleDragLeave() { document.getElementById('drop-zone').classList.remove('dragover'); }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) loadFile(file);
-}
-function handleFile(e) { if (e.target.files[0]) loadFile(e.target.files[0]); }
-
-function loadFile(file) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    currentImage = e.target.result;
-    document.getElementById('preview-img').src = currentImage;
-    document.getElementById('preview-wrap').style.display = 'block';
-    document.getElementById('drop-zone').style.display = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeImage() {
-  currentImage = null;
-  document.getElementById('preview-wrap').style.display = 'none';
-  document.getElementById('drop-zone').style.display = 'block';
-  document.getElementById('drop-zone').querySelector('input').value = '';
-}
-
-async function generate() {
-  if (credits < COST_PER_CHEAT) {
-    document.getElementById('no-credits').style.display = 'block';
-    return;
-  }
-  if (!currentImage) { showError('Nahraj nejdříve fotku testu!'); return; }
-
-  document.getElementById('gen-error').style.display = 'none';
-  document.getElementById('generate-btn').disabled = true;
-  document.getElementById('gen-loading').style.display = 'flex';
-  document.getElementById('result-wrap').style.display = 'none';
-
-  const prompt = buildPrompt();
-  const base64 = currentImage.split(',')[1];
-  const mediaType = currentImage.split(';')[0].split(':')[1];
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
-        system: `Jsi expert na vytváření taháků pro studenty. Odpovídej vždy v zadaném jazyce.
-
-DŮLEŽITÉ PRAVIDLO: Nesmíš sumarizovat ani přepisovat otázky. Musíš dát PŘÍMÉ ODPOVĚDI.
-
-Pro každou otázku v testu/dokumentu:
-- Napiš číslo otázky a PŘÍMOU odpověď
-- Žádné vysvětlování co otázka říká
-- Žádné obecné pojmy — konkrétní fakta, čísla, jména, vzorce
-
-Formátuj pomocí HTML:
-- <h2> pro nadpis taháku
-- <h3> pro sekce/předměty  
-- <ul><li> pro odpovědi
-- <strong> pro klíčové odpovědi
-- <div class="highlight"> pro vzorce a výpočty
-
-Pokud téma obsahuje grafy, křivky, schémata nebo pyramidy — přidej SVG diagram:
-- viewBox="0 0 600 380"
-- Tmavé pozadí rect fill="#1a1a1a"
-- Světlý text fill="#f0ede8", accent #e8d5b0
-- Zabal do: <div class="diagram-wrap"><p class="diagram-label">Název</p>[SVG]</div>`,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-            { type: 'text', text: buildPrompt() }
-          ]
-        }]
-      })
-    });
-
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const text = data.content?.map(b => b.text || '').join('') || '';
-
-    if (!text) throw new Error('Prázdná odpověď od AI');
-
-    // Deduct credits
-    credits -= COST_PER_CHEAT;
-    history.push({
-      type: 'minus',
-      label: 'Generování taháku',
-      amount: `-${COST_PER_CHEAT} kr`,
-      date: new Date().toLocaleDateString('cs')
-    });
-    saveUserData();
-    updateCreditsUI();
-
-    document.getElementById('result-content').innerHTML = text;
-    document.getElementById('result-wrap').style.display = 'block';
-    document.getElementById('result-wrap').scrollIntoView({ behavior: 'smooth' });
-    showToast(`✓ Tahák vygenerován! −${COST_PER_CHEAT} kreditů`);
-
-  } catch(e) {
-    showError('Chyba: ' + e.message);
-  } finally {
-    document.getElementById('generate-btn').disabled = false;
-    document.getElementById('gen-loading').style.display = 'none';
-  }
-}
-
-function showError(msg) {
-  const box = document.getElementById('gen-error');
-  box.textContent = msg;
-  box.style.display = 'block';
-  document.getElementById('gen-loading').style.display = 'none';
-  document.getElementById('generate-btn').disabled = false;
-}
-
-function copyResult() {
-  navigator.clipboard.writeText(document.getElementById('result-content').innerText);
-  showToast('📋 Zkopírováno!');
-}
-
-async function saveResult() {
-  showToast('⏳ Generuji PDF...');
-
-  const loadScript = (src) => new Promise(r => {
-    if (document.querySelector(`script[src="${src}"]`)) { r(); return; }
-    const s = document.createElement('script');
-    s.src = src; s.onload = r;
-    document.head.appendChild(s);
-  });
-
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-  await new Promise(r => setTimeout(r, 800));
-
-  try {
-    const card = document.getElementById('result-content');
-    if (!card || !card.innerHTML.trim()) {
-      showToast('❌ Nejprve vygeneruj tahák!');
-      return;
-    }
-
-    // Create a clean off-screen div for rendering
-    const wrapper = document.createElement('div');
-    wrapper.style.cssText = `
-      position: fixed;
-      left: -9999px;
-      top: 0;
-      width: 794px;
-      background: #111111;
-      color: #f0ede8;
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      line-height: 1.8;
-      padding: 40px;
-      box-sizing: border-box;
-    `;
-    wrapper.innerHTML = card.innerHTML;
-    document.body.appendChild(wrapper);
-
-    await new Promise(r => setTimeout(r, 300));
-
-    const canvas = await html2canvas(wrapper, {
-      backgroundColor: '#111111',
-      scale: 1.5,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      width: 794,
-      height: wrapper.scrollHeight
-    });
-
-    document.body.removeChild(wrapper);
-
-    const imgData = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const pageW = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const imgW = pageW;
-    const imgH = (canvas.height * imgW) / canvas.width;
-
-    if (imgH <= pageH) {
-      pdf.addImage(imgData, 'PNG', 0, 0, imgW, imgH);
-    } else {
-      let y = 0;
-      let page = 0;
-      while (y < imgH) {
-        if (page > 0) pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, -y, imgW, imgH);
-        y += pageH;
-        page++;
-      }
-    }
-
+async function doPDF(){
+  toast('⏳ Generuji PDF...');
+  const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
+  await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  await ld('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  await new Promise(r=>setTimeout(r,600));
+  try{
+    const el=document.getElementById('rc');
+    const wrap=document.createElement('div');
+    wrap.style.cssText='position:fixed;left:-9999px;top:0;width:794px;background:#111;color:#f0ede8;font-family:system-ui,sans-serif;font-size:14px;line-height:1.8;padding:40px;box-sizing:border-box';
+    wrap.innerHTML=el.innerHTML;
+    document.body.appendChild(wrap);
+    await new Promise(r=>setTimeout(r,300));
+    const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:1.5,useCORS:true,allowTaint:true,logging:false,width:794,height:wrap.scrollHeight});
+    document.body.removeChild(wrap);
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const pw=pdf.internal.pageSize.getWidth();
+    const ph=pdf.internal.pageSize.getHeight();
+    const id=canvas.toDataURL('image/png');
+    const ih=(canvas.height*pw)/canvas.width;
+    if(ih<=ph){pdf.addImage(id,'PNG',0,0,pw,ih)}
+    else{let y=0,pg=0;while(y<ih){if(pg>0)pdf.addPage();pdf.addImage(id,'PNG',0,-y,pw,ih);y+=ph;pg++}}
     pdf.save('tahak.pdf');
-    showToast('✅ PDF uloženo!');
-  } catch(e) {
-    showToast('❌ Chyba: ' + e.message);
-  }
+    toast('✅ PDF uloženo!');
+  }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-// ==================== TABS ====================
-function switchTab(tab, el) {
-  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-  document.querySelectorAll('.bnav-item').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + tab).style.display = 'block';
-  el.classList.add('active');
+function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').classList.add('on')}
+function closeSM(){document.getElementById('sm').classList.remove('on')}
+function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim()}
+
+function doPay(){
+  const btn=document.getElementById('paybtn');
+  btn.textContent='Zpracovávám...';btn.disabled=true;
+  setTimeout(()=>{
+    credits+=selPkg.cr;
+    history.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:new Date().toLocaleDateString('cs')});
+    saveU();updCr();updCrScreen();closeSM();
+    btn.textContent='Zaplatit';btn.disabled=false;
+    toast('🪙 '+selPkg.cr+' kreditů přidáno!');
+  },1500);
 }
 
-// ==================== DIAGRAM ====================
-function setDiagramPrompt(text) {
-  document.getElementById('diagram-prompt').value = text;
-}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
-async function generateDiagram() {
-  const prompt = document.getElementById('diagram-prompt').value.trim();
-  if (!prompt) { showDiagramError('Napiš co chceš nakreslit!'); return; }
-  if (credits < 10) {
-    showDiagramError('Nemáš dost kreditů! Potřebuješ 10 kreditů.');
-    return;
-  }
-
-  const btn = document.getElementById('diagram-btn');
-  btn.disabled = true;
-  document.getElementById('diagram-loading').style.display = 'flex';
-  document.getElementById('diagram-result').style.display = 'none';
-  document.getElementById('diagram-error').style.display = 'none';
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 2000,
-        system: `Jsi expert na vytváření SVG diagramů a grafů. 
-Vždy odpovídej POUZE čistým SVG kódem — žádný jiný text, žádné vysvětlení, žádné markdown bloky.
-SVG musí být:
-- viewBox="0 0 600 400" 
-- Tmavé pozadí #1a1a1a
-- Bílý nebo světlý text #f0ede8
-- Accent barva #e8d5b0 pro důležité prvky
-- Zelená #4ade80 pro pozitivní hodnoty
-- Čistý, přehledný, profesionální design
-- Všechny texty v češtině
-- Fonty: font-family="system-ui, sans-serif"`,
-        messages: [{
-          role: 'user',
-          content: `Nakresli SVG diagram: ${prompt}`
-        }]
-      })
-    });
-
-    const data = await res.json();
-    const svg = data.content?.map(b => b.text || '').join('') || '';
-
-    if (!svg || !svg.includes('<svg')) throw new Error('AI nevygenerovala platný diagram');
-
-    // Deduct credits
-    credits -= 10;
-    history.push({
-      type: 'minus',
-      label: 'Generování diagramu',
-      amount: '-10 kr',
-      date: new Date().toLocaleDateString('cs')
-    });
-    saveUserData();
-    updateCreditsUI();
-
-    document.getElementById('diagram-output').innerHTML = svg;
-    document.getElementById('diagram-result').style.display = 'block';
-    document.getElementById('diagram-result').scrollIntoView({ behavior: 'smooth' });
-    showToast('🎨 Diagram vygenerován! −10 kreditů');
-
-  } catch(e) {
-    showDiagramError('Chyba: ' + e.message);
-  } finally {
-    btn.disabled = false;
-    document.getElementById('diagram-loading').style.display = 'none';
-  }
-}
-
-function showDiagramError(msg) {
-  const box = document.getElementById('diagram-error');
-  box.textContent = msg;
-  box.style.display = 'block';
-  document.getElementById('diagram-loading').style.display = 'none';
-  document.getElementById('diagram-btn').disabled = false;
-}
-
-async function saveDiagram() {
-  const script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-  script.onload = async () => {
-    const el = document.getElementById('diagram-output');
-    const canvas = await html2canvas(el, { backgroundColor: '#1a1a1a', scale: 2 });
-    const link = document.createElement('a');
-    link.download = 'diagram.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  };
-  document.head.appendChild(script);
-}
-
-// ==================== TOAST ====================
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// ==================== INIT ====================
-(function init() {
-  // Ensure all screens are hidden except auth
-  document.querySelectorAll('.screen').forEach(s => {
-    s.style.display = 'none';
-    s.classList.remove('active');
-  });
-  const auth = document.getElementById('screen-auth');
-  if (auth) {
-    auth.style.display = 'flex';
-    auth.classList.add('active');
-  }
-  // Load wardrobe if exists
-  if (typeof renderWardrobe === 'function') renderWardrobe();
-})();
-
-// Close stripe on backdrop
-document.getElementById('stripe-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeStripe();
-});
+document.getElementById('sm').addEventListener('click',function(e){if(e.target===this)closeSM()});
 </script>
 </body>
 </html>

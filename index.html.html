@@ -574,8 +574,7 @@ async function doGen(){
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt){
-      const errMsg=d.error?.message||JSON.stringify(d);
-      throw new Error('Prázdná odpověď: '+errMsg);
+      throw new Error('Prázdná odpověď. Detail: '+JSON.stringify(d).substring(0,200));
     }
     credits-=COST;
     history.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:new Date().toLocaleDateString('cs')});
@@ -732,6 +731,7 @@ let panicOn=false;
 let lastTap=0;
 let tapCount=0;
 let tapTimer=null;
+let panicCooldown=false;
 
 const panicEl=document.createElement('div');
 panicEl.id='panic';
@@ -765,6 +765,13 @@ function deactivatePanic(){
   panicOn=false;
   panicEl.style.display='none';
   if(navigator.vibrate)navigator.vibrate(50);
+  // Reset tap counters aby se panic hned znovu nespustil
+  tapCount=0;
+  lastTap=0;
+  if(tapTimer)clearTimeout(tapTimer);
+  // Cooldown 2 sekundy po deaktivaci
+  panicCooldown=true;
+  setTimeout(()=>{panicCooldown=false;},2000);
 }
 
 // Deactivate panic - long press 1 second
@@ -795,9 +802,12 @@ panicEl.addEventListener('dblclick',function(e){
 // Double tap detection anywhere else
 document.addEventListener('touchend',function(e){
   if(panicOn)return;
-  // Only activate when on main screen (not auth, not modals)
   if(!user)return;
-  if(document.getElementById('sm').classList.contains('on'))return;
+  if(panicCooldown)return;
+  if(document.getElementById('sm').style.display==='flex')return;
+  // Nespouštěj na tlačítkách a inputech
+  const tag=e.target.tagName;
+  if(tag==='BUTTON'||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||tag==='LABEL')return;
 
   const now=Date.now();
   tapCount++;
@@ -806,6 +816,7 @@ document.addEventListener('touchend',function(e){
 
   if(tapCount>=2&&now-lastTap<400){
     tapCount=0;
+    lastTap=0;
     activatePanic();
   } else {
     tapTimer=setTimeout(()=>{tapCount=0},500);

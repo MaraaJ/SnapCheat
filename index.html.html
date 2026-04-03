@@ -587,16 +587,20 @@ function deactivatePanic(){
 }
 
 // Double tap detection on panic screen
+let panicLastTap=0;
 panicEl.addEventListener('touchend',function(e){
   e.preventDefault();
   const now=Date.now();
-  if(now-lastTap<400){
+  if(now-panicLastTap<400){
     deactivatePanic();
+    panicLastTap=0;
+  } else {
+    panicLastTap=now;
   }
-  lastTap=now;
 });
 
-panicEl.addEventListener('dblclick',function(){
+panicEl.addEventListener('dblclick',function(e){
+  e.preventDefault();
   deactivatePanic();
 });
 

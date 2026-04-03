@@ -664,7 +664,7 @@ function delTahak(i,e){
   toast('🗑 Tahák smazán');
 }
 
-const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
 document.getElementById('sm').addEventListener('click',function(e){if(e.target===this)closeSM()});
 

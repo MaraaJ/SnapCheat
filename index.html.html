@@ -8,35 +8,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="SnapCheat">
 <meta name="theme-color" content="#000000">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="SnapCheat">
-<meta name="theme-color" content="#000000">
-<meta name="description" content="AI tahák z fotky za sekundy">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle' font-family='system-ui' fill='%23e8d5b0'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
-<meta name="apple-mobile-web-app-title" content="SnapCheat">
-<meta name="theme-color" content="#000000">
-<meta name="description" content="AI tahák z fotky za sekundy">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0a0a'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='%23e8d5b0' font-family='system-ui'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
-<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Ctext x='96' y='130' font-size='120' text-anchor='middle' fill='%23e8d5b0'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;
-  --b1:#2a2a2a;--b2:#333;
-  --t1:#f0ede8;--t2:#888;--t3:#444;
-  --ac:#e8d5b0;--ac2:#c4a96e;
-  --gr:#4ade80;--rd:#f87171;--go:#f59e0b;
-  --ff:system-ui,-apple-system,sans-serif;
-  --fm:'Courier New',monospace;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;--b1:#2a2a2a;--b2:#333;--t1:#f0ede8;--t2:#888;--t3:#444;--ac:#e8d5b0;--ac2:#c4a96e;--gr:#4ade80;--rd:#f87171;--go:#f59e0b;--ff:system-ui,-apple-system,sans-serif;--fm:'Courier New',monospace}
 body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 .hide{display:none!important}
 .screen{min-height:100vh;flex-direction:column;display:none}
 .screen.on{display:flex}
-
-/* AUTH */
 #sa{align-items:center;justify-content:center;padding:24px}
 .abox{width:100%;max-width:400px}
 .logo{font-size:2rem;font-weight:800;color:var(--ac);margin-bottom:4px}
@@ -46,184 +24,145 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 .atab{flex:1;padding:10px;text-align:center;font-size:.75rem;letter-spacing:.08em;cursor:pointer;color:var(--t2);background:none;border:none;transition:.2s}
 .atab.on{background:var(--s2);color:var(--ac)}
 .fg{margin-bottom:14px}
-.fg label{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t2);margin-bottom:6px;font-family:var(--fm)}
-.fg input{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:11px 14px;font-size:.85rem;color:var(--t1);outline:none;font-family:var(--fm)}
+.fg label{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t2);margin-bottom:6px}
+.fg input{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:11px 14px;font-size:.85rem;color:var(--t1);outline:none}
 .fg input:focus{border-color:var(--ac2)}
 .fg .hint{font-size:.65rem;color:var(--t3);margin-top:4px}
-.bp{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:10px;padding:14px;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;margin-top:6px}
-.bp:hover{opacity:.9}
+.bp{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:10px;padding:14px;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:6px}
 .bp:disabled{opacity:.4;cursor:not-allowed}
-.bs{width:100%;background:var(--s2);color:var(--t1);border:1px solid var(--b2);border-radius:10px;padding:14px;font-size:.85rem;cursor:pointer;transition:.2s;margin-top:8px}
-.bs:hover{background:var(--s3)}
+.bs{width:100%;background:var(--s2);color:var(--t1);border:1px solid var(--b2);border-radius:10px;padding:14px;font-size:.85rem;cursor:pointer;margin-top:8px}
 .adiv{text-align:center;font-size:.7rem;color:var(--t3);margin:14px 0}
-.aerr{background:#2a1515;border:1px solid #5a2020;border-radius:8px;padding:10px 14px;color:var(--rd);font-size:.78rem;margin-bottom:14px;display:none;font-family:var(--fm)}
-
-/* TOPBAR */
-.top{background:var(--s1);border-bottom:1px solid var(--b1);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.aerr{background:#2a1515;border:1px solid #5a2020;border-radius:8px;padding:10px 14px;color:var(--rd);font-size:.78rem;margin-bottom:14px;display:none}
+.top{background:var(--s1);border-bottom:1px solid var(--b1);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tlogo{font-size:1.1rem;font-weight:800;color:var(--ac)}
-.tright{display:flex;align-items:center;gap:12px}
-.cbadge{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:6px 12px;cursor:pointer}
-.cbadge:hover{border-color:var(--ac2)}
-.cbadge .amt{font-size:.85rem;font-weight:700;color:var(--go)}
-.cbadge .lbl{font-size:.65rem;color:var(--t2)}
-.avbtn{width:32px;height:32px;background:var(--s3);border:1px solid var(--b2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--t1)}
-.avbtn:hover{border-color:var(--ac2)}
-
-/* PROFILE MENU */
-#pmenu{display:none;position:fixed;top:60px;right:20px;background:var(--s2);border:1px solid var(--b2);border-radius:12px;padding:8px;z-index:200;min-width:180px;box-shadow:0 12px 48px rgba(0,0,0,.6)}
-#pmenu.on{display:block}
-.pmemail{padding:8px 12px;font-size:.72rem;color:var(--t2);border-bottom:1px solid var(--b1);margin-bottom:6px;word-break:break-all;font-family:var(--fm)}
-.pmitem{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:.78rem;color:var(--t1);cursor:pointer;border-radius:8px}
-.pmitem:hover{background:var(--s3)}
-.pmitem.danger{color:var(--rd)}
-
-/* MAIN */
-.mc{flex:1;padding:28px 20px;max-width:680px;margin:0 auto;width:100%}
-.hero{margin-bottom:28px}
-.hero h1{font-size:1.8rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
-.hero h1 span{color:var(--ac)}
-.hero p{font-size:.8rem;color:var(--t2);line-height:1.6}
-.costbar{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.costbar .cl{font-size:.75rem;color:var(--t2);letter-spacing:.06em}
-.costbar .cv{font-size:1rem;font-weight:700;color:var(--go)}
-.costbar .cv span{font-size:.7rem;color:var(--t2);font-weight:300}
-
-/* UPLOAD */
-#dz{border:2px dashed var(--b2);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;background:var(--s1);margin-bottom:16px;position:relative;transition:.2s}
+.tright{display:flex;align-items:center;gap:10px}
+.cbadge{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:5px 10px;cursor:pointer}
+.cbadge .amt{font-size:.82rem;font-weight:700;color:var(--go)}
+.cbadge .lbl{font-size:.62rem;color:var(--t2)}
+.hbtn{width:36px;height:36px;background:var(--s2);border:1px solid var(--b2);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.hbtn span{display:block;width:16px;height:2px;background:var(--t1);border-radius:2px}
+#sidebar{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--s1);border-left:1px solid var(--b1);z-index:200;transition:right .3s ease;padding-top:env(safe-area-inset-top)}
+#sidebar.on{right:0}
+#soverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199}
+#soverlay.on{display:block}
+.sbhead{padding:18px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.sbemail{font-size:.75rem;color:var(--t2);font-family:var(--fm)}
+.sbclose{background:none;border:none;color:var(--t2);font-size:1.2rem;cursor:pointer;padding:4px}
+.sbbal{padding:16px 20px;background:var(--s2);margin:12px;border-radius:12px;text-align:center}
+.sbbal .sbnum{font-size:2rem;font-weight:800;color:var(--go);line-height:1}
+.sbbal .sblbl{font-size:.65rem;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.sbitem{display:flex;align-items:center;gap:12px;padding:14px 20px;font-size:.88rem;color:var(--t1);cursor:pointer;border-bottom:1px solid var(--b1)}
+.sbitem:hover{background:var(--s2)}
+.sbitem.danger{color:var(--rd)}
+.mc{flex:1;display:flex;flex-direction:column;max-width:680px;margin:0 auto;width:100%}
+#dzwrap{flex:1;display:flex;flex-direction:column;padding:16px;gap:12px}
+#dz{flex:1;border:2px dashed var(--b2);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--s1);position:relative;min-height:200px;transition:.2s}
 #dz:hover,#dz.ov{border-color:var(--ac2);background:var(--s2)}
 #dz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-#dz .di{font-size:2.5rem;margin-bottom:12px;display:block}
-#dz h2{font-size:1rem;font-weight:700;margin-bottom:6px}
+#dz .di{font-size:3rem;margin-bottom:10px}
+#dz h2{font-size:1rem;font-weight:700;margin-bottom:4px}
 #dz p{font-size:.75rem;color:var(--t2)}
-#pw{display:none;position:relative;margin-bottom:16px}
-#pw img{width:100%;border-radius:12px;border:1px solid var(--b1);max-height:300px;object-fit:cover}
-#pw button{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);border:1px solid var(--b2);border-radius:50%;width:30px;height:30px;color:var(--t1);cursor:pointer;font-size:.8rem}
-
-/* SETTINGS */
-.sp{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:18px;margin-bottom:16px}
-.st{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t2);margin-bottom:16px;font-family:var(--fm)}
-.sr{margin-bottom:16px}
-.sl{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);margin-bottom:8px;font-family:var(--fm)}
+#pw{flex:1;position:relative;min-height:200px;display:none}
+#pw img{width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
+#pw .rmb{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);border:1px solid var(--b2);border-radius:50%;width:32px;height:32px;color:var(--t1);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.costpill{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--s2);border-radius:10px;font-size:.8rem}
+.costpill .cl{color:var(--t2)}
+.costpill .cv{font-weight:700;color:var(--go)}
+#settbar{background:var(--s1);border-top:1px solid var(--b1)}
+.setthead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none}
+.setthead span:first-child{font-size:.75rem;color:var(--t2);text-transform:uppercase;letter-spacing:.1em}
+.settarrow{font-size:.8rem;color:var(--t2);transition:transform .2s}
+.settarrow.open{transform:rotate(180deg)}
+.settbody{display:none;padding:0 16px 16px;border-top:1px solid var(--b1)}
+.settbody.on{display:block}
+.sr{margin-top:14px}
+.sl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);margin-bottom:8px}
 .so{display:flex;flex-wrap:wrap;gap:6px}
-.ob{background:var(--s2);border:1px solid var(--b1);border-radius:8px;color:var(--t2);font-size:.72rem;padding:6px 12px;cursor:pointer;transition:.15s;font-family:var(--fm)}
-.ob:hover{border-color:var(--ac2);color:var(--t1)}
+.ob{background:var(--s2);border:1px solid var(--b1);border-radius:8px;color:var(--t2);font-size:.72rem;padding:6px 12px;cursor:pointer;transition:.15s}
 .ob.on{background:var(--s3);border-color:var(--ac2);color:var(--ac)}
-.ep{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;font-family:var(--fm);font-size:.78rem;color:var(--t1);resize:none;height:60px;outline:none;margin-top:6px}
+.ep{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;font-size:.78rem;color:var(--t1);resize:none;height:60px;outline:none;margin-top:6px}
 .ep:focus{border-color:var(--ac2)}
-
-/* GENERATE BTN */
-#gbtn{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:12px;padding:16px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
-#gbtn:hover{opacity:.9}
+#genarea{padding:12px 16px;background:var(--s1);border-top:1px solid var(--b1)}
+#nc{display:none;background:#1a1505;border:1px solid #4a3a10;border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--go);margin-bottom:10px;text-align:center}
+#nc span{text-decoration:underline;cursor:pointer}
+#gbtn{width:100%;background:var(--ac);color:#0a0a0a;border:none;border-radius:12px;padding:15px;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 #gbtn:disabled{opacity:.4;cursor:not-allowed}
 .bcost{background:rgba(0,0,0,.15);border-radius:100px;padding:3px 10px;font-size:.72rem}
-#nc{display:none;background:#1a1505;border:1px solid #4a3a10;border-radius:10px;padding:14px 18px;font-size:.8rem;color:var(--go);margin-bottom:16px;text-align:center}
-#nc span{text-decoration:underline;cursor:pointer}
-.errb{display:none;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px 16px;color:var(--rd);font-size:.78rem;margin-bottom:16px;font-family:var(--fm)}
-
-/* LOADING */
-.lw{display:none;flex-direction:column;align-items:center;gap:14px;padding:32px}
-.sp2{width:36px;height:36px;border:2px solid var(--b2);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite}
+.errb{display:none;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:10px 14px;color:var(--rd);font-size:.78rem;margin-bottom:10px}
+.lw{display:none;flex-direction:column;align-items:center;gap:12px;padding:20px}
+.sp2{width:32px;height:32px;border:2px solid var(--b2);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.lw p{font-size:.75rem;color:var(--t2);letter-spacing:.1em;animation:pulse 1.5s ease-in-out infinite;font-family:var(--fm)}
+.lw p{font-size:.75rem;color:var(--t2);letter-spacing:.1em;animation:pulse 1.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-
-/* RESULT */
-#rw{display:none;margin-bottom:32px}
+#rw{display:none;padding:16px}
 .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .rtag{font-size:.7rem;color:var(--gr);letter-spacing:.1em;text-transform:uppercase}
 .ract{display:flex;gap:8px}
-.bsm{background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--t1);font-size:.7rem;padding:7px 12px;cursor:pointer;transition:.2s;font-family:var(--fm)}
-.bsm:hover{background:var(--s3);border-color:var(--ac2)}
-.cc{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:24px;line-height:1.8}
-.cc h2{font-size:1.1rem;font-weight:700;color:var(--ac);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--b1)}
-.cc h3{font-size:.8rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 6px}
-.cc p{font-size:.9rem;color:var(--t1);margin-bottom:8px}
+.bsm{background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--t1);font-size:.7rem;padding:7px 12px;cursor:pointer}
+.cc{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:20px;line-height:1.8}
+.cc h2{font-size:1.1rem;font-weight:700;color:var(--ac);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
+.cc h3{font-size:.8rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin:14px 0 6px}
+.cc p{font-size:.88rem;color:var(--t1);margin-bottom:8px}
 .cc ul,.cc ol{padding-left:18px;margin-bottom:10px}
 .cc li{font-size:.85rem;color:#ccc;margin-bottom:4px}
 .cc strong{color:var(--ac);font-weight:500}
 .cc .highlight{background:var(--s2);border-left:3px solid var(--ac2);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem}
 .cc .step{display:flex;gap:12px;margin:8px 0;align-items:flex-start;background:var(--s2);border-radius:8px;padding:10px 14px}
-.cc .stepnum{background:var(--ac2);color:#0a0a0a;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;margin-top:2px;font-family:var(--fm);flex-shrink:0}
-.cc .diagram-wrap{margin:20px 0;border:1px solid var(--b1);border-radius:12px;overflow:hidden}
-.cc .diagram-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);padding:10px 16px;border-bottom:1px solid var(--b1);background:var(--s2);margin:0;font-family:var(--fm)}
+.cc .stepnum{background:var(--ac2);color:#0a0a0a;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;margin-top:2px;flex-shrink:0}
+.cc .diagram-wrap{margin:16px 0;border:1px solid var(--b1);border-radius:12px;overflow:hidden}
+.cc .diagram-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);padding:8px 14px;border-bottom:1px solid var(--b1);background:var(--s2);margin:0}
 .cc .diagram-wrap svg{width:100%;height:auto;display:block}
-
-/* CREDITS SCREEN */
-#scr{display:none;flex-direction:column}
-#scr.on{display:flex}
-.ccon{flex:1;padding:28px 20px;max-width:680px;margin:0 auto;width:100%}
-.backb{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--t2);cursor:pointer;margin-bottom:24px;background:none;border:none;color:var(--t2)}
-.backb:hover{color:var(--t1)}
-.cbal{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:28px;text-align:center;margin-bottom:28px}
-.cbal .bnum{font-size:3.5rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:6px}
-.cbal .blbl{font-size:.72rem;color:var(--t2);letter-spacing:.12em;text-transform:uppercase}
-.cbal .bval{margin-top:10px;font-size:.8rem;color:var(--t2)}
-.cbal .bval span{color:var(--ac)}
-.ptitle{font-size:1rem;font-weight:600;margin-bottom:16px}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:28px}
-.pcard{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:20px 16px;cursor:pointer;text-align:center;position:relative;transition:.2s}
+.ccon{flex:1;padding:20px;max-width:680px;margin:0 auto;width:100%}
+.backb{font-size:.75rem;color:var(--t2);cursor:pointer;margin-bottom:20px;background:none;border:none;display:block}
+.cbal{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:24px;text-align:center;margin-bottom:24px}
+.cbal .bnum{font-size:3rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:4px}
+.cbal .blbl{font-size:.7rem;color:var(--t2);letter-spacing:.12em;text-transform:uppercase}
+.ptitle{font-size:.95rem;font-weight:600;margin-bottom:14px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:24px}
+.pcard{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:16px;cursor:pointer;text-align:center;position:relative;transition:.2s}
 .pcard:hover{border-color:var(--ac2);transform:translateY(-2px)}
 .pcard.pop{border-color:var(--ac2)}
-.ptag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--ac2);color:#0a0a0a;font-size:.62rem;font-weight:700;padding:2px 10px;border-radius:100px;white-space:nowrap}
-.pcr{font-size:1.8rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:4px}
-.pclbl{font-size:.65rem;color:var(--t2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
-.ppr{font-size:1rem;font-weight:700;margin-bottom:2px}
-.pper{font-size:.65rem;color:var(--t2)}
-.pth{margin-top:10px;font-size:.7rem;color:var(--t2);background:var(--s2);border-radius:6px;padding:4px 8px}
-.hsec{margin-top:32px}
-.htitle{font-size:.85rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--fm)}
-.hi{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b1);font-size:.78rem}
+.ptag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--ac2);color:#0a0a0a;font-size:.6rem;font-weight:700;padding:2px 10px;border-radius:100px;white-space:nowrap}
+.pcr{font-size:1.6rem;font-weight:800;color:var(--go);line-height:1;margin-bottom:4px}
+.pclbl{font-size:.62rem;color:var(--t2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.ppr{font-size:.95rem;font-weight:700;margin-bottom:2px}
+.pper{font-size:.62rem;color:var(--t2)}
+.pth{margin-top:8px;font-size:.68rem;color:var(--t2);background:var(--s2);border-radius:6px;padding:3px 8px}
+.hsec{margin-top:24px}
+.htitle{font-size:.8rem;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b1);font-size:.78rem}
 .hi .hl{color:var(--t2)}
-.hi .hd{font-size:.68rem;color:var(--t3);margin-top:2px}
+.hi .hd{font-size:.66rem;color:var(--t3);margin-top:2px}
 .hi .ha{font-weight:700}
 .hi .ha.plus{color:var(--gr)}
 .hi .ha.minus{color:var(--rd)}
-
-/* STRIPE MODAL */
-#sm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.hcard{background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hcard:hover{border-color:var(--ac2)}
+.hcard-title{font-size:.88rem;font-weight:600;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcard-meta{font-size:.7rem;color:var(--t2)}
+.hdelbtn{background:none;border:1px solid var(--b2);border-radius:8px;color:var(--rd);font-size:.75rem;padding:5px 9px;cursor:pointer;flex-shrink:0}
+.hempty{text-align:center;padding:40px 24px;color:var(--t2)}
+.hempty div:first-child{font-size:2.5rem;margin-bottom:10px}
+#sm{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px}
 #sm.on{display:flex}
-.smbox{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:28px;width:100%;max-width:380px}
+.smbox{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:380px}
 .smbox h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
-.smbox .ssub{font-size:.75rem;color:var(--t2);margin-bottom:24px}
-.ssum{background:var(--s2);border-radius:10px;padding:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.smbox .ssub{font-size:.75rem;color:var(--t2);margin-bottom:20px}
+.ssum{background:var(--s2);border-radius:10px;padding:14px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
 .ssum .scr{font-size:1.3rem;font-weight:800;color:var(--go)}
-.ssum .slbl{font-size:.68rem;color:var(--t2);text-transform:uppercase;letter-spacing:.08em}
+.ssum .slbl{font-size:.65rem;color:var(--t2);text-transform:uppercase;letter-spacing:.08em}
 .ssum .spr{font-size:1.5rem;font-weight:800}
-.sbtns{display:flex;gap:10px;margin-top:20px}
-.bc{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:12px 18px;font-size:.8rem;color:var(--t2);cursor:pointer}
-.bc:hover{background:var(--s3)}
-.snote{font-size:.72rem;color:var(--t2);text-align:center;margin-top:14px;line-height:1.5}
-
-/* HISTORY CARDS */
-.hcard{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.hcard:hover{border-color:var(--ac2);transform:translateY(-1px)}
-.hcard-left{flex:1;min-width:0}
-.hcard-title{font-size:.9rem;font-weight:600;color:var(--t1);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hcard-meta{font-size:.72rem;color:var(--t2);font-family:var(--fm)}
-.hcard-right{display:flex;gap:8px;flex-shrink:0}
-.hdelbtn{background:none;border:1px solid var(--b2);border-radius:8px;color:var(--rd);font-size:.75rem;padding:6px 10px;cursor:pointer;transition:.2s}
-.hdelbtn:hover{background:#2a1515;border-color:var(--rd)}
-.hempty{text-align:center;padding:48px 24px;color:var(--t2)}
-.hempty div:first-child{font-size:2.5rem;margin-bottom:12px}
-.hempty div:last-child{font-size:.85rem}
-
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:10px 20px;font-size:.78rem;z-index:400;transition:transform .3s;white-space:nowrap;font-family:var(--fm)}
+.sbtns{display:flex;gap:10px;margin-top:18px}
+.bc{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:12px 16px;font-size:.8rem;color:var(--t2);cursor:pointer}
+.snote{font-size:.7rem;color:var(--t2);text-align:center;margin-top:12px}
+#tdmodal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:400;overflow-y:auto;padding:16px}
+.tdinner{max-width:680px;margin:0 auto}
+.tdtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:10px 20px;font-size:.78rem;z-index:500;transition:transform .3s;white-space:nowrap}
 #toast.on{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-
-<!-- PWA INSTALL BANNER (iOS) -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:1px solid #333;padding:14px 20px;z-index:8000;flex-direction:column;gap:10px">
-  <div style="display:flex;align-items:center;gap:12px">
-    <div style="width:40px;height:40px;background:#0a0a0a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">⚡</div>
-    <div style="flex:1">
-      <div style="font-size:.85rem;font-weight:700;color:#e8d5b0">Přidat SnapCheat na plochu</div>
-      <div style="font-size:.72rem;color:#888;margin-top:2px">Klikni na <strong style="color:#e8d5b0">sdílet</strong> → "Přidat na plochu"</div>
-    </div>
-    <button onclick="document.getElementById('pwa-banner').style.display='none';localStorage.setItem('pwa_dismissed','1')" style="background:none;border:none;color:#666;font-size:1.2rem;cursor:pointer;padding:4px">✕</button>
-  </div>
-</div>
 
 <div class="screen on" id="sa">
   <div class="abox">
@@ -248,77 +187,61 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   <div class="top">
     <div class="tlogo">SnapCheat</div>
     <div class="tright">
-      <div class="cbadge" onclick="goCredits()">
-        <span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span>
-      </div>
-      <div class="avbtn" onclick="toggleMenu()" id="avbtn">?</div>
+      <div class="cbadge" onclick="goCredits()"><span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span></div>
+      <div class="hbtn" onclick="openSidebar()"><span></span><span></span><span></span></div>
     </div>
-  </div>
-  <div id="pmenu">
-    <div class="pmemail" id="pmemail">—</div>
-    <div class="pmitem" onclick="goHistory()">📋 Moje taháky</div>
-    <div class="pmitem" onclick="goCredits()">🪙 Koupit kredity</div>
-    <div class="pmitem danger" onclick="doLogout()">↩ Odhlásit se</div>
   </div>
   <div class="mc">
-    <div class="hero">
-      <h1>Vyfot test,<br>dostaneš <span>tahák</span></h1>
-      <p>Nahraj fotku testu a AI vytvoří tahák s odpověďmi a diagramy. Každé generování stojí 20 kreditů.</p>
+    <div id="dzwrap">
+      <div class="costpill"><span class="cl">Cena generování</span><span class="cv">20 kreditů</span></div>
+      <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
+        <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
+        <div class="di">📸</div>
+        <h2>Vyfoť nebo nahraj test</h2>
+        <p>Klikni pro fotoaparát</p>
+      </div>
+      <div id="pw">
+        <img id="pimg" src="" alt="">
+        <button class="rmb" onclick="rmImg()">✕</button>
+      </div>
     </div>
-    <div class="costbar">
-      <div class="cl">CENA GENEROVÁNÍ</div>
-      <div class="cv">20 <span>kreditů za tahák</span></div>
-    </div>
-    <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
-      <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
-      <span class="di">📸</span>
-      <h2>Vyfoť nebo nahraj test</h2>
-      <p>Klikni pro fotoaparát nebo přetáhni obrázek</p>
-    </div>
-    <div id="pw">
-      <img id="pimg" src="" alt="">
-      <button onclick="rmImg()">✕</button>
-    </div>
-    <div class="sp">
-      <div class="st">⚙ Nastavení taháku</div>
-      <div class="sr">
-        <div class="sl">Jazyk odpovědi</div>
-        <div class="so" id="lang-opts">
+    <div id="settbar">
+      <div class="setthead" onclick="toggleSett()">
+        <span>⚙ Nastavení taháku</span>
+        <span class="settarrow" id="sarrow">▼</span>
+      </div>
+      <div class="settbody" id="sbody">
+        <div class="sr"><div class="sl">Jazyk</div><div class="so">
           <button class="ob on" onclick="setOpt('lang','česky',this)">🇨🇿 CZ</button>
           <button class="ob" onclick="setOpt('lang','in English',this)">🇬🇧 EN</button>
           <button class="ob" onclick="setOpt('lang','auf Deutsch',this)">🇩🇪 DE</button>
           <button class="ob" onclick="setOpt('lang','en español',this)">🇪🇸 ES</button>
           <button class="ob" onclick="setOpt('lang','en français',this)">🇫🇷 FR</button>
-        </div>
-      </div>
-      <div class="sr">
-        <div class="sl">Délka</div>
-        <div class="so" id="len-opts">
+        </div></div>
+        <div class="sr"><div class="sl">Délka</div><div class="so">
           <button class="ob on" onclick="setOpt('len','Buď maximálně stručný.',this)">⚡ Stručně</button>
           <button class="ob" onclick="setOpt('len','Piš středně podrobně.',this)">📄 Středně</button>
-          <button class="ob" onclick="setOpt('len','Piš velmi podrobně se vším.',this)">📚 Podrobně</button>
-        </div>
-      </div>
-      <div class="sr">
-        <div class="sl">Forma</div>
-        <div class="so" id="form-opts">
+          <button class="ob" onclick="setOpt('len','Piš velmi podrobně.',this)">📚 Podrobně</button>
+        </div></div>
+        <div class="sr"><div class="sl">Forma</div><div class="so">
           <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Tahák</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako esej nebo sloh.',this)">✍ Esej</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako esej.',this)">✍ Esej</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako otázky a odpovědi.',this)">❓ Q&A</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako Q&A.',this)">❓ Q&A</button>
           <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Krok za krokem</button>
+        </div></div>
+        <div class="sr"><div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
+          <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..."></textarea>
         </div>
       </div>
-      <div class="sr">
-        <div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
-        <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..."></textarea>
-      </div>
     </div>
-    <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit kredity →</span></div>
-    <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−20 kr</span></button>
-    <div class="errb" id="gerr"></div>
-    <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
+    <div id="genarea">
+      <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit →</span></div>
+      <div class="errb" id="gerr"></div>
+      <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
+      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−20 kr</span></button>
+    </div>
     <div id="rw">
       <div class="rh">
         <span class="rtag">✓ Tahák připraven</span>
@@ -333,98 +256,61 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 </div>
 
 <div class="screen" id="scr">
-  <div class="top">
-    <div class="tlogo">SnapCheat</div>
-    <div class="tright">
-      <div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div>
-    </div>
-  </div>
+  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
-    <div class="cbal">
-      <div class="bnum" id="bnum">0</div>
-      <div class="blbl">Tvůj zůstatek kreditů</div>
-      <div class="bval">= <span id="bkc">0 Kč</span> hodnota</div>
-    </div>
+    <div class="cbal"><div class="bnum" id="bnum">0</div><div class="blbl">Tvůj zůstatek kreditů</div></div>
     <div class="ptitle">Koupit kredity</div>
     <div class="pgrid">
-      <div class="pcard" onclick="buyPkg(50,49)">
-        <div class="pcr">50</div><div class="pclbl">kreditů</div>
-        <div class="ppr">49 Kč</div><div class="pper">0,98 Kč/kr</div>
-        <div class="pth">~2 taháky</div>
-      </div>
-      <div class="pcard pop" onclick="buyPkg(100,89)">
-        <div class="ptag">NEJPOPULÁRNĚJŠÍ</div>
-        <div class="pcr">100</div><div class="pclbl">kreditů</div>
-        <div class="ppr">89 Kč</div><div class="pper">0,89 Kč/kr</div>
-        <div class="pth">~5 taháků</div>
-      </div>
-      <div class="pcard" onclick="buyPkg(250,199)">
-        <div class="pcr">250</div><div class="pclbl">kreditů</div>
-        <div class="ppr">199 Kč</div><div class="pper">0,80 Kč/kr</div>
-        <div class="pth">~12 taháků</div>
-      </div>
-      <div class="pcard" onclick="buyPkg(500,369)">
-        <div class="pcr">500</div><div class="pclbl">kreditů</div>
-        <div class="ppr">369 Kč</div><div class="pper">0,74 Kč/kr</div>
-        <div class="pth">~25 taháků</div>
-      </div>
+      <div class="pcard" onclick="buyPkg(50,49)"><div class="pcr">50</div><div class="pclbl">kreditů</div><div class="ppr">49 Kč</div><div class="pper">0,98 Kč/kr</div><div class="pth">~2 taháky</div></div>
+      <div class="pcard pop" onclick="buyPkg(100,89)"><div class="ptag">NEJPOPULÁRNĚJŠÍ</div><div class="pcr">100</div><div class="pclbl">kreditů</div><div class="ppr">89 Kč</div><div class="pper">0,89 Kč/kr</div><div class="pth">~5 taháků</div></div>
+      <div class="pcard" onclick="buyPkg(250,199)"><div class="pcr">250</div><div class="pclbl">kreditů</div><div class="ppr">199 Kč</div><div class="pper">0,80 Kč/kr</div><div class="pth">~12 taháků</div></div>
+      <div class="pcard" onclick="buyPkg(500,369)"><div class="pcr">500</div><div class="pclbl">kreditů</div><div class="ppr">369 Kč</div><div class="pper">0,74 Kč/kr</div><div class="pth">~25 taháků</div></div>
     </div>
-    <div class="hsec">
-      <div class="htitle">Historie transakcí</div>
-      <div id="hlist"></div>
-    </div>
+    <div class="hsec"><div class="htitle">Historie transakcí</div><div id="hlist"></div></div>
   </div>
 </div>
 
-<!-- HISTORY SCREEN -->
 <div class="screen" id="shist">
-  <div class="top">
-    <div class="tlogo">SnapCheat</div>
-    <div class="tright">
-      <div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div>
-    </div>
-  </div>
+  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <div style="font-size:1.2rem;font-weight:800">Moje taháky</div>
-      <div id="hcount" style="font-size:.75rem;color:var(--t2);font-family:var(--fm)"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:1.1rem;font-weight:800">Moje taháky</div>
+      <div id="hcount" style="font-size:.72rem;color:var(--t2)"></div>
     </div>
     <div id="hcards"></div>
   </div>
 </div>
 
-<!-- TAHAK DETAIL MODAL -->
-<div id="tdmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;overflow-y:auto;padding:20px;backdrop-filter:blur(4px)">
-  <div style="max-width:680px;margin:0 auto">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div id="tdtitle" style="font-size:1rem;font-weight:700;color:var(--ac)"></div>
-      <button onclick="closeTD()" style="background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--t1);padding:8px 14px;cursor:pointer;font-size:.8rem">✕ Zavřít</button>
-    </div>
-    <div class="cc"><div id="tdcontent"></div></div>
-  </div>
+<div id="soverlay" onclick="closeSidebar()"></div>
+<div id="sidebar">
+  <div class="sbhead"><div class="sbemail" id="sbemail">—</div><button class="sbclose" onclick="closeSidebar()">✕</button></div>
+  <div class="sbbal"><div class="sbnum" id="sbcr">0</div><div class="sblbl">🪙 kreditů</div></div>
+  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje taháky</div>
+  <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
+  <div class="sbitem danger" onclick="doLogout()">↩ Odhlásit se</div>
 </div>
 
-
-<div id="sm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)">
+<div id="sm" onclick="if(event.target===this)closeSM()">
   <div class="smbox">
     <h3>Koupit kredity</h3>
     <p class="ssub">Bezpečná platba přes Stripe</p>
-    <div class="ssum">
-      <div><div class="scr" id="mkcr">100</div><div class="slbl">kreditů</div></div>
-      <div class="spr" id="mkpr">89 Kč</div>
-    </div>
+    <div class="ssum"><div><div class="scr" id="mkcr">100</div><div class="slbl">kreditů</div></div><div class="spr" id="mkpr">89 Kč</div></div>
     <div class="fg"><label>Číslo karty</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="fg"><label>Platnost</label><input type="text" placeholder="MM/RR" maxlength="5"></div>
       <div class="fg"><label>CVC</label><input type="text" placeholder="123" maxlength="3"></div>
     </div>
-    <div class="sbtns">
-      <button class="bc" onclick="closeSM()">Zrušit</button>
-      <button class="bp" style="flex:1;margin-top:0" id="paybtn" onclick="doPay()">Zaplatit</button>
-    </div>
+    <div class="sbtns"><button class="bc" onclick="closeSM()">Zrušit</button><button class="bp" style="flex:1;margin-top:0" id="paybtn" onclick="doPay()">Zaplatit</button></div>
     <div class="snote">🔒 Platba je šifrována a zabezpečena.</div>
+  </div>
+</div>
+
+<div id="tdmodal">
+  <div class="tdinner">
+    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div>
+    <div class="cc"><div id="tdcontent"></div></div>
   </div>
 </div>
 
@@ -433,34 +319,26 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 <script>
 const WU='https://satnik-api.marjansta90.workers.dev/';
 const COST=20;
-let user=null,credits=0,history=[],img=null,selPkg=null;
+let user=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[];
 const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
 
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='none'});
-  const s=document.getElementById(id);
-  s.style.display='flex';
-  s.classList.add('on');
+function today(){return new Date().toLocaleDateString('cs')}
+
+function init(){
+  const saved=localStorage.getItem('sc_session');
+  if(saved){try{const s=JSON.parse(saved);if(s.user&&s.credits!==undefined){user=s.user;credits=s.credits;txHistory=s.txHistory||[];loadTH();updCr();document.getElementById('sbemail').textContent=user;document.getElementById('sbcr').textContent=credits;show('sm2');return}}catch(e){}}
+  show('sa');
 }
 
-function sw(id){show(id)}
+function saveSession(){if(!user)return;localStorage.setItem('sc_session',JSON.stringify({user,credits,txHistory}))}
 
-function atab(m,el){
-  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');
-  document.getElementById('acwrap').classList.toggle('hide',m!=='reg');
-  document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';
-  el._mode=m;
-  window._amode=m;
-}
 window._amode='login';
+function atab(m,el){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');document.getElementById('acwrap').classList.toggle('hide',m!=='reg');document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';window._amode=m}
 
 function doAuth(){
   const email=document.getElementById('aemail').value.trim();
   const pass=document.getElementById('apass').value;
-  const err=document.getElementById('aerr');
-  err.style.display='none';
+  const err=document.getElementById('aerr');err.style.display='none';
   if(!email||!email.includes('@')){err.textContent='Zadej platný e-mail';err.style.display='block';return}
   if(!pass){err.textContent='Zadej heslo';err.style.display='block';return}
   if(window._amode==='reg'){
@@ -472,33 +350,44 @@ function doAuth(){
     const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
     if(us[email]){err.textContent='E-mail již existuje';err.style.display='block';return}
     if(Object.values(us).some(u=>u.phone===phone)){err.textContent='Toto číslo je již použito';err.style.display='block';return}
-    us[email]={pass,phone,cr:20,hist:[{t:'plus',l:'Uvítací bonus',a:'+20 kr',d:new Date().toLocaleDateString('cs')}]};
+    us[email]={pass,phone,cr:30,hist:[{t:'plus',l:'Uvítací bonus',a:'+30 kr',d:today()}]};
     localStorage.setItem('sc_u',JSON.stringify(us));
-    loginAs(email,20,us[email].hist);
-    toast('🎉 Účet vytvořen! +20 kreditů zdarma');
-  } else {
+    loginAs(email,30,us[email].hist);toast('🎉 Účet vytvořen! +30 kreditů zdarma');
+  }else{
     const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
     if(!us[email]||us[email].pass!==pass){err.textContent='Špatný e-mail nebo heslo';err.style.display='block';return}
     loginAs(email,us[email].cr,us[email].hist||[]);
   }
 }
 
-function demoLogin(){loginAs('demo@snapcheat.cz',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:new Date().toLocaleDateString('cs')}]);toast('👋 Demo mód!')}
+function demoLogin(){loginAs('demo@snapcheat.cz',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:today()}]);toast('👋 Demo mód!')}
 
 function loginAs(email,cr,hist){
-  user=email;credits=cr;history=hist||[];
-  document.getElementById('avbtn').textContent=email[0].toUpperCase();
-  document.getElementById('pmemail').textContent=email;
-  updCr();show('sm2');
+  user=email;credits=cr;txHistory=hist||[];loadTH();updCr();
+  document.getElementById('sbemail').textContent=email;
+  document.getElementById('sbcr').textContent=cr;
+  saveSession();show('sm2');
 }
 
-function doLogout(){user=null;credits=0;history=[];img=null;document.getElementById('rw').style.display='none';document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='block';show('sa')}
+function doLogout(){
+  user=null;credits=0;txHistory=[];img=null;tahakyHistory=[];
+  localStorage.removeItem('sc_session');
+  document.getElementById('rw').style.display='none';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('dz').style.display='flex';
+  closeSidebar();show('sa');
+}
 
-function goCredits(){document.getElementById('pmenu').classList.remove('on');updCrScreen();show('scr')}
+function show(id){document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='none'});const s=document.getElementById(id);s.style.display='flex';s.classList.add('on')}
 function goMain(){show('sm2')}
+function goCredits(){updCrScreen();show('scr')}
+function goHistory(){loadTH();renderHistory();document.getElementById('tcr3').textContent=credits;show('shist')}
 
-function toggleMenu(){document.getElementById('pmenu').classList.toggle('on')}
-document.addEventListener('click',e=>{if(!e.target.closest('#pmenu')&&!e.target.closest('#avbtn'))document.getElementById('pmenu').classList.remove('on')});
+function openSidebar(){document.getElementById('sidebar').classList.add('on');document.getElementById('soverlay').classList.add('on');document.getElementById('sbcr').textContent=credits}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('on');document.getElementById('soverlay').classList.remove('on')}
+
+function toggleSett(){document.getElementById('sbody').classList.toggle('on');document.getElementById('sarrow').classList.toggle('open')}
+function setOpt(k,v,btn){opts[k]=v;btn.closest('.so').querySelectorAll('.ob').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 
 function updCr(){
   document.getElementById('tcr').textContent=credits;
@@ -508,37 +397,25 @@ function updCr(){
 
 function updCrScreen(){
   document.getElementById('bnum').textContent=credits;
-  document.getElementById('bkc').textContent=credits+' Kč';
   const list=document.getElementById('hlist');
-  if(!history.length){list.innerHTML='<div style="font-size:.78rem;color:var(--t3);padding:16px 0">Zatím žádné transakce</div>';return}
-  list.innerHTML=history.slice().reverse().map(h=>`<div class="hi"><div><div class="hl">${h.l}</div><div class="hd">${h.d}</div></div><div class="ha ${h.t}">${h.a}</div></div>`).join('');
-}
-
-function setOpt(k,v,btn){
-  opts[k]=v;
-  btn.closest('.so').querySelectorAll('.ob').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
+  if(!txHistory.length){list.innerHTML='<div style="font-size:.78rem;color:var(--t3);padding:14px 0">Zatím žádné transakce</div>';return}
+  list.innerHTML=txHistory.slice().reverse().map(h=>`<div class="hi"><div><div class="hl">${h.l}</div><div class="hd">${h.d}</div></div><div class="ha ${h.t}">${h.a}</div></div>`).join('');
 }
 
 function dzOver(e){e.preventDefault();document.getElementById('dz').classList.add('ov')}
 function dzOut(){document.getElementById('dz').classList.remove('ov')}
 function dzDrop(e){e.preventDefault();dzOut();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))loadF(f)}
 function dzFile(e){if(e.target.files[0])loadF(e.target.files[0])}
+
 function loadF(f){
   const r=new FileReader();
   r.onload=e=>{
-    // Komprimuj obrázek před uložením
     const canvas=document.createElement('canvas');
     const image=new Image();
     image.onload=()=>{
-      const MAX=1200;
-      let w=image.width,h=image.height;
-      if(w>MAX||h>MAX){
-        if(w>h){h=Math.round(h*MAX/w);w=MAX;}
-        else{w=Math.round(w*MAX/h);h=MAX;}
-      }
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(image,0,0,w,h);
+      const MAX=1200;let w=image.width,h=image.height;
+      if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX}else{w=Math.round(w*MAX/h);h=MAX}}
+      canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(image,0,0,w,h);
       img=canvas.toDataURL('image/jpeg',0.85);
       document.getElementById('pimg').src=img;
       document.getElementById('pw').style.display='block';
@@ -548,34 +425,13 @@ function loadF(f){
   };
   r.readAsDataURL(f);
 }
-function rmImg(){img=null;document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='block';document.getElementById('dz').querySelector('input').value=''}
+
+function rmImg(){img=null;document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='flex';document.getElementById('dz').querySelector('input').value=''}
 
 function buildP(){
   const ex=document.getElementById('extra').value.trim();
-  const isStep=opts.form==='STEP_BY_STEP';
-
-  if(isStep){
-    return `Analyzuj tento test/dokument a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem.
-
-Jazyk: ${opts.lang}
-${opts.len}
-
-Pro každou úlohu:
-1. Napiš číslo a název úlohy jako <h3>
-2. Vypiš co je zadáno: <div class="highlight">Zadáno: ...</div>
-3. Každý krok očísluj a vysvětli: <div class="step"><span class="stepnum">Krok 1</span> text...</div>
-4. Výsledek zvýrazni: <div class="highlight">✓ Výsledek: ...</div>
-
-Pro ostatní (ne matematické) otázky dej stručnou přímou odpověď s <ul><li>.
-${ex?'Instrukce: '+ex:''}`;
-  }
-
-  return `Vytvoř tahák z tohoto testu/dokumentu.
-Jazyk: ${opts.lang}
-${opts.len}
-${opts.form}
-${ex?'Instrukce: '+ex:''}
-Pro každou otázku dej PŘÍMOU ODPOVĚĎ. Formátuj: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> klíčové pojmy, <div class="highlight"> vzorce. Pokud téma obsahuje grafy přidej SVG s viewBox="0 0 600 380", bg #1a1a1a, text #f0ede8, zabal do <div class="diagram-wrap"><p class="diagram-label">Název</p>SVG</div>.`;
+  if(opts.form==='STEP_BY_STEP'){return `Analyzuj tento test a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem. Jazyk: ${opts.lang}. ${opts.len} Každá úloha: název <h3>, zadáno <div class="highlight">Zadáno: ...</div>, kroky <div class="step"><span class="stepnum">Krok N</span> popis</div>, výsledek <div class="highlight">✓ Výsledek: ...</div>. Ostatní otázky stručně <ul><li>.${ex?'\n'+ex:''}`}
+  return `Vytvoř tahák z tohoto testu. Jazyk: ${opts.lang}. ${opts.len} ${opts.form} Pro každou otázku PŘÍMÁ ODPOVĚĎ. HTML: <h2> nadpis, <h3> sekce, <ul><li>, <strong>, <div class="highlight"> vzorce. Diagramy: SVG viewBox="0 0 600 380" bg #1a1a1a text #f0ede8 v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.${ex?'\n'+ex:''}`;
 }
 
 async function doGen(){
@@ -585,31 +441,18 @@ async function doGen(){
   document.getElementById('gbtn').disabled=true;
   document.getElementById('glw').style.display='flex';
   document.getElementById('rw').style.display='none';
+  const b64=img.split(',')[1];const mt=img.split(';')[0].split(':')[1];
   try{
-    const b64=img.split(',')[1];
-    const mt=img.split(';')[0].split(':')[1];
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      model:'claude-sonnet-4-6',max_tokens:4000,
-      system:`Jsi expert na taháky. Odpovídej v zadaném jazyce. Pro každou otázku dej PŘÍMOU odpověď. Nesmíš sumarizovat. Formátuj HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">. Pro SVG diagramy: viewBox="0 0 600 380", bg #1a1a1a, text #f0ede8, zabal do <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.`,
-      messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]
-    })});
-    if(!res.ok){
-      const errData=await res.json().catch(()=>({}));
-      throw new Error(errData.error?.message||'HTTP '+res.status);
-    }
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})});
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
-    if(!txt){
-      throw new Error('Prázdná odpověď. Detail: '+JSON.stringify(d).substring(0,200));
-    }
-    credits-=COST;
-    history.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:new Date().toLocaleDateString('cs')});
-    saveU();updCr();
-    saveTahakToHistory(txt);
+    if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
+    credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
+    saveU();saveSession();updCr();saveTH(txt);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
-    // Haptická odezva - 3x krátké vibrace
     if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);
     toast('✓ Tahák připraven! −'+COST+' kreditů');
   }catch(e){showErr('Chyba: '+e.message)}
@@ -621,7 +464,7 @@ function showErr(m){const b=document.getElementById('gerr');b.textContent=m;b.st
 function saveU(){
   if(!user||user==='demo@snapcheat.cz')return;
   const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
-  if(us[user]){us[user].cr=credits;us[user].hist=history;localStorage.setItem('sc_u',JSON.stringify(us))}
+  if(us[user]){us[user].cr=credits;us[user].hist=txHistory;localStorage.setItem('sc_u',JSON.stringify(us))}
 }
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
@@ -636,231 +479,88 @@ async function doPDF(){
     const el=document.getElementById('rc');
     const wrap=document.createElement('div');
     wrap.style.cssText='position:fixed;left:-9999px;top:0;width:794px;background:#111;color:#f0ede8;font-family:system-ui,sans-serif;font-size:14px;line-height:1.8;padding:40px;box-sizing:border-box';
-    wrap.innerHTML=el.innerHTML;
-    document.body.appendChild(wrap);
+    wrap.innerHTML=el.innerHTML;document.body.appendChild(wrap);
     await new Promise(r=>setTimeout(r,300));
     const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:1.5,useCORS:true,allowTaint:true,logging:false,width:794,height:wrap.scrollHeight});
     document.body.removeChild(wrap);
     const{jsPDF}=window.jspdf;
     const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-    const pw=pdf.internal.pageSize.getWidth();
-    const ph=pdf.internal.pageSize.getHeight();
+    const pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight();
     const id=canvas.toDataURL('image/png');
     const ih=(canvas.height*pw)/canvas.width;
-    if(ih<=ph){pdf.addImage(id,'PNG',0,0,pw,ih)}
-    else{let y=0,pg=0;while(y<ih){if(pg>0)pdf.addPage();pdf.addImage(id,'PNG',0,-y,pw,ih);y+=ph;pg++}}
-    pdf.save('tahak.pdf');
-    toast('✅ PDF uloženo!');
+    if(ih<=ph){pdf.addImage(id,'PNG',0,0,pw,ih)}else{let y=0,pg=0;while(y<ih){if(pg>0)pdf.addPage();pdf.addImage(id,'PNG',0,-y,pw,ih);y+=ph;pg++}}
+    pdf.save('tahak.pdf');toast('✅ PDF uloženo!');
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').style.display='flex'}
-function closeSM(){document.getElementById('sm').style.display='none'}
+function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').classList.add('on')}
+function closeSM(){document.getElementById('sm').classList.remove('on')}
 function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim()}
 
 function doPay(){
-  const btn=document.getElementById('paybtn');
-  btn.textContent='Zpracovávám...';btn.disabled=true;
-  setTimeout(()=>{
-    credits+=selPkg.cr;
-    history.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:new Date().toLocaleDateString('cs')});
-    saveU();updCr();updCrScreen();closeSM();
-    btn.textContent='Zaplatit';btn.disabled=false;
-    toast('🪙 '+selPkg.cr+' kreditů přidáno!');
-  },1500);
+  const btn=document.getElementById('paybtn');btn.textContent='Zpracovávám...';btn.disabled=true;
+  setTimeout(()=>{credits+=selPkg.cr;txHistory.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:today()});saveU();saveSession();updCr();updCrScreen();closeSM();btn.textContent='Zaplatit';btn.disabled=false;if(navigator.vibrate)navigator.vibrate([50,30,50]);toast('🪙 '+selPkg.cr+' kreditů přidáno!')},1500);
 }
 
-// ==================== HISTORY ====================
-let tahakyHistory=[];
+function loadTH(){if(!user)return;tahakyHistory=JSON.parse(localStorage.getItem('sc_th_'+user)||'[]')}
 
-function loadTahakyHistory(){
-  if(!user)return;
-  const key='sc_taháky_'+user;
-  tahakyHistory=JSON.parse(localStorage.getItem(key)||'[]');
-}
-
-function saveTahakToHistory(content){
+function saveTH(content){
   if(!user||user==='demo@snapcheat.cz')return;
-  const key='sc_taháky_'+user;
-  // Extract title from content
-  const tmp=document.createElement('div');
-  tmp.innerHTML=content;
+  const tmp=document.createElement('div');tmp.innerHTML=content;
   const h2=tmp.querySelector('h2');
-  const title=h2?h2.textContent.trim():'Tahák '+new Date().toLocaleDateString('cs');
-  tahakyHistory.unshift({
-    id:Date.now(),
-    title,
-    content,
-    date:new Date().toLocaleDateString('cs'),
-    time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})
-  });
-  // Keep max 20 taháků
-  if(tahakyHistory.length>20)tahakyHistory=tahakyHistory.slice(0,20);
-  localStorage.setItem(key,JSON.stringify(tahakyHistory));
-}
-
-function goHistory(){
-  document.getElementById('pmenu').classList.remove('on');
-  loadTahakyHistory();
-  renderHistory();
-  document.getElementById('tcr3').textContent=credits;
-  show('shist');
+  const title=h2?h2.textContent.trim():'Tahák '+today();
+  tahakyHistory.unshift({id:Date.now(),title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
+  if(tahakyHistory.length>30)tahakyHistory=tahakyHistory.slice(0,30);
+  localStorage.setItem('sc_th_'+user,JSON.stringify(tahakyHistory));
 }
 
 function renderHistory(){
   const cont=document.getElementById('hcards');
-  const count=document.getElementById('hcount');
-  count.textContent=tahakyHistory.length+' taháků';
-  if(!tahakyHistory.length){
-    cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.<br>Vygeneruj první tahák!</div></div>';
-    return;
-  }
-  cont.innerHTML=tahakyHistory.map((t,i)=>`
-    <div class="hcard" onclick="openTahak(${i})">
-      <div class="hcard-left">
-        <div class="hcard-title">${t.title}</div>
-        <div class="hcard-meta">${t.date} · ${t.time}</div>
-      </div>
-      <div class="hcard-right">
-        <button class="hdelbtn" onclick="delTahak(${i},event)">✕</button>
-      </div>
-    </div>
-  `).join('');
+  document.getElementById('hcount').textContent=tahakyHistory.length+' taháků';
+  if(!tahakyHistory.length){cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.</div></div>';return}
+  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div>`).join('');
 }
 
-function openTahak(i){
-  const t=tahakyHistory[i];
-  document.getElementById('tdtitle').textContent=t.title;
-  document.getElementById('tdcontent').innerHTML=t.content;
-  document.getElementById('tdmodal').style.display='block';
-}
-
-function closeTD(){
-  document.getElementById('tdmodal').style.display='none';
-}
-
-function delTahak(i,e){
-  e.stopPropagation();
-  tahakyHistory.splice(i,1);
-  const key='sc_taháky_'+user;
-  localStorage.setItem(key,JSON.stringify(tahakyHistory));
-  renderHistory();
-  toast('🗑 Tahák smazán');
-}
+function openTahak(i){const t=tahakyHistory[i];document.getElementById('tdtitle').textContent=t.title;document.getElementById('tdcontent').innerHTML=t.content;document.getElementById('tdmodal').style.display='block'}
+function closeTD(){document.getElementById('tdmodal').style.display='none'}
+function delTahak(i,e){e.stopPropagation();tahakyHistory.splice(i,1);localStorage.setItem('sc_th_'+user,JSON.stringify(tahakyHistory));renderHistory();toast('🗑 Tahák smazán')}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
-document.getElementById('sm').addEventListener('click',function(e){if(e.target===this)closeSM()});
-
-// ==================== PANIC MODE ====================
-let panicOn=false;
-let lastTap=0;
-let tapCount=0;
-let tapTimer=null;
-let panicCooldown=false;
-
+// PANIC MODE
+let panicOn=false,lastTap=0,tapCount=0,tapTimer=null,panicCooldown=false,panicPressTimer=null;
 const panicEl=document.createElement('div');
-panicEl.id='panic';
-panicEl.style.cssText='display:none;position:fixed;inset:0;background:#000;z-index:9999;cursor:pointer;-webkit-tap-highlight-color:transparent';
-document.body.appendChild(panicEl);
-
-// Clock on panic screen
+panicEl.style.cssText='display:none;position:fixed;inset:0;background:#000;z-index:9999;cursor:pointer';
 const panicClock=document.createElement('div');
-panicClock.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#fff';
-panicClock.innerHTML='<div id="pclock" style="font-size:4rem;font-weight:200;letter-spacing:.05em;font-family:system-ui"></div>';
-panicEl.appendChild(panicClock);
-
-function updateClock(){
-  const now=new Date();
-  const h=String(now.getHours()).padStart(2,'0');
-  const m=String(now.getMinutes()).padStart(2,'0');
-  const el=document.getElementById('pclock');
-  if(el)el.textContent=h+':'+m;
-}
-updateClock();
-setInterval(updateClock,1000);
-
-function activatePanic(){
-  panicOn=true;
-  panicEl.style.display='block';
-  // Vibrate on supported devices
-  if(navigator.vibrate)navigator.vibrate([50,30,50]);
-}
-
-function deactivatePanic(){
-  panicOn=false;
-  panicEl.style.display='none';
-  if(navigator.vibrate)navigator.vibrate(50);
-  // Reset tap counters aby se panic hned znovu nespustil
-  tapCount=0;
-  lastTap=0;
-  if(tapTimer)clearTimeout(tapTimer);
-  // Cooldown 2 sekundy po deaktivaci
-  panicCooldown=true;
-  setTimeout(()=>{panicCooldown=false;},2000);
-}
-
-// Deactivate panic - long press 1 second
-let panicPressTimer=null;
-
-panicEl.addEventListener('touchstart',function(e){
-  e.preventDefault();
-  panicPressTimer=setTimeout(()=>{
-    deactivatePanic();
-  },800);
-},{passive:false});
-
-panicEl.addEventListener('touchend',function(e){
-  e.preventDefault();
-  if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null;}
-});
-
-panicEl.addEventListener('touchmove',function(e){
-  if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null;}
-});
-
-// Desktop - double click
-panicEl.addEventListener('dblclick',function(e){
-  e.preventDefault();
-  deactivatePanic();
-});
-
-// Double tap detection anywhere else
-document.addEventListener('touchend',function(e){
-  if(panicOn)return;
-  if(!user)return;
-  if(panicCooldown)return;
-  if(document.getElementById('sm').style.display==='flex')return;
-  // Nespouštěj na tlačítkách a inputech
+panicClock.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:4rem;font-weight:200;letter-spacing:.05em;font-family:system-ui';
+panicEl.appendChild(panicClock);document.body.appendChild(panicEl);
+function updClock(){const n=new Date();panicClock.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')}
+updClock();setInterval(updClock,1000);
+function activatePanic(){panicOn=true;panicEl.style.display='block';if(navigator.vibrate)navigator.vibrate([50,30,50])}
+function deactivatePanic(){panicOn=false;panicEl.style.display='none';if(navigator.vibrate)navigator.vibrate(50);tapCount=0;lastTap=0;panicCooldown=true;setTimeout(()=>{panicCooldown=false},2000)}
+panicEl.addEventListener('touchstart',e=>{e.preventDefault();panicPressTimer=setTimeout(deactivatePanic,800)},{passive:false});
+panicEl.addEventListener('touchend',e=>{e.preventDefault();if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
+panicEl.addEventListener('touchmove',()=>{if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
+panicEl.addEventListener('dblclick',deactivatePanic);
+document.addEventListener('touchend',e=>{
+  if(panicOn||!user||panicCooldown)return;
+  if(document.getElementById('sm').classList.contains('on'))return;
   const tag=e.target.tagName;
   if(tag==='BUTTON'||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||tag==='LABEL')return;
-
-  const now=Date.now();
-  tapCount++;
-
+  const now=Date.now();tapCount++;
   if(tapTimer)clearTimeout(tapTimer);
-
-  if(tapCount>=2&&now-lastTap<400){
-    tapCount=0;
-    lastTap=0;
-    activatePanic();
-  } else {
-    tapTimer=setTimeout(()=>{tapCount=0},500);
-  }
+  if(tapCount>=2&&now-lastTap<400){tapCount=0;lastTap=0;activatePanic()}
+  else tapTimer=setTimeout(()=>{tapCount=0},500);
   lastTap=now;
 },{passive:true});
-
-// Double click for desktop testing
-let clickCount=0;
-let clickTimer=null;
-document.addEventListener('dblclick',function(e){
-  if(panicOn)return;
-  if(!user)return;
-  if(e.target.tagName==='BUTTON'||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
-  if(document.getElementById('sm').classList.contains('on'))return;
+document.addEventListener('dblclick',e=>{
+  if(panicOn||!user||panicCooldown)return;
+  const tag=e.target.tagName;
+  if(tag==='BUTTON'||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
   activatePanic();
 });
 
+init();
 </script>
 </body>
 </html>

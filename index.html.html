@@ -2,8 +2,24 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SnapCheat</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SnapCheat">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;any&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SnapCheat">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="AI tahák z fotky za sekundy">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle' font-family='system-ui' fill='%23e8d5b0'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+<meta name="apple-mobile-web-app-title" content="SnapCheat">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="AI tahák z fotky za sekundy">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0a0a'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='%23e8d5b0' font-family='system-ui'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;SnapCheat&quot;,&quot;short_name&quot;:&quot;SnapCheat&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%230a0a0a&quot;,&quot;theme_color&quot;:&quot;%23000000&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Ctext x='96' y='130' font-size='120' text-anchor='middle' fill='%23e8d5b0'%3E⚡%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,7 +31,7 @@
   --ff:system-ui,-apple-system,sans-serif;
   --fm:'Courier New',monospace;
 }
-body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh}
+body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 .hide{display:none!important}
 .screen{min-height:100vh;flex-direction:column;display:none}
 .screen.on{display:flex}
@@ -194,6 +210,18 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 </style>
 </head>
 <body>
+
+<!-- PWA INSTALL BANNER (iOS) -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:1px solid #333;padding:14px 20px;z-index:8000;flex-direction:column;gap:10px">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:40px;height:40px;background:#0a0a0a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">⚡</div>
+    <div style="flex:1">
+      <div style="font-size:.85rem;font-weight:700;color:#e8d5b0">Přidat SnapCheat na plochu</div>
+      <div style="font-size:.72rem;color:#888;margin-top:2px">Klikni na <strong style="color:#e8d5b0">sdílet</strong> → "Přidat na plochu"</div>
+    </div>
+    <button onclick="document.getElementById('pwa-banner').style.display='none';localStorage.setItem('pwa_dismissed','1')" style="background:none;border:none;color:#666;font-size:1.2rem;cursor:pointer;padding:4px">✕</button>
+  </div>
+</div>
 
 <div class="screen on" id="sa">
   <div class="abox">

@@ -142,6 +142,8 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 .cc li{font-size:.85rem;color:#ccc;margin-bottom:4px}
 .cc strong{color:var(--ac);font-weight:500}
 .cc .highlight{background:var(--s2);border-left:3px solid var(--ac2);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem}
+.cc .step{display:flex;gap:12px;margin:8px 0;align-items:flex-start;background:var(--s2);border-radius:8px;padding:10px 14px}
+.cc .stepnum{background:var(--ac2);color:#0a0a0a;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;white-space:nowrap;margin-top:2px;font-family:var(--fm);flex-shrink:0}
 .cc .diagram-wrap{margin:20px 0;border:1px solid var(--b1);border-radius:12px;overflow:hidden}
 .cc .diagram-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--t2);padding:10px 16px;border-bottom:1px solid var(--b1);background:var(--s2);margin:0;font-family:var(--fm)}
 .cc .diagram-wrap svg{width:100%;height:auto;display:block}
@@ -305,6 +307,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
           <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako otázky a odpovědi.',this)">❓ Q&A</button>
+          <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Krok za krokem</button>
         </div>
       </div>
       <div class="sr">
@@ -549,7 +552,30 @@ function rmImg(){img=null;document.getElementById('pw').style.display='none';doc
 
 function buildP(){
   const ex=document.getElementById('extra').value.trim();
-  return `Vytvoř tahák z tohoto testu/dokumentu.\n\nJazyk: ${opts.lang}\n${opts.len}\n${opts.form}\n${ex?'Instrukce: '+ex:''}\n\nPro každou otázku dej PŘÍMOU ODPOVĚĎ, ne sumarizaci.\nFormátuj pomocí HTML: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> klíčové pojmy, <div class="highlight"> vzorce.\nPokud téma obsahuje grafy nebo diagramy, přidej SVG s viewBox="0 0 600 380", tmavé pozadí #1a1a1a, text #f0ede8. Zabal do <div class="diagram-wrap"><p class="diagram-label">Název</p>[SVG]</div>.`;
+  const isStep=opts.form==='STEP_BY_STEP';
+
+  if(isStep){
+    return `Analyzuj tento test/dokument a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem.
+
+Jazyk: ${opts.lang}
+${opts.len}
+
+Pro každou úlohu:
+1. Napiš číslo a název úlohy jako <h3>
+2. Vypiš co je zadáno: <div class="highlight">Zadáno: ...</div>
+3. Každý krok očísluj a vysvětli: <div class="step"><span class="stepnum">Krok 1</span> text...</div>
+4. Výsledek zvýrazni: <div class="highlight">✓ Výsledek: ...</div>
+
+Pro ostatní (ne matematické) otázky dej stručnou přímou odpověď s <ul><li>.
+${ex?'Instrukce: '+ex:''}`;
+  }
+
+  return `Vytvoř tahák z tohoto testu/dokumentu.
+Jazyk: ${opts.lang}
+${opts.len}
+${opts.form}
+${ex?'Instrukce: '+ex:''}
+Pro každou otázku dej PŘÍMOU ODPOVĚĎ. Formátuj: <h2> nadpis, <h3> sekce, <ul><li> odrážky, <strong> klíčové pojmy, <div class="highlight"> vzorce. Pokud téma obsahuje grafy přidej SVG s viewBox="0 0 600 380", bg #1a1a1a, text #f0ede8, zabal do <div class="diagram-wrap"><p class="diagram-label">Název</p>SVG</div>.`;
 }
 
 async function doGen(){

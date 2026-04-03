@@ -376,6 +376,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 </div>
 
 
+<div id="sm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)">
   <div class="smbox">
     <h3>Koupit kredity</h3>
     <p class="ssub">Bezpečná platba přes Stripe</p>
@@ -569,8 +570,8 @@ async function doPDF(){
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').classList.add('on')}
-function closeSM(){document.getElementById('sm').classList.remove('on')}
+function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').style.display='flex'}
+function closeSM(){document.getElementById('sm').style.display='none'}
 function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim()}
 
 function doPay(){

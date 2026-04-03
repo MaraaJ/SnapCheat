@@ -560,7 +560,7 @@ document.body.appendChild(panicEl);
 // Clock on panic screen
 const panicClock=document.createElement('div');
 panicClock.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#fff';
-panicClock.innerHTML='<div id="pclock" style="font-size:4rem;font-weight:200;letter-spacing:.05em;font-family:system-ui"></div><div style="font-size:.8rem;color:#888;margin-top:8px;letter-spacing:.2em">DVOJITÝM KLEPNUTÍM ODEMKNOUT</div>';
+panicClock.innerHTML='<div id="pclock" style="font-size:4rem;font-weight:200;letter-spacing:.05em;font-family:system-ui"></div>';
 panicEl.appendChild(panicClock);
 
 function updateClock(){

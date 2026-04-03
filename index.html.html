@@ -555,6 +555,8 @@ async function doGen(){
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
+    // Haptická odezva - 3x krátké vibrace
+    if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);
     toast('✓ Tahák připraven! −'+COST+' kreditů');
   }catch(e){showErr('Chyba: '+e.message)}
   finally{document.getElementById('gbtn').disabled=false;document.getElementById('glw').style.display='none'}

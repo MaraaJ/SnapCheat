@@ -545,6 +545,93 @@ function doPay(){
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
 document.getElementById('sm').addEventListener('click',function(e){if(e.target===this)closeSM()});
+
+// ==================== PANIC MODE ====================
+let panicOn=false;
+let lastTap=0;
+let tapCount=0;
+let tapTimer=null;
+
+const panicEl=document.createElement('div');
+panicEl.id='panic';
+panicEl.style.cssText='display:none;position:fixed;inset:0;background:#000;z-index:9999;cursor:pointer;-webkit-tap-highlight-color:transparent';
+document.body.appendChild(panicEl);
+
+// Clock on panic screen
+const panicClock=document.createElement('div');
+panicClock.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#fff';
+panicClock.innerHTML='<div id="pclock" style="font-size:4rem;font-weight:200;letter-spacing:.05em;font-family:system-ui"></div><div style="font-size:.8rem;color:#888;margin-top:8px;letter-spacing:.2em">DVOJITÝM KLEPNUTÍM ODEMKNOUT</div>';
+panicEl.appendChild(panicClock);
+
+function updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const el=document.getElementById('pclock');
+  if(el)el.textContent=h+':'+m;
+}
+updateClock();
+setInterval(updateClock,1000);
+
+function activatePanic(){
+  panicOn=true;
+  panicEl.style.display='block';
+  // Vibrate on supported devices
+  if(navigator.vibrate)navigator.vibrate([50,30,50]);
+}
+
+function deactivatePanic(){
+  panicOn=false;
+  panicEl.style.display='none';
+  if(navigator.vibrate)navigator.vibrate(50);
+}
+
+// Double tap detection on panic screen
+panicEl.addEventListener('touchend',function(e){
+  e.preventDefault();
+  const now=Date.now();
+  if(now-lastTap<400){
+    deactivatePanic();
+  }
+  lastTap=now;
+});
+
+panicEl.addEventListener('dblclick',function(){
+  deactivatePanic();
+});
+
+// Double tap detection anywhere else
+document.addEventListener('touchend',function(e){
+  if(panicOn)return;
+  // Only activate when on main screen (not auth, not modals)
+  if(!user)return;
+  if(document.getElementById('sm').classList.contains('on'))return;
+
+  const now=Date.now();
+  tapCount++;
+
+  if(tapTimer)clearTimeout(tapTimer);
+
+  if(tapCount>=2&&now-lastTap<400){
+    tapCount=0;
+    activatePanic();
+  } else {
+    tapTimer=setTimeout(()=>{tapCount=0},500);
+  }
+  lastTap=now;
+},{passive:true});
+
+// Double click for desktop testing
+let clickCount=0;
+let clickTimer=null;
+document.addEventListener('dblclick',function(e){
+  if(panicOn)return;
+  if(!user)return;
+  if(e.target.tagName==='BUTTON'||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
+  if(document.getElementById('sm').classList.contains('on'))return;
+  activatePanic();
+});
+
 </script>
 </body>
 </html>

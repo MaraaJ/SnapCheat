@@ -176,7 +176,19 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 .bc:hover{background:var(--s3)}
 .snote{font-size:.72rem;color:var(--t2);text-align:center;margin-top:14px;line-height:1.5}
 
-/* TOAST */
+/* HISTORY CARDS */
+.hcard{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hcard:hover{border-color:var(--ac2);transform:translateY(-1px)}
+.hcard-left{flex:1;min-width:0}
+.hcard-title{font-size:.9rem;font-weight:600;color:var(--t1);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcard-meta{font-size:.72rem;color:var(--t2);font-family:var(--fm)}
+.hcard-right{display:flex;gap:8px;flex-shrink:0}
+.hdelbtn{background:none;border:1px solid var(--b2);border-radius:8px;color:var(--rd);font-size:.75rem;padding:6px 10px;cursor:pointer;transition:.2s}
+.hdelbtn:hover{background:#2a1515;border-color:var(--rd)}
+.hempty{text-align:center;padding:48px 24px;color:var(--t2)}
+.hempty div:first-child{font-size:2.5rem;margin-bottom:12px}
+.hempty div:last-child{font-size:.85rem}
+
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:10px 20px;font-size:.78rem;z-index:400;transition:transform .3s;white-space:nowrap;font-family:var(--fm)}
 #toast.on{transform:translateX(-50%) translateY(0)}
 </style>
@@ -214,6 +226,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   </div>
   <div id="pmenu">
     <div class="pmemail" id="pmemail">—</div>
+    <div class="pmitem" onclick="goHistory()">📋 Moje taháky</div>
     <div class="pmitem" onclick="goCredits()">🪙 Koupit kredity</div>
     <div class="pmitem danger" onclick="doLogout()">↩ Odhlásit se</div>
   </div>
@@ -333,7 +346,36 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   </div>
 </div>
 
-<div id="sm">
+<!-- HISTORY SCREEN -->
+<div class="screen" id="shist">
+  <div class="top">
+    <div class="tlogo">SnapCheat</div>
+    <div class="tright">
+      <div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div>
+    </div>
+  </div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:1.2rem;font-weight:800">Moje taháky</div>
+      <div id="hcount" style="font-size:.75rem;color:var(--t2);font-family:var(--fm)"></div>
+    </div>
+    <div id="hcards"></div>
+  </div>
+</div>
+
+<!-- TAHAK DETAIL MODAL -->
+<div id="tdmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:400;overflow-y:auto;padding:20px;backdrop-filter:blur(4px)">
+  <div style="max-width:680px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div id="tdtitle" style="font-size:1rem;font-weight:700;color:var(--ac)"></div>
+      <button onclick="closeTD()" style="background:var(--s2);border:1px solid var(--b2);border-radius:8px;color:var(--t1);padding:8px 14px;cursor:pointer;font-size:.8rem">✕ Zavřít</button>
+    </div>
+    <div class="cc"><div id="tdcontent"></div></div>
+  </div>
+</div>
+
+
   <div class="smbox">
     <h3>Koupit kredity</h3>
     <p class="ssub">Bezpečná platba přes Stripe</p>
@@ -480,6 +522,7 @@ async function doGen(){
     credits-=COST;
     history.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:new Date().toLocaleDateString('cs')});
     saveU();updCr();
+    saveTahakToHistory(txt);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
@@ -542,7 +585,85 @@ function doPay(){
   },1500);
 }
 
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
+// ==================== HISTORY ====================
+let tahakyHistory=[];
+
+function loadTahakyHistory(){
+  if(!user)return;
+  const key='sc_taháky_'+user;
+  tahakyHistory=JSON.parse(localStorage.getItem(key)||'[]');
+}
+
+function saveTahakToHistory(content){
+  if(!user||user==='demo@snapcheat.cz')return;
+  const key='sc_taháky_'+user;
+  // Extract title from content
+  const tmp=document.createElement('div');
+  tmp.innerHTML=content;
+  const h2=tmp.querySelector('h2');
+  const title=h2?h2.textContent.trim():'Tahák '+new Date().toLocaleDateString('cs');
+  tahakyHistory.unshift({
+    id:Date.now(),
+    title,
+    content,
+    date:new Date().toLocaleDateString('cs'),
+    time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})
+  });
+  // Keep max 20 taháků
+  if(tahakyHistory.length>20)tahakyHistory=tahakyHistory.slice(0,20);
+  localStorage.setItem(key,JSON.stringify(tahakyHistory));
+}
+
+function goHistory(){
+  document.getElementById('pmenu').classList.remove('on');
+  loadTahakyHistory();
+  renderHistory();
+  document.getElementById('tcr3').textContent=credits;
+  show('shist');
+}
+
+function renderHistory(){
+  const cont=document.getElementById('hcards');
+  const count=document.getElementById('hcount');
+  count.textContent=tahakyHistory.length+' taháků';
+  if(!tahakyHistory.length){
+    cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.<br>Vygeneruj první tahák!</div></div>';
+    return;
+  }
+  cont.innerHTML=tahakyHistory.map((t,i)=>`
+    <div class="hcard" onclick="openTahak(${i})">
+      <div class="hcard-left">
+        <div class="hcard-title">${t.title}</div>
+        <div class="hcard-meta">${t.date} · ${t.time}</div>
+      </div>
+      <div class="hcard-right">
+        <button class="hdelbtn" onclick="delTahak(${i},event)">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTahak(i){
+  const t=tahakyHistory[i];
+  document.getElementById('tdtitle').textContent=t.title;
+  document.getElementById('tdcontent').innerHTML=t.content;
+  document.getElementById('tdmodal').style.display='block';
+}
+
+function closeTD(){
+  document.getElementById('tdmodal').style.display='none';
+}
+
+function delTahak(i,e){
+  e.stopPropagation();
+  tahakyHistory.splice(i,1);
+  const key='sc_taháky_'+user;
+  localStorage.setItem(key,JSON.stringify(tahakyHistory));
+  renderHistory();
+  toast('🗑 Tahák smazán');
+}
+
+const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
 document.getElementById('sm').addEventListener('click',function(e){if(e.target===this)closeSM()});
 
@@ -586,19 +707,26 @@ function deactivatePanic(){
   if(navigator.vibrate)navigator.vibrate(50);
 }
 
-// Double tap detection on panic screen
-let panicLastTap=0;
+// Deactivate panic - long press 1 second
+let panicPressTimer=null;
+
+panicEl.addEventListener('touchstart',function(e){
+  e.preventDefault();
+  panicPressTimer=setTimeout(()=>{
+    deactivatePanic();
+  },800);
+},{passive:false});
+
 panicEl.addEventListener('touchend',function(e){
   e.preventDefault();
-  const now=Date.now();
-  if(now-panicLastTap<400){
-    deactivatePanic();
-    panicLastTap=0;
-  } else {
-    panicLastTap=now;
-  }
+  if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null;}
 });
 
+panicEl.addEventListener('touchmove',function(e){
+  if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null;}
+});
+
+// Desktop - double click
 panicEl.addEventListener('dblclick',function(e){
   e.preventDefault();
   deactivatePanic();

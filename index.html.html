@@ -448,7 +448,11 @@ async function doGen(){
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
-    credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
+   // Pokud to nejsi ty, normálně strhni kredity
+if (user !== "marjansta90@gmail.com") {
+  credits-=COST;
+  txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
+}
     saveU();saveSession();updCr();saveTH(txt);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';

@@ -232,7 +232,8 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
           <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Krok za krokem</button>
         </div></div>
         <div class="sr"><div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
-          <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..."></textarea>
+          <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..." maxlength="300" oninput="updCounter()"></textarea>
+          <div style="text-align:right;font-size:.68rem;margin-top:4px;font-family:var(--fm)"><span id="excounter" style="color:var(--t2)">0</span><span style="color:var(--t3)">/300</span></div>
         </div>
       </div>
     </div>
@@ -322,6 +323,14 @@ const WU='https://satnik-api.marjansta90.workers.dev/';
 const COST=20;
 let user=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[];
 const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
+
+function updCounter(){
+  const el=document.getElementById('extra');
+  const counter=document.getElementById('excounter');
+  const len=el.value.length;
+  counter.textContent=len;
+  counter.style.color=len>250?'var(--rd)':len>200?'var(--go)':'var(--t2)';
+}
 
 function today(){return new Date().toLocaleDateString('cs')}
 

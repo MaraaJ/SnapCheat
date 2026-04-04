@@ -288,11 +288,44 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 <div id="soverlay" onclick="closeSidebar()"></div>
 <div id="sidebar">
   <div class="sbhead"><div class="sbemail" id="sbemail">—</div><button class="sbclose" onclick="closeSidebar()">✕</button></div>
-  <div class="sbbal"><div class="sbnum" id="sbcr">0</div><div class="sblbl">🪙 kreditů</div></div>
+  <div class="sbbal">
+    <div class="sbnum" id="sbcr">0</div>
+    <div class="sblbl">🪙 kreditů</div>
+    <div id="sbadge" style="margin-top:10px;display:inline-block;background:#0a0a0a;border:1px solid #333;border-radius:100px;padding:4px 12px;font-size:.72rem;color:#888;letter-spacing:.08em">🎓 Student</div>
+  </div>
+  <div class="sbitem" onclick="closeSidebar();goProfile()">👤 Můj profil & odznaky</div>
   <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje taháky</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
   <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
   <div class="sbitem danger" onclick="doLogout()">↩ Odhlásit se</div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div class="screen" id="sprofile">
+  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="width:72px;height:72px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:2rem" id="pbadgeicon">🎓</div>
+      <div style="font-weight:700;font-size:1rem" id="pemail">—</div>
+      <div style="font-size:.75rem;color:#888;margin-top:4px" id="pcurrentbadge">Student</div>
+    </div>
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:16px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:8px">
+        <span style="color:#888">Celkem taháků</span>
+        <span style="font-weight:700;color:var(--ac)" id="ptotal">0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.78rem">
+        <span style="color:#888">Do dalšího odznaku</span>
+        <span style="font-weight:700;color:var(--go)" id="pnext">—</span>
+      </div>
+      <div style="margin-top:10px;background:#1a1a1a;border-radius:100px;height:6px;overflow:hidden">
+        <div id="pprogress" style="height:100%;background:var(--ac);transition:width .5s ease;width:0%"></div>
+      </div>
+    </div>
+    <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Odznaky</div>
+    <div id="pbadges"></div>
+  </div>
 </div>
 
 <!-- TUTORIAL MODAL -->
@@ -495,7 +528,9 @@ async function loginAs(email,uid,cr,hist){
   loadTH();updCr();
   document.getElementById('sbemail').textContent=email;
   document.getElementById('sbcr').textContent=cr;
-  saveSession();show('sm2');
+  saveSession();
+  setTimeout(updBadgeUI,500);
+  show('sm2');
 }
 
 function doLogout(){
@@ -577,10 +612,12 @@ async function doGen(){
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
+    const prevCount=getTotalTahaky();
     credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
     await saveU();
     if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování taháku',amount:-COST,type:'minus'}).catch(()=>{});
     saveSession();updCr();saveTH(txt);
+    checkNewBadges(prevCount);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
@@ -797,7 +834,102 @@ async function delTahak(i,e){
   toast('🗑 Tahák smazán');
 }
 
-// ===== TUTORIAL =====
+// ===== BADGE SYSTEM =====
+const BADGES=[
+  {id:'student',icon:'🎓',name:'Student',desc:'Vytvoř si účet',req:0,credits:0,type:'reg'},
+  {id:'cheater',icon:'⚡',name:'Cheater',desc:'10 taháků',req:10,credits:10,type:'count'},
+  {id:'mastercheater',icon:'🔥',name:'MasterCheater',desc:'20 taháků',req:20,credits:20,type:'count'},
+  {id:'cheatking',icon:'💀',name:'CheatKing',desc:'50 taháků',req:50,credits:30,type:'count'},
+  {id:'shadowninja',icon:'🥷',name:'Shadow Ninja',desc:'100 taháků',req:100,credits:40,type:'count'},
+  {id:'shadow',icon:'🕵️',name:'Shadow',desc:'Použij Panic Mode',req:1,credits:0,type:'panic'},
+];
+
+function getTotalTahaky(){return tahakyHistory.length}
+
+function getEarnedBadges(){
+  const total=getTotalTahaky();
+  const hasPanic=localStorage.getItem('sc_panic_used_'+userId)==='1';
+  return BADGES.filter(b=>{
+    if(b.type==='reg')return true;
+    if(b.type==='count')return total>=b.req;
+    if(b.type==='panic')return hasPanic;
+    return false;
+  });
+}
+
+function getCurrentBadge(){
+  const earned=getEarnedBadges();
+  return earned[earned.length-1]||BADGES[0];
+}
+
+function checkNewBadges(prevCount){
+  const newCount=getTotalTahaky();
+  BADGES.forEach(b=>{
+    if(b.type==='count'&&b.credits>0&&prevCount<b.req&&newCount>=b.req){
+      credits+=b.credits;
+      txHistory.push({t:'plus',l:'Odznak: '+b.name,a:'+'+b.credits+' kr',d:today()});
+      saveU();saveSession();updCr();
+      setTimeout(()=>showBadgeToast(b),500);
+    }
+  });
+  updBadgeUI();
+}
+
+function showBadgeToast(b){
+  const t=document.getElementById('toast');
+  t.innerHTML=b.icon+' Nový odznak: <strong>'+b.name+'</strong> +'+b.credits+' kreditů!';
+  t.classList.add('on');
+  if(navigator.vibrate)navigator.vibrate([100,50,100]);
+  setTimeout(()=>{t.classList.remove('on');t.innerHTML=''},4000);
+}
+
+function updBadgeUI(){
+  const cur=getCurrentBadge();
+  const el=document.getElementById('sbadge');
+  if(el)el.textContent=cur.icon+' '+cur.name;
+}
+
+function goProfile(){
+  const total=getTotalTahaky();
+  const cur=getCurrentBadge();
+  const earned=getEarnedBadges();
+  document.getElementById('pemail').textContent=user||'—';
+  document.getElementById('pbadgeicon').textContent=cur.icon;
+  document.getElementById('pcurrentbadge').textContent=cur.name;
+  document.getElementById('ptotal').textContent=total;
+  document.getElementById('tcr4').textContent=credits;
+
+  // Next badge progress
+  const next=BADGES.find(b=>b.type==='count'&&total<b.req);
+  if(next){
+    const prev=BADGES.find(b=>b.type==='count'&&b.req<=total&&BADGES.indexOf(b)<BADGES.indexOf(next));
+    const prevReq=prev?prev.req:0;
+    const pct=Math.round(((total-prevReq)/(next.req-prevReq))*100);
+    document.getElementById('pnext').textContent=(next.req-total)+' taháků do '+next.name;
+    document.getElementById('pprogress').style.width=pct+'%';
+  }else{
+    document.getElementById('pnext').textContent='Max level! 🥷';
+    document.getElementById('pprogress').style.width='100%';
+  }
+
+  // Render badges
+  const cont=document.getElementById('pbadges');
+  cont.innerHTML=BADGES.map(b=>{
+    const isEarned=earned.find(e=>e.id===b.id);
+    return `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#111;border:1px solid ${isEarned?'#c4a96e':'#2a2a2a'};border-radius:12px;margin-bottom:8px;opacity:${isEarned?'1':'0.4'}">
+      <div style="font-size:1.8rem;width:40px;text-align:center">${b.icon}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:.88rem;color:${isEarned?'var(--ac)':'#888'}">${b.name}</div>
+        <div style="font-size:.72rem;color:#555;margin-top:2px">${b.desc}${b.credits?' · +'+b.credits+' kr':''}</div>
+      </div>
+      <div style="font-size:.75rem">${isEarned?'✓':'🔒'}</div>
+    </div>`;
+  }).join('');
+
+  show('sprofile');
+}
+
+
 let tPanicTapCount=0,tPanicLastTap=0,tPanicDone=false;
 
 function startTutorial(){
@@ -892,7 +1024,17 @@ panicClock.style.cssText='position:absolute;top:50%;left:50%;transform:translate
 panicEl.appendChild(panicClock);document.body.appendChild(panicEl);
 function updClock(){const n=new Date();panicClock.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')}
 updClock();setInterval(updClock,1000);
-function activatePanic(){panicOn=true;panicEl.style.display='block';if(navigator.vibrate)navigator.vibrate([50,30,50])}
+function activatePanic(){
+  panicOn=true;panicEl.style.display='block';
+  if(navigator.vibrate)navigator.vibrate([50,30,50]);
+  // Shadow badge
+  if(userId&&!localStorage.getItem('sc_panic_used_'+userId)){
+    localStorage.setItem('sc_panic_used_'+userId,'1');
+    const b=BADGES.find(b=>b.id==='shadow');
+    if(b)setTimeout(()=>showBadgeToast(b),1500);
+    updBadgeUI();
+  }
+}
 function deactivatePanic(){panicOn=false;panicEl.style.display='none';if(navigator.vibrate)navigator.vibrate(50);tapCount=0;lastTap=0;panicCooldown=true;setTimeout(()=>{panicCooldown=false},2000)}
 panicEl.addEventListener('touchstart',e=>{e.preventDefault();panicPressTimer=setTimeout(deactivatePanic,800)},{passive:false});
 panicEl.addEventListener('touchend',e=>{e.preventDefault();if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});

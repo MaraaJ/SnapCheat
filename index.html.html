@@ -612,11 +612,14 @@ async function doGen(){
   document.getElementById('rw').style.display='none';
   const b64=img.split(',')[1];const mt=img.split(';')[0].split(':')[1];
   try{
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})});
+    // Check network first
+    if(!navigator.onLine)throw new Error('OFFLINE');
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
+    // ✅ Kredity se odečítají POUZE po úspěšné odpovědi
     const prevCount=getTotalTahaky();
     credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
     await saveU();
@@ -628,7 +631,13 @@ async function doGen(){
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
     if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);
     toast('✓ Tahák připraven! −'+COST+' kreditů');
-  }catch(e){showErr('Chyba: '+e.message)}
+  }catch(e){
+    if(e.message==='OFFLINE'||e.message.includes('fetch')||e.message.includes('network')||e.message.includes('Failed')){
+      showErr('📡 Žádné připojení k internetu. Kredity nebyly odečteny — zkus to znovu.');
+    }else{
+      showErr('Chyba: '+e.message);
+    }
+  }
   finally{document.getElementById('gbtn').disabled=false;document.getElementById('glw').style.display='none'}
 }
 

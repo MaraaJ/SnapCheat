@@ -619,6 +619,8 @@ async function doWatchIMG(){
     }
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
+
+async function doPDF(){
   toast('⏳ Generuji PDF...');
   const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
   await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');

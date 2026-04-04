@@ -555,9 +555,10 @@ async function doAuth(){
 
   try{
     if(window._amode==='reg'){
-      const phone=document.getElementById('aphone').value.trim().replace(/\s/g,'');
+      const phoneEl=document.getElementById('aphone');
+      const phone=phoneEl.value.trim().replace(/\s/g,'');
       const conf=document.getElementById('aconf').value;
-      if(!phone||phone.length<9){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
+      if(!phone||phone.length<9||phone.includes('@')){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
       if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
       if(pass.length<8){err.textContent='Heslo musí mít alespoň 8 znaků';err.style.display='block';return}
 

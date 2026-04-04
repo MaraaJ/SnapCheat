@@ -248,7 +248,6 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
         <div class="ract">
           <button class="bsm" onclick="doCopy()">Kopírovat</button>
           <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
-          <button class="bsm" onclick="doWatchIMG()">⌚ Hodinky</button>
           <button class="bsm" onclick="doPDF()">Uložit PDF</button>
         </div>
       </div>
@@ -493,81 +492,86 @@ async function doIMG(){
 }
 
 async function doWatchIMG(){
-  toast('⌚ Generuji pro hodinky...');
-  const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
-  await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-  await new Promise(r=>setTimeout(r,500));
+  toast('⌚ Připravuji pro hodinky...');
   try{
-    // Render full content same as normal image but in watch format
+    // Get current cheatsheet text
     const el=document.getElementById('rc');
-    const wrap=document.createElement('div');
-    // Apple Watch width ~198px, we use 2x = 396px
-    const W=396;
-    wrap.style.cssText=`position:fixed;left:-9999px;top:0;width:${W}px;background:#000;color:#f0ede8;font-family:system-ui,sans-serif;font-size:13px;line-height:1.6;padding:16px;box-sizing:border-box`;
+    const text=el.innerText.trim();
+    if(!text){toast('❌ Nejprve vygeneruj tahák!');return}
 
-    // Add custom styles for watch
-    const style=document.createElement('style');
-    style.textContent=`
-      .ww h2{font-size:14px;font-weight:700;color:#e8d5b0;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #333}
-      .ww h3{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px}
-      .ww p{font-size:12px;margin-bottom:6px}
-      .ww ul,.ww ol{padding-left:14px;margin-bottom:8px}
-      .ww li{font-size:12px;margin-bottom:3px}
-      .ww strong{color:#e8d5b0}
-      .ww .highlight{background:#1a1a1a;border-left:2px solid #c4a96e;padding:6px 10px;border-radius:0 6px 6px 0;margin:6px 0;font-size:11px}
-      .ww .step{display:flex;gap:8px;margin:6px 0;background:#1a1a1a;border-radius:6px;padding:6px 10px}
-      .ww .stepnum{background:#c4a96e;color:#000;font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;white-space:nowrap;flex-shrink:0}
-      .ww .diagram-wrap{margin:10px 0;border:1px solid #333;border-radius:8px;overflow:hidden}
-      .ww .diagram-label{font-size:10px;text-transform:uppercase;color:#888;padding:5px 10px;background:#1a1a1a;border-bottom:1px solid #333}
-      .ww .diagram-wrap svg{width:100%;height:auto;display:block}
-      .ww table{width:100%;font-size:11px;border-collapse:collapse}
-      .ww td,.ww th{border:1px solid #333;padding:4px 6px}
-    `;
-    document.head.appendChild(style);
-
-    wrap.classList.add('ww');
-    wrap.innerHTML=el.innerHTML;
-    document.body.appendChild(wrap);
-    await new Promise(r=>setTimeout(r,400));
-
-    // Capture full height
-    const fullCanvas=await html2canvas(wrap,{
-      backgroundColor:'#000000',scale:2,useCORS:true,allowTaint:true,logging:false,
-      width:W,height:wrap.scrollHeight
-    });
-    document.body.removeChild(wrap);
-    document.head.removeChild(style);
-
-    // Split into watch-screen chunks (Apple Watch 484px tall at 2x)
-    const WATCH_H=484;
-    const totalH=fullCanvas.height;
-    const pages=Math.ceil(totalH/WATCH_H);
-
-    for(let i=0;i<pages;i++){
-      const pageCanvas=document.createElement('canvas');
-      pageCanvas.width=fullCanvas.width;
-      pageCanvas.height=Math.min(WATCH_H,totalH-i*WATCH_H);
-      const pCtx=pageCanvas.getContext('2d');
-      pCtx.fillStyle='#000';
-      pCtx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
-      pCtx.drawImage(fullCanvas,0,-i*WATCH_H);
-
-      // Page indicator
-      if(pages>1){
-        pCtx.fillStyle='rgba(0,0,0,0.7)';
-        pCtx.fillRect(pageCanvas.width-44,pageCanvas.height-22,42,18);
-        pCtx.fillStyle='#666';
-        pCtx.font='11px system-ui';
-        pCtx.fillText(`${i+1}/${pages}`,pageCanvas.width-38,pageCanvas.height-8);
-      }
-
-      await new Promise(r=>setTimeout(r,100));
-      const link=document.createElement('a');
-      link.download=pages>1?`tahak-hodinky-${i+1}z${pages}.png`:'tahak-hodinky.png';
-      link.href=pageCanvas.toDataURL('image/png');
-      link.click();
+    // Ask AI to summarize to max 10 bullet points for watch
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      model:'claude-sonnet-4-6',max_tokens:600,
+      system:'Jsi asistent který zkracuje taháky pro Apple Watch. Odpovídej POUZE jako JSON array stringů, žádný jiný text. Max 12 položek. Každá položka max 45 znaků. Jen nejdůležitější fakta a odpovědi. Formát: ["bod 1","bod 2",...]',
+      messages:[{role:'user',content:'Zkrať tento tahák na max 12 nejdůležitějších bodů pro Apple Watch:\n\n'+text}]
+    })});
+    const d=await res.json();
+    const raw=d.content?.map(b=>b.text||'').join('').trim();
+    let items=[];
+    try{items=JSON.parse(raw)}catch(e){
+      // fallback — split by lines
+      items=text.split('\n').filter(l=>l.trim().length>3).slice(0,12);
     }
-    toast(`⌚ ${pages>1?pages+' obrázků':'Obrázek'} pro hodinky uložen!`);
+
+    // Render clean watch image
+    const W=396,PADDING=20;
+    const lineH=26;
+    const headerH=50;
+    const footerH=30;
+    const totalH=headerH+items.length*lineH+PADDING*2+footerH;
+
+    const canvas=document.createElement('canvas');
+    canvas.width=W;
+    canvas.height=Math.max(totalH,484);
+    const ctx=canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,W,canvas.height);
+
+    // Header
+    ctx.fillStyle='#e8d5b0';
+    ctx.font='bold 18px system-ui';
+    ctx.fillText('⚡ SnapCheat',PADDING,34);
+    ctx.fillStyle='#333';
+    ctx.fillRect(PADDING,42,W-PADDING*2,1);
+
+    // Items
+    let y=headerH+PADDING;
+    items.forEach((item,i)=>{
+      // Alternating subtle background
+      if(i%2===0){
+        ctx.fillStyle='rgba(255,255,255,0.04)';
+        ctx.fillRect(0,y-18,W,lineH);
+      }
+      ctx.fillStyle='#c4a96e';
+      ctx.font='bold 13px system-ui';
+      ctx.fillText('•',PADDING,y);
+      ctx.fillStyle='#f0ede8';
+      ctx.font='13px system-ui';
+      // Truncate if too long
+      let txt=item.trim().replace(/^[•\-\*]\s*/,'');
+      if(ctx.measureText(txt).width>W-PADDING*2-14){
+        while(ctx.measureText(txt+'…').width>W-PADDING*2-14&&txt.length>0)txt=txt.slice(0,-1);
+        txt+='…';
+      }
+      ctx.fillText(txt,PADDING+14,y);
+      y+=lineH;
+    });
+
+    // Footer
+    ctx.fillStyle='#333';
+    ctx.fillRect(PADDING,canvas.height-footerH,W-PADDING*2,1);
+    ctx.fillStyle='#555';
+    ctx.font='11px system-ui';
+    ctx.fillText('snap-cheat.vercel.app',PADDING,canvas.height-10);
+
+    // Download
+    const link=document.createElement('a');
+    link.download='tahak-hodinky.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    toast('⌚ Hotovo! Přidej do galerie → hodinky');
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 

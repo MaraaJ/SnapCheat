@@ -12,8 +12,10 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;--b1:#2a2a2a;--b2:#333;--t1:#f0ede8;--t2:#888;--t3:#444;--ac:#e8d5b0;--ac2:#c4a96e;--gr:#4ade80;--rd:#f87171;--go:#f59e0b;--ff:system-ui,-apple-system,sans-serif;--fm:'Courier New',monospace}
 .trueblack{--bg:#000;--s1:#000;--s2:#0a0a0a;--s3:#111;--b1:#1a1a1a;--b2:#222}
-body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);-webkit-user-select:none;user-select:none}
 body::before{content:'⚡';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:70vw;opacity:.03;pointer-events:none;z-index:0;line-height:1;filter:grayscale(1)}
+input,textarea{-webkit-user-select:text!important;user-select:text!important}
+.cc{-webkit-user-select:text!important;user-select:text!important}
 .hide{display:none!important}
 .screen{min-height:100vh;flex-direction:column;display:none;position:relative;z-index:1}
 .screen.on{display:flex}
@@ -1195,15 +1197,27 @@ panicEl.addEventListener('touchstart',e=>{e.preventDefault();panicPressTimer=set
 panicEl.addEventListener('touchend',e=>{e.preventDefault();if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
 panicEl.addEventListener('touchmove',()=>{if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
 panicEl.addEventListener('dblclick',deactivatePanic);
-// Panic mode pouze na mobilech (touch zařízení)
+
+// Zakázat označování textu všude kromě inputů
+document.addEventListener('selectstart',e=>{
+  const tag=e.target.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA')return;
+  e.preventDefault();
+});
+
+// Panic mode pouze na hlavní obrazovce a historii taháků
 document.addEventListener('touchend',e=>{
   if(panicOn||!user||panicCooldown)return;
+  const activeScreen=document.querySelector('.screen.on');
+  if(!activeScreen)return;
+  const screenId=activeScreen.id;
+  if(screenId!=='sm2'&&screenId!=='shist')return;
   if(document.getElementById('sm').classList.contains('on'))return;
   const tag=e.target.tagName;
   if(tag==='BUTTON'||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||tag==='LABEL')return;
   const now=Date.now();tapCount++;
   if(tapTimer)clearTimeout(tapTimer);
-  if(tapCount>=2&&now-lastTap<400){tapCount=0;lastTap=0;activatePanic()}
+  if(tapCount>=2&&now-lastTap<500){tapCount=0;lastTap=0;activatePanic()}
   else tapTimer=setTimeout(()=>{tapCount=0},500);
   lastTap=now;
 },{passive:true});

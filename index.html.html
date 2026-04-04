@@ -336,15 +336,15 @@ body::before{content:'⚡';position:fixed;top:50%;left:50%;transform:translate(-
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--ac)" id="ptotal">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháky</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháků</div>
       </div>
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--go)" id="pspent">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kč</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kr</div>
       </div>
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--gr)" id="pearned">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaky</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaků</div>
       </div>
     </div>
 
@@ -554,7 +554,7 @@ async function doAuth(){
       const conf=document.getElementById('aconf').value;
       if(!phone||phone.length<9){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
       if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
-      if(pass.length<6){err.textContent='Heslo musí mít alespoň 6 znaků';err.style.display='block';return}
+      if(pass.length<8){err.textContent='Heslo musí mít alespoň 8 znaků';err.style.display='block';return}
 
       // Check if email exists
       const existing=await sbFetch('/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=id');
@@ -594,7 +594,12 @@ async function doAuth(){
   }
 }
 
-function demoLogin(){loginAs('demo@snapcheat.cz','demo',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:today()}]);toast('👋 Demo mód!')}
+function demoLogin(){
+  // Demo má jen 20 kreditů - přesně na 1 generování, žádné dobíjení
+  const demoCredits=parseInt(localStorage.getItem('sc_demo_cr')||'20');
+  loginAs('demo@snapcheat.cz','demo',demoCredits,[{t:'plus',l:'Demo kredity',a:'+20 kr',d:today()}]);
+  toast('👀 Demo mód — 1 tahák zdarma!');
+}
 
 async function loginAs(email,uid,cr,hist){
   user=email;userId=uid;credits=cr;txHistory=hist||[];
@@ -693,6 +698,8 @@ async function doGen(){
     await saveU();
     if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování taháku',amount:-COST,type:'minus'}).catch(()=>{});
     saveSession();updCr();saveTH(txt);
+    // Uložit demo kredity lokálně
+    if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
@@ -855,6 +862,11 @@ const STRIPE_PRICES={
 };
 
 function buyPkg(cr,pr){
+  // Demo nemůže dobíjet
+  if(userId==='demo'){
+    toast('👀 Demo mód — registruj se pro dobíjení kreditů!');
+    return;
+  }
   selPkg={cr,pr};
   document.getElementById('mkcr').textContent=cr;
   document.getElementById('mkpr').textContent=pr+' Kč';

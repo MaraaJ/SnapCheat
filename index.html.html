@@ -321,7 +321,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 <script>
 const WU='https://satnik-api.marjansta90.workers.dev/';
 const COST=20;
-let user=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[];
+let user=null,userId=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[];
 const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
 
 function updCounter(){
@@ -332,55 +332,116 @@ function updCounter(){
   counter.style.color=len>250?'var(--rd)':len>200?'var(--go)':'var(--t2)';
 }
 
+const SB_URL='https://ziaceoqjwcwqejojvkhh.supabase.co';
+const SB_KEY='sb_publishable_nOX5dP9gsGxnLRD6hDelkQ_ZRFQnhNQ';
+
+async function sbFetch(path,method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation'}};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(SB_URL+path,opts);
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.message||'DB error')}
+  return res.status===204?null:res.json();
+}
+
 function today(){return new Date().toLocaleDateString('cs')}
 
-function init(){
+async function init(){
   const saved=localStorage.getItem('sc_session');
-  if(saved){try{const s=JSON.parse(saved);if(s.user&&s.credits!==undefined){user=s.user;credits=s.credits;txHistory=s.txHistory||[];loadTH();updCr();document.getElementById('sbemail').textContent=user;document.getElementById('sbcr').textContent=credits;show('sm2');return}}catch(e){}}
+  if(saved){
+    try{
+      const s=JSON.parse(saved);
+      if(s.userId&&s.email){
+        // Refresh credits from Supabase
+        const rows=await sbFetch('/rest/v1/users?id=eq.'+s.userId+'&select=credits');
+        if(rows&&rows[0]){
+          user=s.email;userId=rows[0].id||s.userId;
+          credits=rows[0].credits;
+          txHistory=s.txHistory||[];
+          loadTH();updCr();
+          document.getElementById('sbemail').textContent=user;
+          document.getElementById('sbcr').textContent=credits;
+          show('sm2');return;
+        }
+      }
+    }catch(e){}
+  }
   show('sa');
 }
 
-function saveSession(){if(!user)return;localStorage.setItem('sc_session',JSON.stringify({user,credits,txHistory}))}
+function saveSession(){
+  if(!user)return;
+  localStorage.setItem('sc_session',JSON.stringify({userId,email:user,txHistory}));
+}
 
 window._amode='login';
 function atab(m,el){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');document.getElementById('acwrap').classList.toggle('hide',m!=='reg');document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';window._amode=m}
 
-function doAuth(){
+async function doAuth(){
   const email=document.getElementById('aemail').value.trim();
   const pass=document.getElementById('apass').value;
   const err=document.getElementById('aerr');err.style.display='none';
   if(!email||!email.includes('@')){err.textContent='Zadej platný e-mail';err.style.display='block';return}
   if(!pass){err.textContent='Zadej heslo';err.style.display='block';return}
-  if(window._amode==='reg'){
-    const phone=document.getElementById('aphone').value.trim().replace(/\s/g,'');
-    const conf=document.getElementById('aconf').value;
-    if(!phone||phone.length<9){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
-    if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
-    if(pass.length<6){err.textContent='Heslo musí mít alespoň 6 znaků';err.style.display='block';return}
-    const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
-    if(us[email]){err.textContent='E-mail již existuje';err.style.display='block';return}
-    if(Object.values(us).some(u=>u.phone===phone)){err.textContent='Toto číslo je již použito';err.style.display='block';return}
-    us[email]={pass,phone,cr:30,hist:[{t:'plus',l:'Uvítací bonus',a:'+30 kr',d:today()}]};
-    localStorage.setItem('sc_u',JSON.stringify(us));
-    loginAs(email,30,us[email].hist);toast('🎉 Účet vytvořen! +30 kreditů zdarma');
-  }else{
-    const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
-    if(!us[email]||us[email].pass!==pass){err.textContent='Špatný e-mail nebo heslo';err.style.display='block';return}
-    loginAs(email,us[email].cr,us[email].hist||[]);
+
+  const btn=document.getElementById('abtn');
+  btn.disabled=true;btn.textContent='Načítám...';
+
+  try{
+    if(window._amode==='reg'){
+      const phone=document.getElementById('aphone').value.trim().replace(/\s/g,'');
+      const conf=document.getElementById('aconf').value;
+      if(!phone||phone.length<9){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
+      if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
+      if(pass.length<6){err.textContent='Heslo musí mít alespoň 6 znaků';err.style.display='block';return}
+
+      // Check if email exists
+      const existing=await sbFetch('/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=id');
+      if(existing&&existing.length>0){err.textContent='Tento e-mail je již registrován';err.style.display='block';return}
+
+      // Check phone
+      const existPhone=await sbFetch('/rest/v1/users?phone=eq.'+encodeURIComponent(phone)+'&select=id');
+      if(existPhone&&existPhone.length>0){err.textContent='Toto telefonní číslo je již použito';err.style.display='block';return}
+
+      // Create user
+      const newUser=await sbFetch('/rest/v1/users','POST',{email,phone,password_hash:btoa(pass),credits:30});
+      const u=Array.isArray(newUser)?newUser[0]:newUser;
+
+      // Add welcome transaction
+      await sbFetch('/rest/v1/transactions','POST',{user_id:u.id,label:'Uvítací bonus',amount:30,type:'plus'});
+
+      await loginAs(email,u.id,30,[{t:'plus',l:'Uvítací bonus',a:'+30 kr',d:today()}]);
+      toast('🎉 Účet vytvořen! +30 kreditů zdarma');
+    }else{
+      // Login
+      const rows=await sbFetch('/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=id,credits,password_hash');
+      if(!rows||rows.length===0||rows[0].password_hash!==btoa(pass)){
+        err.textContent='Špatný e-mail nebo heslo';err.style.display='block';return;
+      }
+      const u=rows[0];
+      // Load transactions
+      const txRows=await sbFetch('/rest/v1/transactions?user_id=eq.'+u.id+'&order=created_at.desc&limit=20');
+      const hist=(txRows||[]).map(t=>({t:t.type,l:t.label,a:(t.type==='plus'?'+':'-')+Math.abs(t.amount)+' kr',d:new Date(t.created_at).toLocaleDateString('cs')}));
+      await loginAs(email,u.id,u.credits,hist);
+    }
+  }catch(e){
+    err.textContent='Chyba: '+e.message;err.style.display='block';
+  }finally{
+    btn.disabled=false;btn.textContent=window._amode==='login'?'Přihlásit se':'Registrovat';
   }
 }
 
-function demoLogin(){loginAs('demo@snapcheat.cz',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:today()}]);toast('👋 Demo mód!')}
+function demoLogin(){loginAs('demo@snapcheat.cz','demo',100,[{t:'plus',l:'Demo kredity',a:'+100 kr',d:today()}]);toast('👋 Demo mód!')}
 
-function loginAs(email,cr,hist){
-  user=email;credits=cr;txHistory=hist||[];loadTH();updCr();
+async function loginAs(email,uid,cr,hist){
+  user=email;userId=uid;credits=cr;txHistory=hist||[];
+  loadTH();updCr();
   document.getElementById('sbemail').textContent=email;
   document.getElementById('sbcr').textContent=cr;
   saveSession();show('sm2');
 }
 
 function doLogout(){
-  user=null;credits=0;txHistory=[];img=null;tahakyHistory=[];
+  user=null;userId=null;credits=0;txHistory=[];img=null;tahakyHistory=[];
   localStorage.removeItem('sc_session');
   document.getElementById('rw').style.display='none';
   document.getElementById('pw').style.display='none';
@@ -459,7 +520,9 @@ async function doGen(){
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
     credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
-    saveU();saveSession();updCr();saveTH(txt);
+    await saveU();
+    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování taháku',amount:-COST,type:'minus'}).catch(()=>{});
+    saveSession();updCr();saveTH(txt);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
@@ -471,10 +534,9 @@ async function doGen(){
 
 function showErr(m){const b=document.getElementById('gerr');b.textContent=m;b.style.display='block';document.getElementById('glw').style.display='none';document.getElementById('gbtn').disabled=false}
 
-function saveU(){
-  if(!user||user==='demo@snapcheat.cz')return;
-  const us=JSON.parse(localStorage.getItem('sc_u')||'{}');
-  if(us[user]){us[user].cr=credits;us[user].hist=txHistory;localStorage.setItem('sc_u',JSON.stringify(us))}
+async function saveU(){
+  if(!userId||userId==='demo')return;
+  await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits}).catch(()=>{});
 }
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
@@ -614,7 +676,7 @@ function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.re
 
 function doPay(){
   const btn=document.getElementById('paybtn');btn.textContent='Zpracovávám...';btn.disabled=true;
-  setTimeout(()=>{credits+=selPkg.cr;txHistory.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:today()});saveU();saveSession();updCr();updCrScreen();closeSM();btn.textContent='Zaplatit';btn.disabled=false;if(navigator.vibrate)navigator.vibrate([50,30,50]);toast('🪙 '+selPkg.cr+' kreditů přidáno!')},1500);
+  setTimeout(async()=>{credits+=selPkg.cr;txHistory.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:today()});await saveU();if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Nákup '+selPkg.cr+' kreditů',amount:selPkg.cr,type:'plus'}).catch(()=>{});saveSession();updCr();updCrScreen();closeSM();btn.textContent='Zaplatit';btn.disabled=false;if(navigator.vibrate)navigator.vibrate([50,30,50]);toast('🪙 '+selPkg.cr+' kreditů přidáno!')},1500);
 }
 
 function loadTH(){if(!user)return;tahakyHistory=JSON.parse(localStorage.getItem('sc_th_'+user)||'[]')}

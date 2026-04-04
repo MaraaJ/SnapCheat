@@ -679,16 +679,42 @@ function doPay(){
   setTimeout(async()=>{credits+=selPkg.cr;txHistory.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:today()});await saveU();if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Nákup '+selPkg.cr+' kreditů',amount:selPkg.cr,type:'plus'}).catch(()=>{});saveSession();updCr();updCrScreen();closeSM();btn.textContent='Zaplatit';btn.disabled=false;if(navigator.vibrate)navigator.vibrate([50,30,50]);toast('🪙 '+selPkg.cr+' kreditů přidáno!')},1500);
 }
 
-function loadTH(){if(!user)return;tahakyHistory=JSON.parse(localStorage.getItem('sc_th_'+user)||'[]')}
+async function loadTH(){
+  if(!userId||userId==='demo'){
+    tahakyHistory=JSON.parse(localStorage.getItem('sc_th_demo')||'[]');
+    return;
+  }
+  try{
+    const rows=await sbFetch('/rest/v1/tahaky?user_id=eq.'+userId+'&order=created_at.desc&limit=30');
+    tahakyHistory=(rows||[]).map(r=>({
+      id:r.id,title:r.title,content:r.content,
+      date:new Date(r.created_at).toLocaleDateString('cs'),
+      time:new Date(r.created_at).toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})
+    }));
+  }catch(e){
+    tahakyHistory=JSON.parse(localStorage.getItem('sc_th_'+userId)||'[]');
+  }
+}
 
-function saveTH(content){
-  if(!user||user==='demo@snapcheat.cz')return;
+async function saveTH(content){
   const tmp=document.createElement('div');tmp.innerHTML=content;
   const h2=tmp.querySelector('h2');
   const title=h2?h2.textContent.trim():'Tahák '+today();
-  tahakyHistory.unshift({id:Date.now(),title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
-  if(tahakyHistory.length>30)tahakyHistory=tahakyHistory.slice(0,30);
-  localStorage.setItem('sc_th_'+user,JSON.stringify(tahakyHistory));
+
+  if(!userId||userId==='demo'){
+    tahakyHistory.unshift({id:Date.now(),title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
+    if(tahakyHistory.length>30)tahakyHistory=tahakyHistory.slice(0,30);
+    localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
+    return;
+  }
+  try{
+    const saved=await sbFetch('/rest/v1/tahaky','POST',{user_id:userId,title,content});
+    const s=Array.isArray(saved)?saved[0]:saved;
+    tahakyHistory.unshift({id:s.id,title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
+  }catch(e){
+    // Fallback lokálně
+    tahakyHistory.unshift({id:Date.now(),title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
+  }
 }
 
 function renderHistory(){
@@ -700,7 +726,18 @@ function renderHistory(){
 
 function openTahak(i){const t=tahakyHistory[i];document.getElementById('tdtitle').textContent=t.title;document.getElementById('tdcontent').innerHTML=t.content;document.getElementById('tdmodal').style.display='block'}
 function closeTD(){document.getElementById('tdmodal').style.display='none'}
-function delTahak(i,e){e.stopPropagation();tahakyHistory.splice(i,1);localStorage.setItem('sc_th_'+user,JSON.stringify(tahakyHistory));renderHistory();toast('🗑 Tahák smazán')}
+
+async function delTahak(i,e){
+  e.stopPropagation();
+  const t=tahakyHistory[i];
+  if(userId&&userId!=='demo'&&t.id&&typeof t.id==='string'){
+    await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'DELETE').catch(()=>{});
+  }
+  tahakyHistory.splice(i,1);
+  if(userId==='demo')localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
+  renderHistory();
+  toast('🗑 Tahák smazán');
+}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 

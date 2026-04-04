@@ -13,8 +13,9 @@
 :root{--bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;--b1:#2a2a2a;--b2:#333;--t1:#f0ede8;--t2:#888;--t3:#444;--ac:#e8d5b0;--ac2:#c4a96e;--gr:#4ade80;--rd:#f87171;--go:#f59e0b;--ff:system-ui,-apple-system,sans-serif;--fm:'Courier New',monospace}
 .trueblack{--bg:#000;--s1:#000;--s2:#0a0a0a;--s3:#111;--b1:#1a1a1a;--b2:#222}
 body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+body::before{content:'⚡';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:70vw;opacity:.03;pointer-events:none;z-index:0;line-height:1;filter:grayscale(1)}
 .hide{display:none!important}
-.screen{min-height:100vh;flex-direction:column;display:none}
+.screen{min-height:100vh;flex-direction:column;display:none;position:relative;z-index:1}
 .screen.on{display:flex}
 #sa{align-items:center;justify-content:center;padding:24px}
 .abox{width:100%;max-width:400px}
@@ -168,7 +169,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 <div class="screen on" id="sa">
   <div class="abox">
     <div style="position:relative;margin-bottom:6px;display:inline-block">
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.06;pointer-events:none;user-select:none;line-height:1">⚡</div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;opacity:.08;pointer-events:none;user-select:none;line-height:1;filter:grayscale(1)">⚡</div>
       <div class="logo" style="position:relative">Snap<span>Cheat</span></div>
     </div>
     <div class="tag">AI tahák z fotky za sekundy</div>
@@ -335,15 +336,15 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--ac)" id="ptotal">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháků</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháky</div>
       </div>
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--go)" id="pspent">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kr</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kč</div>
       </div>
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--gr)" id="pearned">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaků</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaky</div>
       </div>
     </div>
 

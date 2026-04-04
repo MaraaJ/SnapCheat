@@ -291,8 +291,57 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   <div class="sbbal"><div class="sbnum" id="sbcr">0</div><div class="sblbl">🪙 kreditů</div></div>
   <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje taháky</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
+  <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
   <div class="sbitem danger" onclick="doLogout()">↩ Odhlásit se</div>
 </div>
+
+<!-- TUTORIAL MODAL -->
+<div id="tutorial" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;align-items:center;justify-content:center;padding:20px">
+  <div style="width:100%;max-width:420px;background:#111;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden">
+    <div style="height:3px;background:#1a1a1a"><div id="tprogress" style="height:100%;background:var(--ac);transition:width .4s ease;width:33%"></div></div>
+    <div class="tstep" id="tstep1" style="padding:28px">
+      <div style="font-size:2.5rem;margin-bottom:16px;text-align:center">⚡</div>
+      <h2 style="font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:10px;color:var(--ac)">Vítej v SnapCheat!</h2>
+      <p style="font-size:.88rem;color:#888;text-align:center;line-height:1.6;margin-bottom:24px">Za 30 sekund se naučíš vše co potřebuješ vědět. Pojďme na to!</p>
+      <button class="bp" onclick="tNext(2)">Začít →</button>
+      <button class="bs" style="margin-top:8px;font-size:.78rem;padding:10px" onclick="tFinish()">Přeskočit</button>
+    </div>
+    <div class="tstep" id="tstep2" style="padding:28px;display:none">
+      <div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;text-align:center">Krok 1 ze 2 · Focení</div>
+      <div id="tsim" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:16px;position:relative;overflow:hidden">
+        <div style="font-size:.7rem;color:#555;margin-bottom:8px">VZOROVÝ TEST</div>
+        <div style="font-size:.78rem;color:#666;line-height:1.6">1. Kdy začala první světová válka?<br>2. Kdo napsal Babičku?<br>3. Vypočítej: 2x + 5 = 13</div>
+        <div id="tviewfinder" style="display:none;position:absolute;inset:0;border:3px solid var(--ac);border-radius:12px"></div>
+        <div id="tflash" style="display:none;position:absolute;inset:0;background:white;border-radius:12px"></div>
+      </div>
+      <div id="tsimtext" style="font-size:.82rem;color:#888;text-align:center;margin-bottom:16px">Klikni na tlačítko a simuluj focení testu</div>
+      <button class="bp" id="tshootbtn" onclick="tSimulateShoot()">📸 Vyfotit test</button>
+    </div>
+    <div class="tstep" id="tstep3" style="padding:28px;display:none">
+      <div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;text-align:center">Krok 2 ze 2 · Tajný mód</div>
+      <div style="font-size:1.5rem;text-align:center;margin-bottom:12px">🕵️</div>
+      <h3 style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:8px">Panic Mode</h3>
+      <p style="font-size:.82rem;color:#888;text-align:center;line-height:1.6;margin-bottom:16px">Kdyby přišel učitel — <strong style="color:var(--ac)">2x rychle poklepej</strong> kdekoliv. Zobrazí se jen hodiny.</p>
+      <div style="background:#1a1a1a;border-radius:12px;padding:16px;text-align:center;margin-bottom:16px">
+        <div id="tpanicprompt" style="font-size:.82rem;color:#888;margin-bottom:10px">👇 Zkus to — 2x poklepej na tuto oblast</div>
+        <div id="tpanicarea" style="height:60px;border:2px dashed #333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#555;cursor:pointer;user-select:none" ontouchend="tHandlePanic()" ondblclick="tHandlePanic()">Poklepej 2x sem</div>
+        <div id="tpanicsuccess" style="display:none;margin-top:8px;color:var(--gr);font-size:.82rem">✓ Skvěle! Teď víš jak se schovat 😄</div>
+      </div>
+      <button class="bp" id="tpanicnext" style="opacity:.4;cursor:not-allowed" disabled onclick="tNext(4)">Pokračovat →</button>
+    </div>
+    <div class="tstep" id="tstep4" style="padding:28px;display:none;text-align:center">
+      <div style="width:80px;height:80px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem">🎓</div>
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Nyní jsi připraven!</h2>
+      <div style="display:inline-block;background:#1a1a1a;border:1px solid #333;border-radius:100px;padding:6px 16px;font-size:.75rem;color:#888;letter-spacing:.1em;margin-bottom:16px">🎓 STUDENT</div>
+      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:24px">Teď víš vše. Vyfot test, nech AI udělat tahák a pokud přijde učitel — víš co dělat.</p>
+      <button class="bp" onclick="tFinish()">Jdeme na to! ⚡</button>
+    </div>
+  </div>
+</div>
+<style>
+.tstep{animation:fadeUp .3s ease both}
+@keyframes tflashanim{0%{opacity:.9}100%{opacity:0;display:none}}
+</style>
 
 <div id="sm" onclick="if(event.target===this)closeSM()">
   <div class="smbox">
@@ -411,6 +460,8 @@ async function doAuth(){
 
       await loginAs(email,u.id,30,[{t:'plus',l:'Uvítací bonus',a:'+30 kr',d:today()}]);
       toast('🎉 Účet vytvořen! +30 kreditů zdarma');
+      // Show tutorial for new users
+      setTimeout(()=>startTutorial(),500);
     }else{
       // Login
       const rows=await sbFetch('/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=id,credits,password_hash');
@@ -737,6 +788,61 @@ async function delTahak(i,e){
   if(userId==='demo')localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
   renderHistory();
   toast('🗑 Tahák smazán');
+}
+
+// ===== TUTORIAL =====
+let tPanicTapCount=0,tPanicLastTap=0,tPanicDone=false;
+
+function startTutorial(){
+  document.getElementById('tutorial').style.display='flex';
+  tNext(1);
+}
+
+function tNext(step){
+  document.querySelectorAll('.tstep').forEach(s=>s.style.display='none');
+  document.getElementById('tstep'+step).style.display='block';
+  const progress={1:'25%',2:'50%',3:'75%',4:'100%'};
+  document.getElementById('tprogress').style.width=progress[step]||'25%';
+  tPanicDone=false;tPanicTapCount=0;
+}
+
+function tSimulateShoot(){
+  const btn=document.getElementById('tshootbtn');
+  btn.disabled=true;btn.textContent='Focuji...';
+  const vf=document.getElementById('tviewfinder');
+  vf.style.display='block';
+  setTimeout(()=>{
+    vf.style.display='none';
+    const flash=document.getElementById('tflash');
+    flash.style.display='block';flash.style.opacity='0.9';flash.style.transition='opacity 0.3s';
+    setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>{flash.style.display='none'},300)},100);
+    document.getElementById('tsimtext').innerHTML='✓ <span style="color:var(--gr)">Tahák by byl vygenerován!</span>';
+    btn.textContent='Pokračovat →';btn.disabled=false;btn.onclick=()=>tNext(3);
+  },1200);
+}
+
+function tHandlePanic(){
+  const now=Date.now();
+  tPanicTapCount++;
+  if(tPanicTapCount>=2&&now-tPanicLastTap<500){
+    tPanicTapCount=0;
+    if(!tPanicDone){
+      tPanicDone=true;
+      const area=document.getElementById('tpanicarea');
+      area.style.background='#0a1a0a';area.style.borderColor='var(--gr)';area.textContent='✓';
+      document.getElementById('tpanicsuccess').style.display='block';
+      const btn=document.getElementById('tpanicnext');
+      btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+      if(navigator.vibrate)navigator.vibrate([50,30,50]);
+    }
+  }
+  tPanicLastTap=now;
+}
+
+function tFinish(){
+  document.getElementById('tutorial').style.display='none';
+  localStorage.setItem('sc_tutorial_done','1');
+  tPanicDone=false;tPanicTapCount=0;
 }
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}

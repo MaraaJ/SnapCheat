@@ -11,6 +11,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#222;--b1:#2a2a2a;--b2:#333;--t1:#f0ede8;--t2:#888;--t3:#444;--ac:#e8d5b0;--ac2:#c4a96e;--gr:#4ade80;--rd:#f87171;--go:#f59e0b;--ff:system-ui,-apple-system,sans-serif;--fm:'Courier New',monospace}
+.trueblack{--bg:#000;--s1:#000;--s2:#0a0a0a;--s3:#111;--b1:#1a1a1a;--b2:#222}
 body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;min-height:100vh;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 .hide{display:none!important}
 .screen{min-height:100vh;flex-direction:column;display:none}
@@ -297,6 +298,10 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje taháky</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
   <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
+  <div class="sbitem" onclick="toggleBlackMode()">
+    <span>🖤 True Black mode</span>
+    <span id="blacktoggle" style="font-size:.7rem;color:var(--t2)">OFF</span>
+  </div>
   <div class="sbitem danger" onclick="doLogout()">↩ Odhlásit se</div>
 </div>
 
@@ -834,7 +839,22 @@ async function delTahak(i,e){
   toast('🗑 Tahák smazán');
 }
 
-// ===== BADGE SYSTEM =====
+function toggleBlackMode(){
+  const isOn=document.documentElement.classList.toggle('trueblack');
+  document.getElementById('blacktoggle').textContent=isOn?'ON':'OFF';
+  document.getElementById('blacktoggle').style.color=isOn?'var(--ac)':'var(--t2)';
+  localStorage.setItem('sc_blackmode',isOn?'1':'0');
+}
+
+function initBlackMode(){
+  if(localStorage.getItem('sc_blackmode')==='1'){
+    document.documentElement.classList.add('trueblack');
+    const el=document.getElementById('blacktoggle');
+    if(el){el.textContent='ON';el.style.color='var(--ac)';}
+  }
+}
+
+
 const BADGES=[
   {id:'student',icon:'🎓',name:'Student',desc:'Vytvoř si účet',req:0,credits:0,type:'reg'},
   {id:'cheater',icon:'⚡',name:'Cheater',desc:'10 taháků',req:10,credits:10,type:'count'},
@@ -1053,6 +1073,7 @@ document.addEventListener('touchend',e=>{
   lastTap=now;
 },{passive:true});
 
+initBlackMode();
 init();
 </script>
 </body>

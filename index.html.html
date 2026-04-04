@@ -167,8 +167,18 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 
 <div class="screen on" id="sa">
   <div class="abox">
-    <div class="logo">Snap<span>Cheat</span></div>
+    <div style="position:relative;margin-bottom:6px;display:inline-block">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.06;pointer-events:none;user-select:none;line-height:1">⚡</div>
+      <div class="logo" style="position:relative">Snap<span>Cheat</span></div>
+    </div>
     <div class="tag">AI tahák z fotky za sekundy</div>
+    <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center">
+      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">📸 Vyfot</div>
+      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
+      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">⚡ AI</div>
+      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
+      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:100px;padding:5px 12px;font-size:.68rem;color:var(--ac)">✓ Tahák</div>
+    </div>
     <div class="atabs">
       <button class="atab on" onclick="atab('login',this)">Přihlásit se</button>
       <button class="atab" onclick="atab('reg',this)">Registrovat</button>
@@ -181,6 +191,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
     <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
     <div class="adiv">nebo pokračuj jako host</div>
     <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
+    <div style="text-align:center;margin-top:20px;font-size:.65rem;color:#333">Nový účet = 30 kreditů zdarma 🎁</div>
   </div>
 </div>
 
@@ -310,24 +321,44 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
   <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
-    <div style="text-align:center;margin-bottom:24px">
-      <div style="width:72px;height:72px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:2rem" id="pbadgeicon">🎓</div>
-      <div style="font-weight:700;font-size:1rem" id="pemail">—</div>
-      <div style="font-size:.75rem;color:#888;margin-top:4px" id="pcurrentbadge">Student</div>
+
+    <!-- Hero profil -->
+    <div style="background:linear-gradient(135deg,#111 0%,#1a1505 100%);border:1px solid #2a2a2a;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;opacity:.04;pointer-events:none">⚡</div>
+      <div style="width:72px;height:72px;background:#1a1a1a;border:2px solid var(--ac2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:2.2rem;position:relative" id="pbadgeicon">🎓</div>
+      <div style="font-weight:700;font-size:1rem;margin-bottom:4px" id="pemail">—</div>
+      <div style="display:inline-block;background:rgba(196,169,110,.1);border:1px solid var(--ac2);border-radius:100px;padding:4px 14px;font-size:.72rem;color:var(--ac);letter-spacing:.08em;margin-bottom:4px" id="pcurrentbadge">Student</div>
+      <div style="font-size:.65rem;color:#555;margin-top:6px" id="pjoindate"></div>
     </div>
-    <div style="background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:16px;margin-bottom:20px">
-      <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:8px">
-        <span style="color:#888">Celkem taháků</span>
-        <span style="font-weight:700;color:var(--ac)" id="ptotal">0</span>
+
+    <!-- Statistiky -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--ac)" id="ptotal">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháků</div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:.78rem">
-        <span style="color:#888">Do dalšího odznaku</span>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--go)" id="pspent">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kr</div>
+      </div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--gr)" id="pearned">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaků</div>
+      </div>
+    </div>
+
+    <!-- Progress do dalšího ranku -->
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:8px">
+        <span style="color:#888">Postup k dalšímu ranku</span>
         <span style="font-weight:700;color:var(--go)" id="pnext">—</span>
       </div>
-      <div style="margin-top:10px;background:#1a1a1a;border-radius:100px;height:6px;overflow:hidden">
-        <div id="pprogress" style="height:100%;background:var(--ac);transition:width .5s ease;width:0%"></div>
+      <div style="background:#1a1a1a;border-radius:100px;height:6px;overflow:hidden">
+        <div id="pprogress" style="height:100%;background:linear-gradient(90deg,var(--ac2),var(--ac));transition:width .5s ease;width:0%"></div>
       </div>
     </div>
+
+    <!-- Odznaky -->
     <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Odznaky</div>
     <div id="pbadges"></div>
   </div>
@@ -994,19 +1025,29 @@ function goProfile(){
   const total=getTotalTahaky();
   const cur=getCurrentBadge();
   const earned=getEarnedBadges();
+  const spent=txHistory.filter(t=>t.t==='minus').length*COST;
+
   document.getElementById('pemail').textContent=user||'—';
   document.getElementById('pbadgeicon').textContent=cur.icon;
   document.getElementById('pcurrentbadge').textContent=cur.name;
   document.getElementById('ptotal').textContent=total;
+  document.getElementById('pspent').textContent=spent;
+  document.getElementById('pearned').textContent=earned.length;
   document.getElementById('tcr4').textContent=credits;
+
+  // Join date from localStorage
+  const session=JSON.parse(localStorage.getItem('sc_session')||'{}');
+  const joinDate=localStorage.getItem('sc_joined_'+userId);
+  if(!joinDate)localStorage.setItem('sc_joined_'+userId,today());
+  document.getElementById('pjoindate').textContent='Člen od: '+(joinDate||today());
 
   // Next badge progress
   const next=BADGES.find(b=>b.type==='count'&&total<b.req);
   if(next){
-    const prev=BADGES.find(b=>b.type==='count'&&b.req<=total&&BADGES.indexOf(b)<BADGES.indexOf(next));
+    const prev=BADGES.slice().reverse().find(b=>b.type==='count'&&b.req<=total);
     const prevReq=prev?prev.req:0;
-    const pct=Math.round(((total-prevReq)/(next.req-prevReq))*100);
-    document.getElementById('pnext').textContent=(next.req-total)+' taháků do '+next.name;
+    const pct=Math.min(100,Math.round(((total-prevReq)/(next.req-prevReq))*100));
+    document.getElementById('pnext').textContent=(next.req-total)+' taháků → '+next.icon+' '+next.name;
     document.getElementById('pprogress').style.width=pct+'%';
   }else{
     document.getElementById('pnext').textContent='Max level! 🥷';
@@ -1017,13 +1058,13 @@ function goProfile(){
   const cont=document.getElementById('pbadges');
   cont.innerHTML=BADGES.map(b=>{
     const isEarned=earned.find(e=>e.id===b.id);
-    return `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#111;border:1px solid ${isEarned?'#c4a96e':'#2a2a2a'};border-radius:12px;margin-bottom:8px;opacity:${isEarned?'1':'0.4'}">
+    return `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#111;border:1px solid ${isEarned?'var(--ac2)':'#1a1a1a'};border-radius:12px;margin-bottom:8px;opacity:${isEarned?'1':'0.35'}">
       <div style="font-size:1.8rem;width:40px;text-align:center">${b.icon}</div>
       <div style="flex:1">
-        <div style="font-weight:600;font-size:.88rem;color:${isEarned?'var(--ac)':'#888'}">${b.name}</div>
-        <div style="font-size:.72rem;color:#555;margin-top:2px">${b.desc}${b.credits?' · +'+b.credits+' kr':''}</div>
+        <div style="font-weight:600;font-size:.88rem;color:${isEarned?'var(--ac)':'#666'}">${b.name}</div>
+        <div style="font-size:.72rem;color:#444;margin-top:2px">${b.desc}${b.credits?' · +'+b.credits+' kr':''}</div>
       </div>
-      <div style="font-size:.75rem">${isEarned?'✓':'🔒'}</div>
+      <div style="font-size:.8rem;color:${isEarned?'var(--gr)':'#333'}">${isEarned?'✓':'🔒'}</div>
     </div>`;
   }).join('');
 

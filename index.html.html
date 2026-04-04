@@ -440,20 +440,56 @@ async function sbFetch(path,method='GET',body=null){
 function today(){return new Date().toLocaleDateString('cs')}
 
 async function init(){
+  // Handle Stripe payment return
+  const urlParams=new URLSearchParams(window.location.search);
+  if(urlParams.get('payment')==='success'){
+    const sessionId=urlParams.get('session_id');
+    const pending=JSON.parse(localStorage.getItem('sc_pending_payment')||'null');
+    window.history.replaceState({},document.title,window.location.pathname);
+    if(sessionId&&pending){
+      try{
+        const res=await fetch(WU+'stripe-verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId})});
+        const session=await res.json();
+        if(session.payment_status==='paid'){
+          const saved=localStorage.getItem('sc_session');
+          if(saved){const s=JSON.parse(saved);user=s.email;userId=s.userId||pending.userId;credits=s.credits||0;txHistory=s.txHistory||[];}
+          credits+=pending.cr;
+          txHistory.push({t:'plus',l:'Nákup '+pending.cr+' kreditů',a:'+'+pending.cr+' kr',d:today()});
+          await saveU();
+          if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Nákup '+pending.cr+' kreditů',amount:pending.cr,type:'plus'}).catch(()=>{});
+          saveSession();localStorage.removeItem('sc_pending_payment');
+          loadTH();updCr();
+          document.getElementById('sbemail').textContent=user;
+          document.getElementById('sbcr').textContent=credits;
+          setTimeout(()=>updBadgeUI(),500);
+          show('sm2');
+          if(navigator.vibrate)navigator.vibrate([100,50,100]);
+          setTimeout(()=>toast('🎉 Platba proběhla! +'+pending.cr+' kreditů!'),500);
+          return;
+        }
+      }catch(e){console.error(e)}
+      localStorage.removeItem('sc_pending_payment');
+    }
+  }
+  if(urlParams.get('payment')==='cancel'){
+    window.history.replaceState({},document.title,window.location.pathname);
+    toast('❌ Platba zrušena');
+  }
+
   const saved=localStorage.getItem('sc_session');
   if(saved){
     try{
       const s=JSON.parse(saved);
       if(s.userId&&s.email){
-        // Refresh credits from Supabase
         const rows=await sbFetch('/rest/v1/users?id=eq.'+s.userId+'&select=credits');
         if(rows&&rows[0]){
-          user=s.email;userId=rows[0].id||s.userId;
+          user=s.email;userId=s.userId;
           credits=rows[0].credits;
           txHistory=s.txHistory||[];
           loadTH();updCr();
           document.getElementById('sbemail').textContent=user;
           document.getElementById('sbcr').textContent=credits;
+          setTimeout(()=>updBadgeUI(),500);
           show('sm2');return;
         }
       }
@@ -779,13 +815,49 @@ async function doPDF(){
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-function buyPkg(cr,pr){selPkg={cr,pr};document.getElementById('mkcr').textContent=cr;document.getElementById('mkpr').textContent=pr+' Kč';document.getElementById('sm').classList.add('on')}
+const STRIPE_PRICES={
+  50:'price_1TIZxVDzxLBIojZpNcfkpBK5',
+  100:'price_1TIZxzDzxLBIojZp6lwRDszS',
+  250:'price_1TIZyEDzxLBIojZpEXYL1Vf8',
+  500:'price_1TIZySDzxLBIojZptbxICqwI'
+};
+
+function buyPkg(cr,pr){
+  selPkg={cr,pr};
+  document.getElementById('mkcr').textContent=cr;
+  document.getElementById('mkpr').textContent=pr+' Kč';
+  document.getElementById('sm').classList.add('on');
+}
 function closeSM(){document.getElementById('sm').classList.remove('on')}
 function fmtCard(i){let v=i.value.replace(/\D/g,'').substring(0,16);i.value=v.replace(/(.{4})/g,'$1 ').trim()}
 
-function doPay(){
-  const btn=document.getElementById('paybtn');btn.textContent='Zpracovávám...';btn.disabled=true;
-  setTimeout(async()=>{credits+=selPkg.cr;txHistory.push({t:'plus',l:'Nákup '+selPkg.cr+' kreditů',a:'+'+selPkg.cr+' kr',d:today()});await saveU();if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Nákup '+selPkg.cr+' kreditů',amount:selPkg.cr,type:'plus'}).catch(()=>{});saveSession();updCr();updCrScreen();closeSM();btn.textContent='Zaplatit';btn.disabled=false;if(navigator.vibrate)navigator.vibrate([50,30,50]);toast('🪙 '+selPkg.cr+' kreditů přidáno!')},1500);
+async function doPay(){
+  const btn=document.getElementById('paybtn');
+  btn.textContent='Přesměrovávám...';btn.disabled=true;
+  try{
+    const priceId=STRIPE_PRICES[selPkg.cr];
+    const baseUrl=window.location.origin+window.location.pathname;
+    const res=await fetch(WU+'stripe-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        priceId,
+        successUrl:baseUrl+'?payment=success&credits='+selPkg.cr+'&session_id={CHECKOUT_SESSION_ID}',
+        cancelUrl:baseUrl+'?payment=cancel'
+      })
+    });
+    const session=await res.json();
+    if(session.url){
+      // Save pending payment to localStorage
+      localStorage.setItem('sc_pending_payment',JSON.stringify({cr:selPkg.cr,userId,sessionId:session.id}));
+      window.location.href=session.url;
+    }else{
+      throw new Error('Nepodařilo se vytvořit platbu');
+    }
+  }catch(e){
+    toast('❌ Chyba: '+e.message);
+    btn.textContent='Zaplatit';btn.disabled=false;
+  }
 }
 
 async function loadTH(){

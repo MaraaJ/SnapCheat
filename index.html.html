@@ -297,7 +297,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
 
 <!-- TUTORIAL MODAL -->
 <div id="tutorial" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;align-items:center;justify-content:center;padding:20px">
-  <div style="width:100%;max-width:420px;background:#111;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden">
+  <div style="width:100%;max-width:420px;background:#111;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden;position:relative">
     <div style="height:3px;background:#1a1a1a"><div id="tprogress" style="height:100%;background:var(--ac);transition:width .4s ease;width:33%"></div></div>
     <div class="tstep" id="tstep1" style="padding:28px">
       <div style="font-size:2.5rem;margin-bottom:16px;text-align:center">⚡</div>
@@ -310,7 +310,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
       <div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;text-align:center">Krok 1 ze 2 · Focení</div>
       <div id="tsim" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:16px;position:relative;overflow:hidden">
         <div style="font-size:.7rem;color:#555;margin-bottom:8px">VZOROVÝ TEST</div>
-        <div style="font-size:.78rem;color:#666;line-height:1.6">1. Kdy začala první světová válka?<br>2. Kdo napsal Babičku?<br>3. Vypočítej: 2x + 5 = 13</div>
+        <div id="tsimcontent" style="font-size:.78rem;color:#666;line-height:1.6">1. Kdy začala první světová válka?<br>2. Kdo napsal Babičku?<br>3. Vypočítej: 2x + 5 = 13</div>
         <div id="tviewfinder" style="display:none;position:absolute;inset:0;border:3px solid var(--ac);border-radius:12px"></div>
         <div id="tflash" style="display:none;position:absolute;inset:0;background:white;border-radius:12px"></div>
       </div>
@@ -325,9 +325,16 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
       <div style="background:#1a1a1a;border-radius:12px;padding:16px;text-align:center;margin-bottom:16px">
         <div id="tpanicprompt" style="font-size:.82rem;color:#888;margin-bottom:10px">👇 Zkus to — 2x poklepej na tuto oblast</div>
         <div id="tpanicarea" style="height:60px;border:2px dashed #333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#555;cursor:pointer;user-select:none" ontouchend="tHandlePanic()" ondblclick="tHandlePanic()">Poklepej 2x sem</div>
-        <div id="tpanicsuccess" style="display:none;margin-top:8px;color:var(--gr);font-size:.82rem">✓ Skvěle! Teď víš jak se schovat 😄</div>
+        <div id="tpanicsuccess" style="display:none;margin-top:8px;color:var(--gr);font-size:.82rem">✓ Parádní! Teď víš jak se schovat 😄</div>
       </div>
       <button class="bp" id="tpanicnext" style="opacity:.4;cursor:not-allowed" disabled onclick="tNext(4)">Pokračovat →</button>
+    </div>
+
+    <!-- Mini panic overlay uvnitř tutorialu -->
+    <div id="tpanicscreen" style="display:none;position:absolute;inset:0;background:#000;z-index:10;align-items:center;justify-content:center;flex-direction:column;border-radius:20px">
+      <div style="font-size:3rem;font-weight:200;color:#fff;letter-spacing:.05em;font-family:system-ui" id="tpanicclock"></div>
+      <div style="font-size:.72rem;color:#444;margin-top:16px;letter-spacing:.1em">Podržte 1s pro návrat zpět</div>
+      <div style="margin-top:8px;font-size:.7rem;color:#333">Parádní! Jsi v incognito módu 🕵️</div>
     </div>
     <div class="tstep" id="tstep4" style="padding:28px;display:none;text-align:center">
       <div style="width:80px;height:80px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem">🎓</div>
@@ -816,11 +823,19 @@ function tSimulateShoot(){
     const flash=document.getElementById('tflash');
     flash.style.display='block';flash.style.opacity='0.9';flash.style.transition='opacity 0.3s';
     setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>{flash.style.display='none'},300)},100);
-    document.getElementById('tsimtext').innerHTML='✓ <span style="color:var(--gr)">Tahák by byl vygenerován!</span>';
+    // Show fake cheatsheet result instead of test
+    document.getElementById('tsimcontent').innerHTML=`
+      <div style="color:var(--ac);font-weight:700;font-size:.85rem;margin-bottom:8px">⚡ Tahák připraven</div>
+      <div style="color:#ccc"><strong style="color:var(--ac)">1. WWI:</strong> 1914 (atentát na Františka Ferdinanda)</div>
+      <div style="color:#ccc;margin-top:4px"><strong style="color:var(--ac)">2. Babička:</strong> Božena Němcová</div>
+      <div style="color:#ccc;margin-top:4px"><strong style="color:var(--ac)">3. 2x+5=13:</strong> x = 4</div>
+    `;
+    document.getElementById('tsimtext').innerHTML='<span style="color:var(--gr)">✓ AI vygenerovala odpovědi za 3 sekundy!</span>';
     btn.textContent='Pokračovat →';btn.disabled=false;btn.onclick=()=>tNext(3);
   },1200);
 }
 
+let tPanicPressTimer=null;
 function tHandlePanic(){
   const now=Date.now();
   tPanicTapCount++;
@@ -828,16 +843,37 @@ function tHandlePanic(){
     tPanicTapCount=0;
     if(!tPanicDone){
       tPanicDone=true;
-      const area=document.getElementById('tpanicarea');
-      area.style.background='#0a1a0a';area.style.borderColor='var(--gr)';area.textContent='✓';
-      document.getElementById('tpanicsuccess').style.display='block';
-      const btn=document.getElementById('tpanicnext');
-      btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+      // Show mini panic screen
+      const ps=document.getElementById('tpanicscreen');
+      ps.style.display='flex';
+      // Update clock
+      const n=new Date();
+      document.getElementById('tpanicclock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
       if(navigator.vibrate)navigator.vibrate([50,30,50]);
+      // Long press to return
+      ps.addEventListener('touchstart',tStartReturn,{passive:false});
+      ps.addEventListener('mousedown',tStartReturn);
     }
   }
   tPanicLastTap=now;
 }
+
+function tStartReturn(e){
+  e.preventDefault();
+  tPanicPressTimer=setTimeout(()=>{
+    const ps=document.getElementById('tpanicscreen');
+    ps.style.display='none';
+    ps.removeEventListener('touchstart',tStartReturn);
+    ps.removeEventListener('mousedown',tStartReturn);
+    document.getElementById('tpanicsuccess').style.display='block';
+    const btn=document.getElementById('tpanicnext');
+    btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+    if(navigator.vibrate)navigator.vibrate(50);
+  },1000);
+}
+
+document.addEventListener('touchend',()=>{if(tPanicPressTimer){clearTimeout(tPanicPressTimer);tPanicPressTimer=null}});
+document.addEventListener('mouseup',()=>{if(tPanicPressTimer){clearTimeout(tPanicPressTimer);tPanicPressTimer=null}});
 
 function tFinish(){
   document.getElementById('tutorial').style.display='none';

@@ -248,6 +248,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
         <div class="ract">
           <button class="bsm" onclick="doCopy()">Kopírovat</button>
           <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
+          <button class="bsm" onclick="doWatchIMG()">⌚ Hodinky</button>
           <button class="bsm" onclick="doPDF()">Uložit PDF</button>
         </div>
       </div>
@@ -491,7 +492,133 @@ async function doIMG(){
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-async function doPDF(){
+async function doWatchIMG(){
+  toast('⌚ Generuji pro hodinky...');
+  const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
+  await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  await new Promise(r=>setTimeout(r,400));
+  try{
+    // Extract plain text from result
+    const el=document.getElementById('rc');
+    const tmp=document.createElement('div');
+    tmp.innerHTML=el.innerHTML;
+
+    // Get all text content structured
+    const lines=[];
+    tmp.querySelectorAll('h2,h3,li,p,.highlight').forEach(el=>{
+      const tag=el.tagName.toLowerCase();
+      const txt=el.textContent.trim();
+      if(!txt)return;
+      if(tag==='h2')lines.push({type:'h2',text:txt});
+      else if(tag==='h3')lines.push({type:'h3',text:txt});
+      else if(tag==='li')lines.push({type:'li',text:'• '+txt});
+      else lines.push({type:'p',text:txt});
+    });
+
+    // Apple Watch dimensions — 198x242px for Series 4+
+    // We make it 2x for retina: 396x484
+    const W=396,PADDING=16;
+    const canvas=document.createElement('canvas');
+    const ctx=canvas.getContext('2d');
+
+    // Calculate height needed
+    ctx.font='bold 22px system-ui';
+    let totalH=PADDING;
+    lines.forEach(l=>{
+      if(l.type==='h2'){ctx.font='bold 20px system-ui';totalH+=28}
+      else if(l.type==='h3'){ctx.font='bold 15px system-ui';totalH+=22}
+      else{
+        ctx.font='14px system-ui';
+        const words=l.text.split(' ');
+        let line='';let lineH=0;
+        words.forEach(w=>{
+          const test=line+w+' ';
+          if(ctx.measureText(test).width>W-PADDING*2&&line){lineH+=18;line=w+' '}
+          else line=test;
+        });
+        totalH+=lineH+20;
+      }
+      totalH+=4;
+    });
+    totalH+=PADDING;
+
+    canvas.width=W;
+    canvas.height=Math.max(totalH,242);
+
+    // Background
+    ctx.fillStyle='#000000';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // Draw content
+    let y=PADDING+16;
+    lines.forEach(l=>{
+      if(l.type==='h2'){
+        ctx.fillStyle='#e8d5b0';
+        ctx.font='bold 20px system-ui';
+        ctx.fillText(l.text.substring(0,28),PADDING,y);
+        ctx.fillStyle='#333';
+        ctx.fillRect(PADDING,y+4,W-PADDING*2,1);
+        y+=28;
+      }else if(l.type==='h3'){
+        ctx.fillStyle='#888888';
+        ctx.font='bold 13px system-ui';
+        ctx.fillText(l.text.toUpperCase().substring(0,30),PADDING,y);
+        y+=22;
+      }else{
+        ctx.fillStyle='#f0ede8';
+        ctx.font='14px system-ui';
+        const maxW=W-PADDING*2;
+        const words=l.text.split(' ');
+        let line='';
+        words.forEach(w=>{
+          const test=line+w+' ';
+          if(ctx.measureText(test).width>maxW&&line){
+            ctx.fillText(line,PADDING,y);
+            y+=18;line=w+' ';
+          }else line=test;
+        });
+        if(line.trim())ctx.fillText(line,PADDING,y);
+        y+=20;
+      }
+      y+=2;
+    });
+
+    // Save multiple pages if too long
+    // Split into watch-screen-sized chunks
+    const WATCH_H=484; // 2x Apple Watch height
+    const pages=Math.ceil(canvas.height/WATCH_H);
+
+    if(pages===1){
+      const link=document.createElement('a');
+      link.download='tahak-hodinky.png';
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+      toast('⌚ Obrázek pro hodinky uložen!');
+    }else{
+      // Save each page separately
+      for(let i=0;i<pages;i++){
+        const pageCanvas=document.createElement('canvas');
+        pageCanvas.width=W;pageCanvas.height=WATCH_H;
+        const pCtx=pageCanvas.getContext('2d');
+        pCtx.fillStyle='#000';
+        pCtx.fillRect(0,0,W,WATCH_H);
+        pCtx.drawImage(canvas,0,-i*WATCH_H);
+
+        // Page indicator
+        pCtx.fillStyle='#555';
+        pCtx.font='11px system-ui';
+        pCtx.fillText(`${i+1}/${pages}`,W-30,WATCH_H-8);
+
+        await new Promise(r=>setTimeout(r,100));
+        const link=document.createElement('a');
+        link.download=`tahak-hodinky-${i+1}.png`;
+        link.href=pageCanvas.toDataURL('image/png');
+        link.click();
+      }
+      toast(`⌚ ${pages} obrázků pro hodinky uloženo!`);
+    }
+  }catch(e){toast('❌ Chyba: '+e.message)}
+}
   toast('⏳ Generuji PDF...');
   const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
   await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');

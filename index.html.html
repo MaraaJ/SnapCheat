@@ -719,6 +719,7 @@ panicEl.addEventListener('touchstart',e=>{e.preventDefault();panicPressTimer=set
 panicEl.addEventListener('touchend',e=>{e.preventDefault();if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
 panicEl.addEventListener('touchmove',()=>{if(panicPressTimer){clearTimeout(panicPressTimer);panicPressTimer=null}});
 panicEl.addEventListener('dblclick',deactivatePanic);
+// Panic mode pouze na mobilech (touch zařízení)
 document.addEventListener('touchend',e=>{
   if(panicOn||!user||panicCooldown)return;
   if(document.getElementById('sm').classList.contains('on'))return;
@@ -730,12 +731,6 @@ document.addEventListener('touchend',e=>{
   else tapTimer=setTimeout(()=>{tapCount=0},500);
   lastTap=now;
 },{passive:true});
-document.addEventListener('dblclick',e=>{
-  if(panicOn||!user||panicCooldown)return;
-  const tag=e.target.tagName;
-  if(tag==='BUTTON'||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
-  activatePanic();
-});
 
 init();
 </script>

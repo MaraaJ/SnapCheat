@@ -247,6 +247,7 @@ body{background:var(--bg);color:var(--t1);font-family:var(--ff);font-size:15px;m
         <span class="rtag">✓ Tahák připraven</span>
         <div class="ract">
           <button class="bsm" onclick="doCopy()">Kopírovat</button>
+          <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
           <button class="bsm" onclick="doPDF()">Uložit PDF</button>
         </div>
       </div>
@@ -448,11 +449,7 @@ async function doGen(){
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
-   // Pokud to nejsi ty, normálně strhni kredity
-if (user !== "marjansta90@gmail.com") {
-  credits-=COST;
-  txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
-}
+    credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
     saveU();saveSession();updCr();saveTH(txt);
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
@@ -472,6 +469,27 @@ function saveU(){
 }
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
+
+async function doIMG(){
+  toast('⏳ Generuji obrázek...');
+  const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
+  await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  await new Promise(r=>setTimeout(r,400));
+  try{
+    const el=document.getElementById('rc');
+    const wrap=document.createElement('div');
+    wrap.style.cssText='position:fixed;left:-9999px;top:0;width:750px;background:#111;color:#f0ede8;font-family:system-ui,sans-serif;font-size:14px;line-height:1.8;padding:32px;box-sizing:border-box';
+    wrap.innerHTML=el.innerHTML;document.body.appendChild(wrap);
+    await new Promise(r=>setTimeout(r,300));
+    const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:2,useCORS:true,allowTaint:true,logging:false,width:750,height:wrap.scrollHeight});
+    document.body.removeChild(wrap);
+    const link=document.createElement('a');
+    link.download='tahak.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    toast('🖼 Obrázek uložen!');
+  }catch(e){toast('❌ Chyba: '+e.message)}
+}
 
 async function doPDF(){
   toast('⏳ Generuji PDF...');

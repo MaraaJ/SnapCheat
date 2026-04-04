@@ -39,6 +39,9 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 .aerr{background:#2a1515;border:1px solid #5a2020;border-radius:8px;padding:10px 14px;color:var(--rd);font-size:.78rem;margin-bottom:14px;display:none}
 .top{background:var(--s1);border-bottom:1px solid var(--b1);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tlogo{font-size:1.1rem;font-weight:800;color:var(--ac)}
+.tlogo.clickable{cursor:pointer;position:absolute;left:50%;transform:translateX(-50%);transition:.15s}
+.tlogo.clickable:hover{opacity:.7}
+.top{position:relative}
 .tright{display:flex;align-items:center;gap:10px}
 .cbadge{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--b2);border-radius:100px;padding:5px 10px;cursor:pointer}
 .cbadge .amt{font-size:.82rem;font-weight:700;color:var(--go)}
@@ -273,7 +276,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 </div>
 
 <div class="screen" id="scr">
-  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
     <div class="cbal"><div class="bnum" id="bnum">0</div><div class="blbl">Tvůj zůstatek kreditů</div></div>
@@ -289,7 +292,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 </div>
 
 <div class="screen" id="shist">
-  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -321,7 +324,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <!-- PROFILE SCREEN -->
 <div class="screen" id="sprofile">
-  <div class="top"><div class="tlogo">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()">SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
 

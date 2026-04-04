@@ -194,6 +194,12 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div class="fg"><label>Heslo</label><input type="password" id="apass" placeholder="••••••••"></div>
     <div class="fg hide" id="aphwrap"><label>Telefonní číslo</label><input type="tel" id="aphone" placeholder="+420 123 456 789"><div class="hint">Jedno číslo = jeden účet</div></div>
     <div class="fg hide" id="acwrap"><label>Potvrdit heslo</label><input type="password" id="aconf" placeholder="••••••••"></div>
+    <div class="fg hide" id="avopwrap" style="display:none">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.78rem;color:var(--t2);text-transform:none;letter-spacing:0">
+        <input type="checkbox" id="avop" style="margin-top:2px;width:16px;height:16px;accent-color:var(--ac);flex-shrink:0">
+        <span>Souhlasím s <span onclick="showVOP()" style="color:var(--ac);text-decoration:underline;cursor:pointer">Podmínkami užívání</span> a beru na vědomí že SnapCheat je studijní pomůcka</span>
+      </label>
+    </div>
     <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
     <div class="adiv">nebo pokračuj jako host</div>
     <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
@@ -425,6 +431,28 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 @keyframes tflashanim{0%{opacity:.9}100%{opacity:0;display:none}}
 </style>
 
+<!-- VOP MODAL -->
+<div id="vopmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto">
+    <div style="padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#111;border-bottom:1px solid #2a2a2a;padding-bottom:14px">
+      <div style="font-weight:700;font-size:.95rem">Podmínky užívání</div>
+      <button onclick="closeVOP()" style="background:none;border:none;color:var(--t2);font-size:1.2rem;cursor:pointer">✕</button>
+    </div>
+    <div style="padding:20px;font-size:.78rem;color:#888;line-height:1.8">
+      <p style="color:var(--ac);font-weight:600;margin-bottom:12px">SnapCheat — Podmínky užívání služby</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">1. Studijní pomůcka</strong><br>SnapCheat je studijní pomůcka určená k procvičování a přípravě na testy. Uživatel je plně zodpovědný za způsob využití vygenerovaného obsahu.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">2. Věk uživatele</strong><br>Používáním služby potvrzuješ, že jsi starší 13 let, nebo máš souhlas zákonného zástupce.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">3. Kredity a platby</strong><br>Zakoupené kredity jsou nevratné. Každé generování taháku stojí 20 kreditů. Ceny jsou uvedeny v CZK včetně DPH.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">4. Ochrana dat</strong><br>Ukládáme pouze email, telefonní číslo a historii transakcí. Data nejsou prodávána třetím stranám.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">5. Odpovědnost</strong><br>Provozovatel neodpovídá za způsob použití vygenerovaného obsahu. Uživatel nese plnou odpovědnost za své jednání.</p>
+      <p style="color:#555;font-size:.7rem;margin-top:16px">Poslední aktualizace: duben 2026. Podmínky mohou být aktualizovány — o změnách budou uživatelé informováni.</p>
+    </div>
+    <div style="padding:16px;border-top:1px solid #2a2a2a">
+      <button class="bp" onclick="acceptVOP()">Souhlasím ✓</button>
+    </div>
+  </div>
+</div>
+
 <div id="sm" onclick="if(event.target===this)closeSM()">
   <div class="smbox">
     <h3>Koupit kredity</h3>
@@ -541,7 +569,17 @@ function saveSession(){
 }
 
 window._amode='login';
-function atab(m,el){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');document.getElementById('acwrap').classList.toggle('hide',m!=='reg');document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';window._amode=m}
+function atab(m,el){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');
+  document.getElementById('acwrap').classList.toggle('hide',m!=='reg');
+  const vop=document.getElementById('avopwrap');
+  if(m==='reg'){vop.style.display='block';vop.classList.remove('hide')}
+  else{vop.style.display='none'}
+  document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';
+  window._amode=m;
+}
 
 async function doAuth(){
   const email=document.getElementById('aemail').value.trim();
@@ -561,6 +599,7 @@ async function doAuth(){
       if(!phone||phone.length<9||phone.includes('@')){err.textContent='Zadej platné telefonní číslo';err.style.display='block';return}
       if(pass!==conf){err.textContent='Hesla se neshodují';err.style.display='block';return}
       if(pass.length<8){err.textContent='Heslo musí mít alespoň 8 znaků';err.style.display='block';return}
+      if(!document.getElementById('avop').checked){err.textContent='Musíš souhlasit s podmínkami užívání';err.style.display='block';return}
 
       // Check if email exists
       const existing=await sbFetch('/rest/v1/users?email=eq.'+encodeURIComponent(email)+'&select=id');
@@ -969,6 +1008,10 @@ async function delTahak(i,e){
   renderHistory();
   toast('🗑 Tahák smazán');
 }
+
+function showVOP(){document.getElementById('vopmodal').style.display='flex'}
+function closeVOP(){document.getElementById('vopmodal').style.display='none'}
+function acceptVOP(){document.getElementById('avop').checked=true;closeVOP();toast('✓ Podmínky přijaty')}
 
 function toggleBlackMode(){
   const isOn=document.documentElement.classList.toggle('trueblack');

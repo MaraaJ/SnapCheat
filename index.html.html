@@ -496,127 +496,78 @@ async function doWatchIMG(){
   toast('⌚ Generuji pro hodinky...');
   const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
   await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-  await new Promise(r=>setTimeout(r,400));
+  await new Promise(r=>setTimeout(r,500));
   try{
-    // Extract plain text from result
+    // Render full content same as normal image but in watch format
     const el=document.getElementById('rc');
-    const tmp=document.createElement('div');
-    tmp.innerHTML=el.innerHTML;
+    const wrap=document.createElement('div');
+    // Apple Watch width ~198px, we use 2x = 396px
+    const W=396;
+    wrap.style.cssText=`position:fixed;left:-9999px;top:0;width:${W}px;background:#000;color:#f0ede8;font-family:system-ui,sans-serif;font-size:13px;line-height:1.6;padding:16px;box-sizing:border-box`;
 
-    // Get all text content structured
-    const lines=[];
-    tmp.querySelectorAll('h2,h3,li,p,.highlight').forEach(el=>{
-      const tag=el.tagName.toLowerCase();
-      const txt=el.textContent.trim();
-      if(!txt)return;
-      if(tag==='h2')lines.push({type:'h2',text:txt});
-      else if(tag==='h3')lines.push({type:'h3',text:txt});
-      else if(tag==='li')lines.push({type:'li',text:'• '+txt});
-      else lines.push({type:'p',text:txt});
+    // Add custom styles for watch
+    const style=document.createElement('style');
+    style.textContent=`
+      .ww h2{font-size:14px;font-weight:700;color:#e8d5b0;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #333}
+      .ww h3{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px}
+      .ww p{font-size:12px;margin-bottom:6px}
+      .ww ul,.ww ol{padding-left:14px;margin-bottom:8px}
+      .ww li{font-size:12px;margin-bottom:3px}
+      .ww strong{color:#e8d5b0}
+      .ww .highlight{background:#1a1a1a;border-left:2px solid #c4a96e;padding:6px 10px;border-radius:0 6px 6px 0;margin:6px 0;font-size:11px}
+      .ww .step{display:flex;gap:8px;margin:6px 0;background:#1a1a1a;border-radius:6px;padding:6px 10px}
+      .ww .stepnum{background:#c4a96e;color:#000;font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;white-space:nowrap;flex-shrink:0}
+      .ww .diagram-wrap{margin:10px 0;border:1px solid #333;border-radius:8px;overflow:hidden}
+      .ww .diagram-label{font-size:10px;text-transform:uppercase;color:#888;padding:5px 10px;background:#1a1a1a;border-bottom:1px solid #333}
+      .ww .diagram-wrap svg{width:100%;height:auto;display:block}
+      .ww table{width:100%;font-size:11px;border-collapse:collapse}
+      .ww td,.ww th{border:1px solid #333;padding:4px 6px}
+    `;
+    document.head.appendChild(style);
+
+    wrap.classList.add('ww');
+    wrap.innerHTML=el.innerHTML;
+    document.body.appendChild(wrap);
+    await new Promise(r=>setTimeout(r,400));
+
+    // Capture full height
+    const fullCanvas=await html2canvas(wrap,{
+      backgroundColor:'#000000',scale:2,useCORS:true,allowTaint:true,logging:false,
+      width:W,height:wrap.scrollHeight
     });
+    document.body.removeChild(wrap);
+    document.head.removeChild(style);
 
-    // Apple Watch dimensions — 198x242px for Series 4+
-    // We make it 2x for retina: 396x484
-    const W=396,PADDING=16;
-    const canvas=document.createElement('canvas');
-    const ctx=canvas.getContext('2d');
+    // Split into watch-screen chunks (Apple Watch 484px tall at 2x)
+    const WATCH_H=484;
+    const totalH=fullCanvas.height;
+    const pages=Math.ceil(totalH/WATCH_H);
 
-    // Calculate height needed
-    ctx.font='bold 22px system-ui';
-    let totalH=PADDING;
-    lines.forEach(l=>{
-      if(l.type==='h2'){ctx.font='bold 20px system-ui';totalH+=28}
-      else if(l.type==='h3'){ctx.font='bold 15px system-ui';totalH+=22}
-      else{
-        ctx.font='14px system-ui';
-        const words=l.text.split(' ');
-        let line='';let lineH=0;
-        words.forEach(w=>{
-          const test=line+w+' ';
-          if(ctx.measureText(test).width>W-PADDING*2&&line){lineH+=18;line=w+' '}
-          else line=test;
-        });
-        totalH+=lineH+20;
-      }
-      totalH+=4;
-    });
-    totalH+=PADDING;
+    for(let i=0;i<pages;i++){
+      const pageCanvas=document.createElement('canvas');
+      pageCanvas.width=fullCanvas.width;
+      pageCanvas.height=Math.min(WATCH_H,totalH-i*WATCH_H);
+      const pCtx=pageCanvas.getContext('2d');
+      pCtx.fillStyle='#000';
+      pCtx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
+      pCtx.drawImage(fullCanvas,0,-i*WATCH_H);
 
-    canvas.width=W;
-    canvas.height=Math.max(totalH,242);
-
-    // Background
-    ctx.fillStyle='#000000';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    // Draw content
-    let y=PADDING+16;
-    lines.forEach(l=>{
-      if(l.type==='h2'){
-        ctx.fillStyle='#e8d5b0';
-        ctx.font='bold 20px system-ui';
-        ctx.fillText(l.text.substring(0,28),PADDING,y);
-        ctx.fillStyle='#333';
-        ctx.fillRect(PADDING,y+4,W-PADDING*2,1);
-        y+=28;
-      }else if(l.type==='h3'){
-        ctx.fillStyle='#888888';
-        ctx.font='bold 13px system-ui';
-        ctx.fillText(l.text.toUpperCase().substring(0,30),PADDING,y);
-        y+=22;
-      }else{
-        ctx.fillStyle='#f0ede8';
-        ctx.font='14px system-ui';
-        const maxW=W-PADDING*2;
-        const words=l.text.split(' ');
-        let line='';
-        words.forEach(w=>{
-          const test=line+w+' ';
-          if(ctx.measureText(test).width>maxW&&line){
-            ctx.fillText(line,PADDING,y);
-            y+=18;line=w+' ';
-          }else line=test;
-        });
-        if(line.trim())ctx.fillText(line,PADDING,y);
-        y+=20;
-      }
-      y+=2;
-    });
-
-    // Save multiple pages if too long
-    // Split into watch-screen-sized chunks
-    const WATCH_H=484; // 2x Apple Watch height
-    const pages=Math.ceil(canvas.height/WATCH_H);
-
-    if(pages===1){
-      const link=document.createElement('a');
-      link.download='tahak-hodinky.png';
-      link.href=canvas.toDataURL('image/png');
-      link.click();
-      toast('⌚ Obrázek pro hodinky uložen!');
-    }else{
-      // Save each page separately
-      for(let i=0;i<pages;i++){
-        const pageCanvas=document.createElement('canvas');
-        pageCanvas.width=W;pageCanvas.height=WATCH_H;
-        const pCtx=pageCanvas.getContext('2d');
-        pCtx.fillStyle='#000';
-        pCtx.fillRect(0,0,W,WATCH_H);
-        pCtx.drawImage(canvas,0,-i*WATCH_H);
-
-        // Page indicator
-        pCtx.fillStyle='#555';
+      // Page indicator
+      if(pages>1){
+        pCtx.fillStyle='rgba(0,0,0,0.7)';
+        pCtx.fillRect(pageCanvas.width-44,pageCanvas.height-22,42,18);
+        pCtx.fillStyle='#666';
         pCtx.font='11px system-ui';
-        pCtx.fillText(`${i+1}/${pages}`,W-30,WATCH_H-8);
-
-        await new Promise(r=>setTimeout(r,100));
-        const link=document.createElement('a');
-        link.download=`tahak-hodinky-${i+1}.png`;
-        link.href=pageCanvas.toDataURL('image/png');
-        link.click();
+        pCtx.fillText(`${i+1}/${pages}`,pageCanvas.width-38,pageCanvas.height-8);
       }
-      toast(`⌚ ${pages} obrázků pro hodinky uloženo!`);
+
+      await new Promise(r=>setTimeout(r,100));
+      const link=document.createElement('a');
+      link.download=pages>1?`tahak-hodinky-${i+1}z${pages}.png`:'tahak-hodinky.png';
+      link.href=pageCanvas.toDataURL('image/png');
+      link.click();
     }
+    toast(`⌚ ${pages>1?pages+' obrázků':'Obrázek'} pro hodinky uložen!`);
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 

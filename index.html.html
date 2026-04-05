@@ -787,8 +787,9 @@ function rmImg(){img=null;document.getElementById('pw').style.display='none';doc
 
 function buildP(){
   const ex=document.getElementById('extra').value.trim();
-  if(opts.form==='STEP_BY_STEP'){return `Analyzuj tento test a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem. Jazyk: ${opts.lang}. ${opts.len} Každá úloha: název <h3>, zadáno <div class="highlight">Zadáno: ...</div>, kroky <div class="step"><span class="stepnum">Krok N</span> popis</div>, výsledek <div class="highlight">✓ Výsledek: ...</div>. Ostatní otázky stručně <ul><li>.${ex?'\n'+ex:''}`}
-  return `Vytvoř tahák z tohoto testu. Jazyk: ${opts.lang}. ${opts.len} ${opts.form} Pro každou otázku PŘÍMÁ ODPOVĚĎ. HTML: <h2> nadpis, <h3> sekce, <ul><li>, <strong>, <div class="highlight"> vzorce. Diagramy: SVG viewBox="0 0 600 380" bg #1a1a1a text #f0ede8 v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.${ex?'\n'+ex:''}`;
+  const diagramRules=`DIAGRAMY (pouze pokud test obsahuje graf nebo diagram): Nakresli SVG viewBox="0 0 600 380" přímo do <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. Pravidla SVG: pozadí <rect fill="#1a1a1a" width="600" height="380"/>. Osy: čára stroke="#555" stroke-width="1.5". Popisky os: fill="#888" font-size="12" font-family="system-ui". Hodnoty na osách: fill="#aaa" font-size="11". Křivky/čáry dat: stroke="#e8d5b0" nebo "#4ade80" stroke-width="2" fill="none". Nadpis grafu: fill="#f0ede8" font-size="13" font-weight="bold". Šipky os: polygon fill="#555". Vždy nakresli mřížku: stroke="#2a2a2a" stroke-width="1". Pokud si nejsi jistý jak diagram nakreslit správně, raději ho vůbec nevkládej.`;
+  if(opts.form==='STEP_BY_STEP'){return `Analyzuj tento test a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem. Jazyk: ${opts.lang}. ${opts.len} Každá úloha: název <h3>, zadáno <div class="highlight">Zadáno: ...</div>, kroky <div class="step"><span class="stepnum">Krok N</span> popis</div>, výsledek <div class="highlight">✓ Výsledek: ...</div>. Ostatní otázky stručně <ul><li>. ${diagramRules}${ex?'\n'+ex:''}`}
+  return `Vytvoř tahák z tohoto testu. Jazyk: ${opts.lang}. ${opts.len} ${opts.form} Pro každou otázku PŘÍMÁ ODPOVĚĎ. HTML: <h2> nadpis, <h3> sekce, <ul><li>, <strong>, <div class="highlight"> vzorce. ${diagramRules}${ex?'\n'+ex:''}`;
 }
 
 async function doGen(){
@@ -802,7 +803,7 @@ async function doGen(){
   try{
     // Check network first
     if(!navigator.onLine)throw new Error('OFFLINE');
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';

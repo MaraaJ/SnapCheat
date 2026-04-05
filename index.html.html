@@ -492,6 +492,28 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
   </div>
 </div>
 
+<div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat tahák?</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
+    <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeDelModal()">Zrušit</button>
+      <button style="flex:1;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px;font-size:.85rem;font-weight:700;color:var(--rd);cursor:pointer" id="delmodalbtn">Smazat</button>
+    </div>
+  </div>
+</div>
+<div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat tahák?</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
+    <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeDelModal()">Zrušit</button>
+      <button style="flex:1;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px;font-size:.85rem;font-weight:700;color:var(--rd);cursor:pointer" id="delmodalbtn">Smazat</button>
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -1045,13 +1067,25 @@ function renderHistory(){
 function openTahak(i){const t=tahakyHistory[i];document.getElementById('tdtitle').textContent=t.title;document.getElementById('tdcontent').innerHTML=t.content;document.getElementById('tdmodal').style.display='block'}
 function closeTD(){document.getElementById('tdmodal').style.display='none'}
 
-async function delTahak(i,e){
+let _delIdx=null;
+function delTahak(i,e){
   e.stopPropagation();
+  _delIdx=i;
   const t=tahakyHistory[i];
+  document.getElementById('delmodaltitle').textContent=t.title;
+  document.getElementById('delmodalbtn').onclick=confirmDelTahak;
+  document.getElementById('delmodal').style.display='flex';
+}
+function closeDelModal(){document.getElementById('delmodal').style.display='none';_delIdx=null}
+async function confirmDelTahak(){
+  closeDelModal();
+  if(_delIdx===null)return;
+  const t=tahakyHistory[_delIdx];
   if(userId&&userId!=='demo'&&t.id&&typeof t.id==='string'){
     await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'DELETE').catch(()=>{});
   }
-  tahakyHistory.splice(i,1);
+  tahakyHistory.splice(_delIdx,1);
+  _delIdx=null;
   if(userId==='demo')localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
   renderHistory();
   toast('🗑 Tahák smazán');

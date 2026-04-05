@@ -200,6 +200,11 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
         <span>Souhlasím s <span onclick="showVOP()" style="color:var(--ac);text-decoration:underline;cursor:pointer">Podmínkami užívání</span> a beru na vědomí že SnapCheat je studijní pomůcka</span>
       </label>
     </div>
+    <div class="fg hide" id="arefwrap" style="display:none">
+      <label>Referral kód <span style="color:var(--t3)">(volitelné)</span></label>
+      <input type="text" id="aref" placeholder="Kód od kamaráda" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <div class="hint">+10 kreditů navíc za platný kód</div>
+    </div>
     <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
     <div class="adiv">nebo pokračuj jako host</div>
     <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
@@ -373,6 +378,18 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <!-- Odznaky -->
     <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Odznaky</div>
     <div id="pbadges"></div>
+
+    <!-- Referral -->
+    <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin:20px 0 12px">Pozvat kamaráda</div>
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:16px;margin-bottom:8px">
+      <div style="font-size:.78rem;color:#888;margin-bottom:12px">Pošli kamarádovi odkaz — on dostane <strong style="color:var(--ac)">+10 kr</strong> a ty dostaneš <strong style="color:var(--ac)">+20 kr</strong>. Max 2 pozvánky.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:10px 14px;font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--ac);letter-spacing:.1em" id="prefcode">—</div>
+        <button class="bsm" onclick="navigator.clipboard.writeText(document.getElementById('prefcode').textContent);toast('📋 Kód zkopírován!')">Kopírovat</button>
+      </div>
+      <button class="bp" style="margin-top:0" onclick="shareReferral()">🔗 Sdílet odkaz</button>
+      <div style="font-size:.68rem;color:#444;text-align:center;margin-top:8px" id="prefcount"></div>
+    </div>
   </div>
 </div>
 
@@ -541,6 +558,13 @@ async function init(){
     toast('❌ Platba zrušena');
   }
 
+  // Auto-detect referral from URL
+  const refFromUrl=urlParams.get('ref');
+  if(refFromUrl){
+    window.history.replaceState({},document.title,window.location.pathname);
+    localStorage.setItem('sc_pending_ref',refFromUrl.toUpperCase());
+  }
+
   const saved=localStorage.getItem('sc_session');
   if(saved){
     try{
@@ -575,10 +599,14 @@ function atab(m,el){
   document.getElementById('aphwrap').classList.toggle('hide',m!=='reg');
   document.getElementById('acwrap').classList.toggle('hide',m!=='reg');
   const vop=document.getElementById('avopwrap');
-  if(m==='reg'){vop.style.display='block';vop.classList.remove('hide')}
-  else{vop.style.display='none'}
+  const ref=document.getElementById('arefwrap');
+  if(m==='reg'){vop.style.display='block';vop.classList.remove('hide');ref.style.display='block';ref.classList.remove('hide')}
+  else{vop.style.display='none';ref.style.display='none'}
   document.getElementById('abtn').textContent=m==='login'?'Přihlásit se':'Registrovat';
   window._amode=m;
+  // Check URL for referral code
+  const urlRef=new URLSearchParams(window.location.search).get('ref');
+  if(urlRef&&m==='reg')document.getElementById('aref').value=urlRef.toUpperCase();
 }
 
 async function doAuth(){
@@ -610,14 +638,34 @@ async function doAuth(){
       if(existPhone&&existPhone.length>0){err.textContent='Toto telefonní číslo je již použito';err.style.display='block';return}
 
       // Create user
-      const newUser=await sbFetch('/rest/v1/users','POST',{email,phone,password_hash:btoa(pass),credits:30});
+      const newUser=await sbFetch('/rest/v1/users','POST',{email,phone,password_hash:btoa(pass),credits:30,referral_code:genRefCode(email),referral_count:0});
       const u=Array.isArray(newUser)?newUser[0]:newUser;
+
+      // Process referral code
+      const refCode=document.getElementById('aref').value.trim().toUpperCase();
+      let bonusCredits=0;
+      if(refCode){
+        try{
+          const refUser=await sbFetch('/rest/v1/users?referral_code=eq.'+refCode+'&select=id,credits,referral_count');
+          if(refUser&&refUser.length>0){
+            const ref=refUser[0];
+            if((ref.referral_count||0)<2){
+              bonusCredits=10;
+              await sbFetch('/rest/v1/users?id=eq.'+u.id,'PATCH',{credits:40});
+              await sbFetch('/rest/v1/transactions','POST',{user_id:u.id,label:'Referral bonus',amount:10,type:'plus'});
+              await sbFetch('/rest/v1/users?id=eq.'+ref.id,'PATCH',{credits:ref.credits+20,referral_count:(ref.referral_count||0)+1});
+              await sbFetch('/rest/v1/transactions','POST',{user_id:ref.id,label:'Doporučil kamaráda +20 kr',amount:20,type:'plus'});
+            }
+          }
+        }catch(e){console.error('Referral:',e)}
+      }
 
       // Add welcome transaction
       await sbFetch('/rest/v1/transactions','POST',{user_id:u.id,label:'Uvítací bonus',amount:30,type:'plus'});
 
-      await loginAs(email,u.id,30,[{t:'plus',l:'Uvítací bonus',a:'+30 kr',d:today()}]);
-      toast('🎉 Účet vytvořen! +30 kreditů zdarma');
+      const totalCr=30+bonusCredits;
+      await loginAs(email,u.id,totalCr,[{t:'plus',l:'Uvítací bonus',a:'+'+totalCr+' kr',d:today()}]);
+      toast(bonusCredits?'🎉 Účet vytvořen! +'+(totalCr)+' kreditů!':'🎉 Účet vytvořen! +30 kreditů zdarma');
       // Show tutorial for new users
       setTimeout(()=>startTutorial(),500);
     }else{
@@ -1083,6 +1131,32 @@ function updBadgeUI(){
   if(el)el.textContent=cur.icon+' '+cur.name;
 }
 
+function genRefCode(seed){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='';let hash=0;
+  for(let i=0;i<seed.length;i++){hash=(hash*31+seed.charCodeAt(i))&0xffffffff}
+  for(let i=0;i<6;i++){code+=chars[Math.abs(hash>>i*5)%chars.length]}
+  return code;
+}
+
+function getMyRefCode(){
+  const key='sc_refcode_'+userId;
+  let code=localStorage.getItem(key);
+  if(!code){code=genRefCode(userId||user);localStorage.setItem(key,code)}
+  return code;
+}
+
+function shareReferral(){
+  const code=getMyRefCode();
+  const url=window.location.origin+window.location.pathname+'?ref='+code;
+  if(navigator.share){
+    navigator.share({title:'SnapCheat',text:'Zkus SnapCheat — AI tahák z fotky za sekundy! Registruj se přes můj odkaz a dostaneš +10 kreditů zdarma 🎁',url});
+  }else{
+    navigator.clipboard.writeText(url);
+    toast('🔗 Odkaz zkopírován!');
+  }
+}
+
 function goProfile(){
   const total=getTotalTahaky();
   const cur=getCurrentBadge();
@@ -1129,6 +1203,13 @@ function goProfile(){
       <div style="font-size:.8rem;color:${isEarned?'var(--gr)':'#333'}">${isEarned?'✓':'🔒'}</div>
     </div>`;
   }).join('');
+
+  // Referral
+  const refCode=getMyRefCode();
+  document.getElementById('prefcode').textContent=refCode;
+  const refRows=await sbFetch('/rest/v1/users?id=eq.'+userId+'&select=referral_count').catch(()=>null);
+  const refCount=refRows&&refRows[0]?refRows[0].referral_count||0:0;
+  document.getElementById('prefcount').textContent=refCount+'/2 pozvánek využito';
 
   show('sprofile');
 }

@@ -487,7 +487,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <div id="tdmodal">
   <div class="tdinner">
-    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div>
+    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><div style="display:flex;gap:8px"><button class="bsm" id="tdimgbtn">🖼 PNG</button><button class="bsm" id="tdpdfbtn">📄 PDF</button><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div></div>
     <div class="cc"><div id="tdcontent"></div></div>
   </div>
 </div>
@@ -803,7 +803,7 @@ async function doGen(){
   try{
     // Check network first
     if(!navigator.onLine)throw new Error('OFFLINE');
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Jsi expert na taháky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,system:'Jsi expert na taháky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
@@ -841,23 +841,21 @@ async function saveU(){
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
 
-async function doIMG(){
+async function doIMG(html){
   toast('⏳ Generuji obrázek...');
   const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
   await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
   await new Promise(r=>setTimeout(r,400));
   try{
-    const el=document.getElementById('rc');
+    const content=html||document.getElementById('rc').innerHTML;
     const wrap=document.createElement('div');
     wrap.style.cssText='position:fixed;left:-9999px;top:0;width:750px;background:#111;color:#f0ede8;font-family:system-ui,sans-serif;font-size:14px;line-height:1.8;padding:32px;box-sizing:border-box';
-    wrap.innerHTML=el.innerHTML;document.body.appendChild(wrap);
+    wrap.innerHTML=content;document.body.appendChild(wrap);
     await new Promise(r=>setTimeout(r,300));
     const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:2,useCORS:true,allowTaint:true,logging:false,width:750,height:wrap.scrollHeight});
     document.body.removeChild(wrap);
     const link=document.createElement('a');
-    link.download='tahak.png';
-    link.href=canvas.toDataURL('image/png');
-    link.click();
+    link.download='tahak.png';link.href=canvas.toDataURL('image/png');link.click();
     toast('🖼 Obrázek uložen!');
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
@@ -946,17 +944,17 @@ async function doWatchIMG(){
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
-async function doPDF(){
+async function doPDF(html){
   toast('⏳ Generuji PDF...');
   const ld=src=>new Promise(r=>{if(document.querySelector(`script[src="${src}"]`)){r();return}const s=document.createElement('script');s.src=src;s.onload=r;document.head.appendChild(s)});
   await ld('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
   await ld('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
   await new Promise(r=>setTimeout(r,600));
   try{
-    const el=document.getElementById('rc');
+    const content=html||document.getElementById('rc').innerHTML;
     const wrap=document.createElement('div');
     wrap.style.cssText='position:fixed;left:-9999px;top:0;width:794px;background:#111;color:#f0ede8;font-family:system-ui,sans-serif;font-size:14px;line-height:1.8;padding:40px;box-sizing:border-box';
-    wrap.innerHTML=el.innerHTML;document.body.appendChild(wrap);
+    wrap.innerHTML=content;document.body.appendChild(wrap);
     await new Promise(r=>setTimeout(r,300));
     const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:1.5,useCORS:true,allowTaint:true,logging:false,width:794,height:wrap.scrollHeight});
     document.body.removeChild(wrap);
@@ -1062,10 +1060,17 @@ function renderHistory(){
   const cont=document.getElementById('hcards');
   document.getElementById('hcount').textContent=tahakyHistory.length+' taháků';
   if(!tahakyHistory.length){cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.</div></div>';return}
-  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div>`).join('');
+  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><div style="display:flex;gap:6px;flex-shrink:0"><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${i}].content)" title="Stáhnout PNG">🖼</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${i}].content)" title="Stáhnout PDF">📄</button><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div></div>`).join('');
 }
 
-function openTahak(i){const t=tahakyHistory[i];document.getElementById('tdtitle').textContent=t.title;document.getElementById('tdcontent').innerHTML=t.content;document.getElementById('tdmodal').style.display='block'}
+function openTahak(i){
+  const t=tahakyHistory[i];
+  document.getElementById('tdtitle').textContent=t.title;
+  document.getElementById('tdcontent').innerHTML=t.content;
+  document.getElementById('tdimgbtn').onclick=()=>doIMG(t.content);
+  document.getElementById('tdpdfbtn').onclick=()=>doPDF(t.content);
+  document.getElementById('tdmodal').style.display='block';
+}
 function closeTD(){document.getElementById('tdmodal').style.display='none'}
 
 let _delIdx=null;

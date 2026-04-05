@@ -1078,17 +1078,13 @@ function delTahak(i,e){
 }
 function closeDelModal(){document.getElementById('delmodal').style.display='none';_delIdx=null}
 async function confirmDelTahak(){
-  closeDelModal();
   if(_delIdx===null)return;
-  const t=tahakyHistory[_delIdx];
-  if(userId&&userId!=='demo'&&t.id&&typeof t.id==='string'){
-    await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'DELETE').catch(()=>{});
-  }
-  tahakyHistory.splice(_delIdx,1);
-  _delIdx=null;
+  const idx=_delIdx;closeDelModal();
+  const t=tahakyHistory[idx];
+  if(userId&&userId!=='demo'&&t.id){await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'DELETE').catch(()=>{})}
+  tahakyHistory.splice(idx,1);
   if(userId==='demo')localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
-  renderHistory();
-  toast('🗑 Tahák smazán');
+  renderHistory();toast('🗑 Tahák smazán');
 }
 
 function showVOP(){document.getElementById('vopmodal').style.display='flex'}

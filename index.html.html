@@ -279,6 +279,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
           <button class="bsm" onclick="doCopy()">Kopírovat</button>
           <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
           <button class="bsm" onclick="doPDF()">Uložit PDF</button>
+          <button class="bsm" onclick="doWatch(_lastTahakId)">⌚ Hodinky</button>
         </div>
       </div>
       <div class="cc"><div id="rc"></div></div>
@@ -487,7 +488,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <div id="tdmodal">
   <div class="tdinner">
-    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><div style="display:flex;gap:8px"><button class="bsm" id="tdimgbtn">🖼 PNG</button><button class="bsm" id="tdpdfbtn">📄 PDF</button><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div></div>
+    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><div style="display:flex;gap:8px"><button class="bsm" id="tdimgbtn">🖼 PNG</button><button class="bsm" id="tdpdfbtn">📄 PDF</button><button class="bsm" id="tdwatchbtn">⌚ Hodinky</button><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div></div>
     <div class="cc"><div id="tdcontent"></div></div>
   </div>
 </div>
@@ -519,7 +520,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 <script>
 const WU='https://satnik-api.marjansta90.workers.dev/';
 const COST=20;
-let user=null,userId=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[];
+let user=null,userId=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[],_lastTahakId=null;
 const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
 
 function updCounter(){
@@ -813,7 +814,8 @@ async function doGen(){
     credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
     await saveU();
     if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování taháku',amount:-COST,type:'minus'}).catch(()=>{});
-    saveSession();updCr();saveTH(txt);
+    saveSession();updCr();await saveTH(txt);
+    _lastTahakId=tahakyHistory[0]?.id||null;
     // Uložit demo kredity lokálně
     if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);
@@ -840,6 +842,13 @@ async function saveU(){
 }
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
+
+function doWatch(id){
+  if(!id||typeof id!=='string'||id===String(Math.floor(id))){toast('⌚ Sdílení na hodinky není dostupné v demo módu');return}
+  const url='https://satnik-api.marjansta90.workers.dev/watch/'+id;
+  if(navigator.share){navigator.share({title:'SnapCheat tahák',text:'Otevři na hodinkách v Safari:',url})}
+  else{navigator.clipboard.writeText(url);toast('📋 URL zkopírována — pošli si ji přes iMessage!')}
+}
 
 async function doIMG(html){
   toast('⏳ Generuji obrázek...');
@@ -1048,7 +1057,7 @@ function renderHistory(){
   const cont=document.getElementById('hcards');
   document.getElementById('hcount').textContent=tahakyHistory.length+' taháků';
   if(!tahakyHistory.length){cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.</div></div>';return}
-  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><div style="display:flex;gap:6px;flex-shrink:0"><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${i}].content)" title="Stáhnout PNG">🖼</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${i}].content)" title="Stáhnout PDF">📄</button><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div></div>`).join('');
+  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><div style="display:flex;gap:6px;flex-shrink:0"><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${i}].content)" title="PNG">🖼</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${i}].content)" title="PDF">📄</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doWatch(tahakyHistory[${i}].id)" title="Hodinky">⌚</button><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div></div>`).join('');
 }
 
 function openTahak(i){
@@ -1057,6 +1066,7 @@ function openTahak(i){
   document.getElementById('tdcontent').innerHTML=t.content;
   document.getElementById('tdimgbtn').onclick=()=>doIMG(t.content);
   document.getElementById('tdpdfbtn').onclick=()=>doPDF(t.content);
+  document.getElementById('tdwatchbtn').onclick=()=>doWatch(t.id);
   document.getElementById('tdmodal').style.display='block';
 }
 function closeTD(){document.getElementById('tdmodal').style.display='none'}

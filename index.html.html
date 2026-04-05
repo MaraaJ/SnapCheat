@@ -883,8 +883,8 @@ async function doWatchIMG(){
     }
 
     // Render clean watch image
-    const SCALE=2,W=396,PADDING=20;
-    const lineH=26,headerH=50,footerH=30;
+    const SCALE=2,W=396,PADDING=24;
+    const fontSize=18,lineH=36,headerH=60,footerH=36;
     const totalH=headerH+items.length*lineH+PADDING*2+footerH;
     const H=Math.max(totalH,484);
 
@@ -899,29 +899,29 @@ async function doWatchIMG(){
 
     // Header
     ctx.fillStyle='#e8d5b0';
-    ctx.font='bold 18px system-ui';
-    ctx.fillText('⚡ SnapCheat',PADDING,34);
+    ctx.font='bold 22px system-ui';
+    ctx.fillText('⚡ SnapCheat',PADDING,38);
     ctx.fillStyle='#333';
-    ctx.fillRect(PADDING,42,W-PADDING*2,1);
+    ctx.fillRect(PADDING,48,W-PADDING*2,1);
 
     // Items
     let y=headerH+PADDING;
     items.forEach((item,i)=>{
-      if(i%2===0){ctx.fillStyle='rgba(255,255,255,0.04)';ctx.fillRect(0,y-18,W,lineH)}
-      ctx.fillStyle='#c4a96e';ctx.font='bold 13px system-ui';ctx.fillText('•',PADDING,y);
-      ctx.fillStyle='#f0ede8';ctx.font='13px system-ui';
+      if(i%2===0){ctx.fillStyle='rgba(255,255,255,0.05)';ctx.fillRect(0,y-fontSize-4,W,lineH)}
+      ctx.fillStyle='#c4a96e';ctx.font='bold '+fontSize+'px system-ui';ctx.fillText('•',PADDING,y);
+      ctx.fillStyle='#ffffff';ctx.font='bold '+fontSize+'px system-ui';
       let txt=item.trim().replace(/^[•\-\*]\s*/,'');
-      if(ctx.measureText(txt).width>W-PADDING*2-14){
-        while(ctx.measureText(txt+'…').width>W-PADDING*2-14&&txt.length>0)txt=txt.slice(0,-1);
+      if(ctx.measureText(txt).width>W-PADDING*2-20){
+        while(ctx.measureText(txt+'…').width>W-PADDING*2-20&&txt.length>0)txt=txt.slice(0,-1);
         txt+='…';
       }
-      ctx.fillText(txt,PADDING+14,y);y+=lineH;
+      ctx.fillText(txt,PADDING+20,y);y+=lineH;
     });
 
     // Footer
-    ctx.fillStyle='#333';ctx.fillRect(PADDING,H-footerH,W-PADDING*2,1);
-    ctx.fillStyle='#555';ctx.font='11px system-ui';
-    ctx.fillText('snap-cheat.vercel.app',PADDING,H-10);
+    ctx.fillStyle='#222';ctx.fillRect(PADDING,H-footerH,W-PADDING*2,1);
+    ctx.fillStyle='#444';ctx.font='12px system-ui';
+    ctx.fillText('snap-cheat.vercel.app',PADDING,H-12);
 
     // Download
     const link=document.createElement('a');

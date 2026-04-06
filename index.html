@@ -156,8 +156,78 @@
     <div id="hcards"></div>
   </div>
 </div>
-
-<div id="soverlay" onclick="closeSidebar()"></div>
+<!-- VZOREČKY SCREEN -->
+<div class="screen" id="sformulas">
+  <div class="top"><div class="tlogo clickable" onclick="goMain()">⚡ SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr5">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:1.1rem;font-weight:800">📐 Vzorečky</div>
+      <button class="bsm" onclick="doWatchFormulas()">⌚ Na hodinky</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button id="ftab-math" class="bp" style="flex:1;padding:10px;font-size:.82rem" onclick="showFTab('math')">📊 Matematika</button>
+      <button id="ftab-phys" class="bs" style="flex:1;padding:10px;font-size:.82rem" onclick="showFTab('phys')">⚡ Fyzika</button>
+    </div>
+    <div id="fcontent-math"><div class="cc">
+      <h2>Matematika</h2>
+      <h3>Obvody</h3>
+      <div class="highlight">Čtverec: o = 4a</div>
+      <div class="highlight">Obdélník: o = 2(a + b)</div>
+      <div class="highlight">Trojúhelník: o = a + b + c</div>
+      <div class="highlight">Kruh: o = 2πr</div>
+      <h3>Obsahy</h3>
+      <div class="highlight">Čtverec: S = a²</div>
+      <div class="highlight">Obdélník: S = a · b</div>
+      <div class="highlight">Trojúhelník: S = (a · v) / 2</div>
+      <div class="highlight">Kruh: S = πr²</div>
+      <h3>Objem</h3>
+      <div class="highlight">Krychle: V = a³</div>
+      <div class="highlight">Kvádr: V = a · b · c</div>
+      <div class="highlight">Válec: V = πr² · h</div>
+      <div class="highlight">Kužel: V = (πr² · h) / 3</div>
+      <div class="highlight">Koule: V = (4/3) · πr³</div>
+      <h3>Pythagorova věta</h3>
+      <div class="highlight">c² = a² + b²</div>
+      <h3>Kvadratická rovnice</h3>
+      <div class="highlight">ax² + bx + c = 0</div>
+      <div class="highlight">x = (−b ± √(b²−4ac)) / 2a</div>
+      <h3>Procenta</h3>
+      <div class="highlight">p% z x = x · p / 100</div>
+      <h3>Goniometrie</h3>
+      <div class="highlight">sin α = protilehlá / přepona</div>
+      <div class="highlight">cos α = přilehlá / přepona</div>
+      <div class="highlight">tan α = protilehlá / přilehlá</div>
+    </div></div>
+    <div id="fcontent-phys" style="display:none"><div class="cc">
+      <h2>Fyzika</h2>
+      <h3>Kinematika</h3>
+      <div class="highlight">Rychlost: v = s / t</div>
+      <div class="highlight">Zrychlení: a = Δv / t</div>
+      <div class="highlight">Dráha: s = v₀t + ½at²</div>
+      <div class="highlight">Volný pád: h = ½gt²</div>
+      <h3>Dynamika</h3>
+      <div class="highlight">F = m · a</div>
+      <div class="highlight">Tíhová síla: G = m · g</div>
+      <h3>Práce a energie</h3>
+      <div class="highlight">Práce: W = F · s</div>
+      <div class="highlight">Výkon: P = W / t</div>
+      <div class="highlight">Kinetická energie: E_k = ½mv²</div>
+      <div class="highlight">Potenciální energie: E_p = mgh</div>
+      <h3>Tlak</h3>
+      <div class="highlight">p = F / S</div>
+      <div class="highlight">Hydrostatický tlak: p = ρgh</div>
+      <h3>Elektřina</h3>
+      <div class="highlight">Ohmův zákon: U = R · I</div>
+      <div class="highlight">Výkon: P = U · I</div>
+      <h3>Teplo</h3>
+      <div class="highlight">Q = m · c · ΔT</div>
+      <h3>Hustota</h3>
+      <div class="highlight">ρ = m / V</div>
+    </div></div>
+  </div>
+</div>
+ onclick="closeSidebar()"></div>
 <div id="sidebar">
   <div class="sbhead"><div class="sbemail" id="sbemail">—</div><button class="sbclose" onclick="closeSidebar()">✕</button></div>
   <div class="sbbal">

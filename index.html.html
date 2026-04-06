@@ -176,13 +176,13 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div style="position:relative;margin-bottom:6px;display:inline-block">
       <div class="logo" style="position:relative;display:flex;align-items:center;gap:8px"><svg style="margin-top:6px" width="50" height="66" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>Snap<span>Cheat</span></div>
     </div>
-    <div class="tag">AI tahák z fotky za sekundy</div>
+    <div class="tag">AI výsledky z fotky za sekundy</div>
     <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center">
       <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">📸 Vyfot</div>
       <div style="color:#333;font-size:.8rem;line-height:2">→</div>
       <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">⚡ AI</div>
       <div style="color:#333;font-size:.8rem;line-height:2">→</div>
-      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:100px;padding:5px 12px;font-size:.68rem;color:var(--ac)">✓ Tahák</div>
+      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:100px;padding:5px 12px;font-size:.68rem;color:var(--ac)">✓ Výsledky</div>
     </div>
     <div class="atabs">
       <button class="atab on" onclick="atab('login',this)">Přihlásit se</button>
@@ -225,7 +225,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
         <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
         <div class="di">📸</div>
-        <h2>Vyfoť nebo nahraj Problém</h2>
+        <h2>Vyfoť nebo nahraj test</h2>
         <p>Klikni pro fotoaparát</p>
       </div>
       <div id="pw">
@@ -235,7 +235,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     </div>
     <div id="settbar">
       <div class="setthead" onclick="toggleSett()">
-        <span>⚙ Nastavení odpovědi</span>
+        <span>⚙ Nastavení výsledků</span>
         <span class="settarrow" id="sarrow">▼</span>
       </div>
       <div class="settbody" id="sbody">
@@ -252,7 +252,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
           <button class="ob" onclick="setOpt('len','Piš velmi podrobně.',this)">📚 Podrobně</button>
         </div></div>
         <div class="sr"><div class="sl">Forma</div><div class="so">
-          <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Tahák</button>
+          <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Výsledky</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako esej.',this)">✍ Esej</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
           <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
@@ -269,11 +269,11 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit →</span></div>
       <div class="errb" id="gerr"></div>
       <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
-      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT ODPOVĚĎ <span class="bcost">−20 kr</span></button>
+      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−20 kr</span></button>
     </div>
     <div id="rw">
       <div class="rh">
-        <span class="rtag">✓ Tahák připraven</span>
+        <span class="rtag">✓ Výsledky připraven</span>
         <div class="ract">
           <button class="bsm" onclick="doCopy()">Kopírovat</button>
           <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
@@ -293,10 +293,10 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div class="cbal"><div class="bnum" id="bnum">0</div><div class="blbl">Tvůj zůstatek kreditů</div></div>
     <div class="ptitle">Koupit kredity</div>
     <div class="pgrid">
-      <div class="pcard" onclick="buyPkg(50,49)"><div class="pcr">50</div><div class="pclbl">kreditů</div><div class="ppr">49 Kč</div><div class="pper">0,98 Kč/kr</div><div class="pth">~2 taháky</div></div>
-      <div class="pcard pop" onclick="buyPkg(100,89)"><div class="ptag">NEJPOPULÁRNĚJŠÍ</div><div class="pcr">100</div><div class="pclbl">kreditů</div><div class="ppr">89 Kč</div><div class="pper">0,89 Kč/kr</div><div class="pth">~5 taháků</div></div>
-      <div class="pcard" onclick="buyPkg(250,199)"><div class="pcr">250</div><div class="pclbl">kreditů</div><div class="ppr">199 Kč</div><div class="pper">0,80 Kč/kr</div><div class="pth">~12 taháků</div></div>
-      <div class="pcard" onclick="buyPkg(500,369)"><div class="pcr">500</div><div class="pclbl">kreditů</div><div class="ppr">369 Kč</div><div class="pper">0,74 Kč/kr</div><div class="pth">~25 taháků</div></div>
+      <div class="pcard" onclick="buyPkg(50,49)"><div class="pcr">50</div><div class="pclbl">kreditů</div><div class="ppr">49 Kč</div><div class="pper">0,98 Kč/kr</div><div class="pth">~2 výsledky</div></div>
+      <div class="pcard pop" onclick="buyPkg(100,89)"><div class="ptag">NEJPOPULÁRNĚJŠÍ</div><div class="pcr">100</div><div class="pclbl">kreditů</div><div class="ppr">89 Kč</div><div class="pper">0,89 Kč/kr</div><div class="pth">~5 výsledků</div></div>
+      <div class="pcard" onclick="buyPkg(250,199)"><div class="pcr">250</div><div class="pclbl">kreditů</div><div class="ppr">199 Kč</div><div class="pper">0,80 Kč/kr</div><div class="pth">~12 výsledků</div></div>
+      <div class="pcard" onclick="buyPkg(500,369)"><div class="pcr">500</div><div class="pclbl">kreditů</div><div class="ppr">369 Kč</div><div class="pper">0,74 Kč/kr</div><div class="pth">~25 výsledků</div></div>
     </div>
     <div class="hsec"><div class="htitle">Historie transakcí</div><div id="hlist"></div></div>
   </div>
@@ -307,7 +307,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:1.1rem;font-weight:800">Moje odpovědi</div>
+      <div style="font-size:1.1rem;font-weight:800">Moje výsledky</div>
       <div id="hcount" style="font-size:.72rem;color:var(--t2)"></div>
     </div>
     <div id="hcards"></div>
@@ -323,7 +323,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div id="sbadge" style="margin-top:10px;display:inline-block;background:#0a0a0a;border:1px solid #333;border-radius:100px;padding:4px 12px;font-size:.72rem;color:#888;letter-spacing:.08em">🎓 Student</div>
   </div>
   <div class="sbitem" onclick="closeSidebar();goProfile()">👤 Můj profil & odznaky</div>
-  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje odpovědi</div>
+  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje výsledky</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
   <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
   <div class="sbitem" onclick="toggleBlackMode()">
@@ -352,7 +352,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--ac)" id="ptotal">0</div>
-        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Taháků</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Výsledků</div>
       </div>
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
         <div style="font-size:1.5rem;font-weight:800;color:var(--go)" id="pspent">0</div>
@@ -436,12 +436,12 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     </div>
     <div class="tstep" id="tstep4" style="padding:28px;display:none;text-align:center">
       <div style="font-size:2rem;margin-bottom:12px">⌚</div>
-      <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Tahák na Apple Watch?</h2>
-      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:20px">Můžeš si tahák otevřít přímo na hodinkách v Safari — ostrý text, scrollování korunkou.</p>
+      <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Výsledky na Apple Watch?</h2>
+      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:20px">Můžeš si výsledky otevřít přímo na hodinkách v Safari — ostrý text, scrollování korunkou.</p>
       <div style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left">
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
           <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">1</div>
-          <div style="font-size:.82rem;color:#ccc">Vygeneruj tahák a klikni na tlačítko <strong style="color:var(--ac)">⌚ Hodinky</strong></div>
+          <div style="font-size:.82rem;color:#ccc">Vygeneruj výsledky a klikni na tlačítko <strong style="color:var(--ac)">⌚ Hodinky</strong></div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
           <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">2</div>
@@ -449,7 +449,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
         </div>
         <div style="display:flex;align-items:flex-start;gap:12px">
           <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">3</div>
-          <div style="font-size:.82rem;color:#ccc">Na hodinkách otevři zprávu → klikni na odkaz → <strong style="color:var(--ac)">Safari</strong> otevře tahák</div>
+          <div style="font-size:.82rem;color:#ccc">Na hodinkách otevři zprávu → klikni na odkaz → <strong style="color:var(--ac)">Safari</strong> otevře výsledky</div>
         </div>
       </div>
       <button class="bp" onclick="tNext(5)">Rozumím →</button>
@@ -459,7 +459,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div style="width:80px;height:80px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem">🎓</div>
       <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Nyní jsi připraven!</h2>
       <div style="display:inline-block;background:#1a1a1a;border:1px solid #333;border-radius:100px;padding:6px 16px;font-size:.75rem;color:#888;letter-spacing:.1em;margin-bottom:16px">🎓 STUDENT</div>
-      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:24px">Teď víš vše. Vyfot test, nech AI udělat tahák a pokud přijde učitel — víš co dělat.</p>
+      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:24px">Teď víš vše. Vyfot test, nech AI udělat výsledky a pokud přijde učitel — víš co dělat.</p>
       <button class="bp" onclick="tFinish()">Jdeme na to! ⚡</button>
     </div>
   </div>
@@ -480,7 +480,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <p style="color:var(--ac);font-weight:600;margin-bottom:12px">SnapClue — Podmínky užívání služby</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">1. Studijní pomůcka</strong><br>SnapClue je studijní pomůcka určená k procvičování a přípravě na testy. Uživatel je plně zodpovědný za způsob využití vygenerovaného obsahu.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">2. Věk uživatele</strong><br>Používáním služby potvrzuješ, že jsi starší 13 let, nebo máš souhlas zákonného zástupce.</p>
-      <p style="margin-bottom:10px"><strong style="color:#ccc">3. Kredity a platby</strong><br>Zakoupené kredity jsou nevratné. Každé generování taháku stojí 20 kreditů. Ceny jsou uvedeny v CZK včetně DPH.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">3. Kredity a platby</strong><br>Zakoupené kredity jsou nevratné. Každé generování výsledků stojí 20 kreditů. Ceny jsou uvedeny v CZK včetně DPH.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">4. Ochrana dat</strong><br>Ukládáme pouze email, telefonní číslo a historii transakcí. Data nejsou prodávána třetím stranám.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">5. Odpovědnost</strong><br>Provozovatel neodpovídá za způsob použití vygenerovaného obsahu. Uživatel nese plnou odpovědnost za své jednání.</p>
       <p style="color:#555;font-size:.7rem;margin-top:16px">Poslední aktualizace: duben 2026. Podmínky mohou být aktualizovány — o změnách budou uživatelé informováni.</p>
@@ -515,7 +515,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
-    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat tahák?</div>
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat výsledek?</div>
     <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
     <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
     <div style="display:flex;gap:10px">
@@ -526,7 +526,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 </div>
 <div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
-    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat tahák?</div>
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat výsledek?</div>
     <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
     <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
     <div style="display:flex;gap:10px">
@@ -734,7 +734,7 @@ function demoLogin(){
   // Demo má jen 20 kreditů - přesně na 1 generování, žádné dobíjení
   const demoCredits=parseInt(localStorage.getItem('sc_demo_cr')||'20');
   loginAs('demo@snapclue.cz','demo',demoCredits,[{t:'plus',l:'Demo kredity',a:'+20 kr',d:today()}]);
-  toast('👀 Demo mód — 1 tahák zdarma!');
+  toast('👀 Demo mód — 1 výsledek zdarma!');
 }
 
 async function loginAs(email,uid,cr,hist){
@@ -810,7 +810,7 @@ function buildP(){
   const ex=document.getElementById('extra').value.trim();
   const diagramRules=`DIAGRAMY (pouze pokud test obsahuje graf nebo diagram): Nakresli SVG viewBox="0 0 600 380" přímo do <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. Pravidla SVG: pozadí <rect fill="#1a1a1a" width="600" height="380"/>. Osy: čára stroke="#555" stroke-width="1.5". Popisky os: fill="#888" font-size="12" font-family="system-ui". Hodnoty na osách: fill="#aaa" font-size="11". Křivky/čáry dat: stroke="#e8d5b0" nebo "#4ade80" stroke-width="2" fill="none". Nadpis grafu: fill="#f0ede8" font-size="13" font-weight="bold". Šipky os: polygon fill="#555". Vždy nakresli mřížku: stroke="#2a2a2a" stroke-width="1". Pokud si nejsi jistý jak diagram nakreslit správně, raději ho vůbec nevkládej.`;
   if(opts.form==='STEP_BY_STEP'){return `Analyzuj tento test a pro každou matematickou nebo fyzikální úlohu vytvoř postup krok za krokem. Jazyk: ${opts.lang}. ${opts.len} Každá úloha: název <h3>, zadáno <div class="highlight">Zadáno: ...</div>, kroky <div class="step"><span class="stepnum">Krok N</span> popis</div>, výsledek <div class="highlight">✓ Výsledek: ...</div>. Ostatní otázky stručně <ul><li>. ${diagramRules}${ex?'\n'+ex:''}`}
-  return `Vytvoř tahák z tohoto testu. Jazyk: ${opts.lang}. ${opts.len} ${opts.form} Pro každou otázku PŘÍMÁ ODPOVĚĎ. HTML: <h2> nadpis, <h3> sekce, <ul><li>, <strong>, <div class="highlight"> vzorce. ${diagramRules}${ex?'\n'+ex:''}`;
+  return `Vytvoř výsledky z tohoto testu. Jazyk: ${opts.lang}. ${opts.len} ${opts.form} Pro každou otázku PŘÍMÁ ODPOVĚĎ. HTML: <h2> nadpis, <h3> sekce, <ul><li>, <strong>, <div class="highlight"> vzorce. ${diagramRules}${ex?'\n'+ex:''}`;
 }
 
 async function doGen(){
@@ -824,16 +824,16 @@ async function doGen(){
   try{
     // Check network first
     if(!navigator.onLine)throw new Error('OFFLINE');
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,system:'Jsi expert na taháky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,system:'Jsi expert na výsledky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
     // ✅ Kredity se odečítají POUZE po úspěšné odpovědi
     const prevCount=getTotalTahaky();
-    credits-=COST;txHistory.push({t:'minus',l:'Generování taháku',a:'-'+COST+' kr',d:today()});
+    credits-=COST;txHistory.push({t:'minus',l:'Generování výsledků',a:'-'+COST+' kr',d:today()});
     await saveU();
-    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování taháku',amount:-COST,type:'minus'}).catch(()=>{});
+    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování výsledků',amount:-COST,type:'minus'}).catch(()=>{});
     saveSession();updCr();await saveTH(txt);
     _lastTahakId=tahakyHistory[0]?.id||null;
     // Uložit demo kredity lokálně
@@ -843,7 +843,7 @@ async function doGen(){
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
     if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);
-    toast('✓ Tahák připraven! −'+COST+' kreditů');
+    toast('✓ Výsledky připraven! −'+COST+' kreditů');
   }catch(e){
     if(e.message==='OFFLINE'||e.message.includes('fetch')||e.message.includes('network')||e.message.includes('Failed')){
       showErr('📡 Žádné připojení k internetu. Kredity nebyly odečteny — zkus to znovu.');
@@ -866,7 +866,7 @@ function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').in
 function doWatch(id){
   if(!id||typeof id!=='string'||id===String(Math.floor(id))){toast('⌚ Sdílení na hodinky není dostupné v demo módu');return}
   const url='https://satnik-api.marjansta90.workers.dev/watch/'+id;
-  if(navigator.share){navigator.share({title:'SnapClue tahák',text:'Otevři na hodinkách v Safari:',url})}
+  if(navigator.share){navigator.share({title:'SnapClue výsledky',text:'Otevři na hodinkách v Safari:',url})}
   else{navigator.clipboard.writeText(url);toast('📋 URL zkopírována — pošli si ji přes iMessage!')}
 }
 
@@ -884,7 +884,7 @@ async function doIMG(html){
     const canvas=await html2canvas(wrap,{backgroundColor:'#111111',scale:2,useCORS:true,allowTaint:true,logging:false,width:750,height:wrap.scrollHeight});
     document.body.removeChild(wrap);
     const link=document.createElement('a');
-    link.download='tahak.png';link.href=canvas.toDataURL('image/png');link.click();
+    link.download='vysledky.png';link.href=canvas.toDataURL('image/png');link.click();
     toast('🖼 Obrázek uložen!');
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
@@ -895,13 +895,13 @@ async function doWatchIMG(){
     // Get current cheatsheet text
     const el=document.getElementById('rc');
     const text=el.innerText.trim();
-    if(!text){toast('❌ Nejprve vygeneruj tahák!');return}
+    if(!text){toast('❌ Nejprve vygeneruj výsledky!');return}
 
     // Ask AI to summarize to max 10 bullet points for watch
     const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
       model:'claude-sonnet-4-6',max_tokens:600,
-      system:'Jsi asistent který zkracuje taháky pro Apple Watch. Odpovídej POUZE jako JSON array stringů, žádný jiný text. Max 12 položek. Každá položka max 45 znaků. Jen nejdůležitější fakta a odpovědi. Formát: ["bod 1","bod 2",...]',
-      messages:[{role:'user',content:'Zkrať tento tahák na max 12 nejdůležitějších bodů pro Apple Watch:\n\n'+text}]
+      system:'Jsi asistent který zkracuje výsledky pro Apple Watch. Odpovídej POUZE jako JSON array stringů, žádný jiný text. Max 12 položek. Každá položka max 45 znaků. Jen nejdůležitější fakta a odpovědi. Formát: ["bod 1","bod 2",...]',
+      messages:[{role:'user',content:'Zkrať tyto výsledky na max 12 nejdůležitějších bodů pro Apple Watch:\n\n'+text}]
     })});
     const d=await res.json();
     const raw=d.content?.map(b=>b.text||'').join('').trim();
@@ -954,7 +954,7 @@ async function doWatchIMG(){
 
     // Download
     const link=document.createElement('a');
-    link.download='tahak-hodinky.png';
+    link.download='vysledky-hodinky.png';
     link.href=canvas.toDataURL('image/png');
     link.click();
     toast('⌚ Hotovo! Přidej do galerie → hodinky');
@@ -981,7 +981,7 @@ async function doPDF(html){
     const id=canvas.toDataURL('image/png');
     const ih=(canvas.height*pw)/canvas.width;
     if(ih<=ph){pdf.addImage(id,'PNG',0,0,pw,ih)}else{let y=0,pg=0;while(y<ih){if(pg>0)pdf.addPage();pdf.addImage(id,'PNG',0,-y,pw,ih);y+=ph;pg++}}
-    pdf.save('tahak.pdf');toast('✅ PDF uloženo!');
+    pdf.save('vysledky.pdf');toast('✅ PDF uloženo!');
   }catch(e){toast('❌ Chyba: '+e.message)}
 }
 
@@ -1055,7 +1055,7 @@ async function loadTH(){
 async function saveTH(content){
   const tmp=document.createElement('div');tmp.innerHTML=content;
   const h2=tmp.querySelector('h2');
-  const title=h2?h2.textContent.trim():'Tahák '+today();
+  const title=h2?h2.textContent.trim():'Výsledek '+today();
 
   if(!userId||userId==='demo'){
     tahakyHistory.unshift({id:Date.now(),title,content,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
@@ -1108,7 +1108,7 @@ async function confirmDelTahak(){
   if(userId&&userId!=='demo'&&t.id){await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'DELETE').catch(()=>{})}
   tahakyHistory.splice(idx,1);
   if(userId==='demo')localStorage.setItem('sc_th_demo',JSON.stringify(tahakyHistory));
-  renderHistory();toast('🗑 Tahák smazán');
+  renderHistory();toast('🗑 Výsledek smazán');
 }
 
 function showVOP(){document.getElementById('vopmodal').style.display='flex'}
@@ -1133,10 +1133,10 @@ function initBlackMode(){
 
 const BADGES=[
   {id:'student',icon:'🎓',name:'Student',desc:'Vytvoř si účet',req:0,credits:0,type:'reg'},
-  {id:'cheater',icon:'⚡',name:'Cheater',desc:'10 taháků',req:10,credits:10,type:'count'},
-  {id:'mastercheater',icon:'🔥',name:'MasterCheater',desc:'20 taháků',req:20,credits:20,type:'count'},
-  {id:'cheatking',icon:'💀',name:'CheatKing',desc:'50 taháků',req:50,credits:30,type:'count'},
-  {id:'shadowninja',icon:'🥷',name:'Shadow Ninja',desc:'100 taháků',req:100,credits:40,type:'count'},
+  {id:'cheater',icon:'⚡',name:'Cheater',desc:'10 výsledků',req:10,credits:10,type:'count'},
+  {id:'mastercheater',icon:'🔥',name:'MasterCheater',desc:'20 výsledků',req:20,credits:20,type:'count'},
+  {id:'cheatking',icon:'💀',name:'CheatKing',desc:'50 výsledků',req:50,credits:30,type:'count'},
+  {id:'shadowninja',icon:'🥷',name:'Shadow Ninja',desc:'100 výsledků',req:100,credits:40,type:'count'},
   {id:'shadow',icon:'🕵️',name:'Shadow',desc:'Použij Panic Mode',req:1,credits:0,type:'panic'},
 ];
 
@@ -1204,7 +1204,7 @@ function shareReferral(){
   const code=getMyRefCode();
   const url=window.location.origin+window.location.pathname+'?ref='+code;
   if(navigator.share){
-    navigator.share({title:'SnapClue',text:'Zkus SnapClue — AI tahák z fotky za sekundy! Registruj se přes můj odkaz a dostaneš +10 kreditů zdarma 🎁',url});
+    navigator.share({title:'SnapClue',text:'Zkus SnapClue — AI výsledky z fotky za sekundy! Registruj se přes můj odkaz a dostaneš +10 kreditů zdarma 🎁',url});
   }else{
     navigator.clipboard.writeText(url);
     toast('🔗 Odkaz zkopírován!');
@@ -1237,7 +1237,7 @@ async function goProfile(){
     const prev=BADGES.slice().reverse().find(b=>b.type==='count'&&b.req<=total);
     const prevReq=prev?prev.req:0;
     const pct=Math.min(100,Math.round(((total-prevReq)/(next.req-prevReq))*100));
-    document.getElementById('pnext').textContent=(next.req-total)+' taháků → '+next.icon+' '+next.name;
+    document.getElementById('pnext').textContent=(next.req-total)+' výsledků → '+next.icon+' '+next.name;
     document.getElementById('pprogress').style.width=pct+'%';
   }else{
     document.getElementById('pnext').textContent='Max level! 🥷';
@@ -1296,7 +1296,7 @@ function tSimulateShoot(){
     setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>{flash.style.display='none'},300)},100);
     // Show fake cheatsheet result instead of test
     document.getElementById('tsimcontent').innerHTML=`
-      <div style="color:var(--ac);font-weight:700;font-size:.85rem;margin-bottom:8px">⚡ Tahák připraven</div>
+      <div style="color:var(--ac);font-weight:700;font-size:.85rem;margin-bottom:8px">⚡ Výsledky připraveny</div>
       <div style="color:#ccc"><strong style="color:var(--ac)">1. WWI:</strong> 1914 (atentát na Františka Ferdinanda)</div>
       <div style="color:#ccc;margin-top:4px"><strong style="color:var(--ac)">2. Babička:</strong> Božena Němcová</div>
       <div style="color:#ccc;margin-top:4px"><strong style="color:var(--ac)">3. 2x+5=13:</strong> x = 4</div>
@@ -1387,7 +1387,7 @@ document.addEventListener('selectstart',e=>{
   e.preventDefault();
 });
 
-// Panic mode pouze na hlavní obrazovce a historii taháků
+// Panic mode pouze na hlavní obrazovce a historii výsledků
 document.addEventListener('touchend',e=>{
   if(panicOn||!user||panicCooldown)return;
   const activeScreen=document.querySelector('.screen.on');

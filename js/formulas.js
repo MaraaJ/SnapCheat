@@ -135,7 +135,7 @@ async function unlockFormulas(){
   try{
     credits-=100;
     const token=crypto.randomUUID().replace(/-/g,'')+crypto.randomUUID().replace(/-/g,'');
-    await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits,formulas_token:token});
+    await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits,formulas_token:token,formulas_token_expiry:'2099-01-01T00:00:00Z'});
     localStorage.setItem('sc_formulas_token_'+userId,token);
     updCr();
     await saveU();

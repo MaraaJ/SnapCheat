@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SnapClue</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SnapClue">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+</head>
+<body>
+
+<div class="screen on" id="sa">
+  <div class="abox">
+    <div style="position:relative;margin-bottom:6px;display:inline-block">
+      <div class="logo" style="position:relative;display:flex;align-items:center;gap:8px"><svg style="margin-top:6px" width="50" height="66" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>Snap<span>Cheat</span></div>
+    </div>
+    <div class="tag">AI výsledky z fotky za sekundy</div>
+    <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center">
+      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">📸 Vyfot</div>
+      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
+      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">⚡ AI</div>
+      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
+      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:100px;padding:5px 12px;font-size:.68rem;color:var(--ac)">✓ Výsledky</div>
+    </div>
+    <div class="atabs">
+      <button class="atab on" onclick="atab('login',this)">Přihlásit se</button>
+      <button class="atab" onclick="atab('reg',this)">Registrovat</button>
+    </div>
+    <div class="aerr" id="aerr"></div>
+    <div class="fg"><label>E-mail</label><input type="email" id="aemail" placeholder="tvuj@email.cz"></div>
+    <div class="fg"><label>Heslo</label><input type="password" id="apass" placeholder="••••••••"></div>
+    <div class="fg hide" id="aphwrap"><label>Telefonní číslo</label><input type="tel" id="aphone" placeholder="+420 123 456 789"><div class="hint">Jedno číslo = jeden účet</div></div>
+    <div class="fg hide" id="acwrap"><label>Potvrdit heslo</label><input type="password" id="aconf" placeholder="••••••••"></div>
+    <div class="fg hide" id="avopwrap" style="display:none">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.78rem;color:var(--t2);text-transform:none;letter-spacing:0">
+        <input type="checkbox" id="avop" style="margin-top:2px;width:16px;height:16px;accent-color:var(--ac);flex-shrink:0">
+        <span>Souhlasím s <span onclick="showVOP()" style="color:var(--ac);text-decoration:underline;cursor:pointer">Podmínkami užívání</span> a beru na vědomí že SnapClue je studijní pomůcka</span>
+      </label>
+    </div>
+    <div class="fg hide" id="arefwrap" style="display:none">
+      <label>Referral kód <span style="color:var(--t3)">(volitelné)</span></label>
+      <input type="text" id="aref" placeholder="Kód od kamaráda" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+      <div class="hint">+10 kreditů navíc za platný kód</div>
+    </div>
+    <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
+    <div class="adiv">nebo pokračuj jako host</div>
+    <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
+    <div style="text-align:center;margin-top:20px;font-size:.65rem;color:#333">Nový účet = 10 kreditů zdarma 🎁</div>
+  </div>
+</div>
+
+<div class="screen" id="sm2">
+  <div class="top">
+    <div class="tlogo"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div>
+    <div class="tright">
+      <div class="cbadge" onclick="goCredits()"><span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span></div>
+      <div class="hbtn" onclick="openSidebar()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <div class="mc">
+    <div id="dzwrap">
+      <div class="costpill"><span class="cl">Cena generování</span><span class="cv">10 kreditů</span></div>
+      <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
+        <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
+        <div class="di">📸</div>
+        <h2>Vyfoť nebo nahraj test</h2>
+        <p>Klikni pro fotoaparát</p>
+      </div>
+      <div id="pw">
+        <img id="pimg" src="" alt="">
+        <button class="rmb" onclick="rmImg()">✕</button>
+      </div>
+    </div>
+    <div id="settbar">
+      <div class="setthead" onclick="toggleSett()">
+        <span>⚙ Nastavení výsledků</span>
+        <span class="settarrow" id="sarrow">▼</span>
+      </div>
+      <div class="settbody" id="sbody">
+        <div class="sr"><div class="sl">Jazyk</div><div class="so">
+          <button class="ob on" onclick="setOpt('lang','česky',this)">🇨🇿 CZ</button>
+          <button class="ob" onclick="setOpt('lang','in English',this)">🇬🇧 EN</button>
+          <button class="ob" onclick="setOpt('lang','auf Deutsch',this)">🇩🇪 DE</button>
+          <button class="ob" onclick="setOpt('lang','en español',this)">🇪🇸 ES</button>
+          <button class="ob" onclick="setOpt('lang','en français',this)">🇫🇷 FR</button>
+        </div></div>
+        <div class="sr"><div class="sl">Délka</div><div class="so">
+          <button class="ob on" onclick="setOpt('len','Buď maximálně stručný.',this)">⚡ Stručně</button>
+          <button class="ob" onclick="setOpt('len','Piš středně podrobně.',this)">📄 Středně</button>
+          <button class="ob" onclick="setOpt('len','Piš velmi podrobně.',this)">📚 Podrobně</button>
+        </div></div>
+        <div class="sr"><div class="sl">Forma</div><div class="so">
+          <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Výsledky</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako esej.',this)">✍ Esej</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
+          <button class="ob" onclick="setOpt('form','Formátuj jako Q&A.',this)">❓ Q&A</button>
+          <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Krok za krokem</button>
+        </div></div>
+        <div class="sr"><div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
+          <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..." maxlength="300" oninput="updCounter()"></textarea>
+          <div style="text-align:right;font-size:.68rem;margin-top:4px;font-family:var(--fm)"><span id="excounter" style="color:var(--t2)">0</span><span style="color:var(--t3)">/300</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="genarea">
+      <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit →</span></div>
+      <div class="errb" id="gerr"></div>
+      <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
+      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−10 kr</span></button>
+    </div>
+    <div id="rw">
+      <div class="rh">
+        <span class="rtag">✓ Výsledky připraven</span>
+        <div class="ract">
+          <button class="bsm" onclick="doCopy()">Kopírovat</button>
+          <button class="bsm" onclick="doIMG()">Uložit obrázek</button>
+          <button class="bsm" onclick="doPDF()">Uložit PDF</button>
+          <button class="bsm" onclick="doWatch(_lastTahakId)">⌚ Hodinky</button>
+        </div>
+      </div>
+      <div class="cc"><div id="rc"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="scr">
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div class="cbal"><div class="bnum" id="bnum">0</div><div class="blbl">Tvůj zůstatek kreditů</div></div>
+    <div class="ptitle">Koupit kredity</div>
+    <div class="pgrid">
+      <div class="pcard" onclick="buyPkg(50,55)"><div class="pcr">50</div><div class="pclbl">kreditů</div><div class="ppr">55 Kč</div><div class="pper">1,10 Kč/kr</div><div class="pth">~5 výsledků</div></div>
+      <div class="pcard pop" onclick="buyPkg(100,100)"><div class="ptag">NEJPOPULÁRNĚJŠÍ</div><div class="pcr">100</div><div class="pclbl">kreditů</div><div class="ppr">100 Kč</div><div class="pper">1,00 Kč/kr</div><div class="pth">~10 výsledků</div></div>
+      <div class="pcard" onclick="buyPkg(250,230)"><div class="pcr">250</div><div class="pclbl">kreditů</div><div class="ppr">230 Kč</div><div class="pper">0,92 Kč/kr</div><div class="pth">~25 výsledků</div></div>
+      <div class="pcard" onclick="buyPkg(500,420)"><div class="pcr">500</div><div class="pclbl">kreditů</div><div class="ppr">420 Kč</div><div class="pper">0,84 Kč/kr</div><div class="pth">~50 výsledků</div></div>
+    </div>
+    <div class="hsec"><div class="htitle">Historie transakcí</div><div id="hlist"></div></div>
+  </div>
+</div>
+
+<div class="screen" id="shist">
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:1.1rem;font-weight:800">Moje výsledky</div>
+      <div id="hcount" style="font-size:.72rem;color:var(--t2)"></div>
+    </div>
+    <div id="hcards"></div>
+  </div>
+</div>
+
+<div id="soverlay" onclick="closeSidebar()"></div>
+<div id="sidebar">
+  <div class="sbhead"><div class="sbemail" id="sbemail">—</div><button class="sbclose" onclick="closeSidebar()">✕</button></div>
+  <div class="sbbal">
+    <div class="sbnum" id="sbcr">0</div>
+    <div class="sblbl">🪙 kreditů</div>
+    <div id="sbadge" style="margin-top:10px;display:inline-block;background:#0a0a0a;border:1px solid #333;border-radius:100px;padding:4px 12px;font-size:.72rem;color:#888;letter-spacing:.08em">🎓 Student</div>
+  </div>
+  <div class="sbitem" onclick="closeSidebar();goProfile()">👤 Můj profil & odznaky</div>
+  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje výsledky</div>
+  <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
+  <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
+  <div class="sbitem" onclick="closeSidebar();doReport()">🐛 Nahlásit problém</div>
+  <div class="sbitem" onclick="toggleBlackMode()">
+    <span>🖤 True Black mode</span>
+    <span id="blacktoggle" style="font-size:.7rem;color:var(--t2)">OFF</span>
+  </div>
+  <div class="sbitem danger" onclick="doLogout()">↩ Odhlásit se</div>
+</div>
+
+<!-- PROFILE SCREEN -->
+<div class="screen" id="sprofile">
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="ccon">
+    <button class="backb" onclick="goMain()">← Zpět</button>
+
+    <!-- Hero profil -->
+    <div style="background:linear-gradient(135deg,#111 0%,#1a1505 100%);border:1px solid #2a2a2a;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8rem;opacity:.04;pointer-events:none">⚡</div>
+      <div style="width:72px;height:72px;background:#1a1a1a;border:2px solid var(--ac2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:2.2rem;position:relative" id="pbadgeicon">🎓</div>
+      <div style="font-weight:700;font-size:1rem;margin-bottom:4px" id="pemail">—</div>
+      <div style="display:inline-block;background:rgba(196,169,110,.1);border:1px solid var(--ac2);border-radius:100px;padding:4px 14px;font-size:.72rem;color:var(--ac);letter-spacing:.08em;margin-bottom:4px" id="pcurrentbadge">Student</div>
+      <div style="font-size:.65rem;color:#555;margin-top:6px" id="pjoindate"></div>
+    </div>
+
+    <!-- Statistiky -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--ac)" id="ptotal">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Výsledků</div>
+      </div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--go)" id="pspent">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Utraceno kr</div>
+      </div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
+        <div style="font-size:1.5rem;font-weight:800;color:var(--gr)" id="pearned">0</div>
+        <div style="font-size:.62rem;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em">Odznaků</div>
+      </div>
+    </div>
+
+    <!-- Progress do dalšího ranku -->
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:8px">
+        <span style="color:#888">Postup k dalšímu ranku</span>
+        <span style="font-weight:700;color:var(--go)" id="pnext">—</span>
+      </div>
+      <div style="background:#1a1a1a;border-radius:100px;height:6px;overflow:hidden">
+        <div id="pprogress" style="height:100%;background:linear-gradient(90deg,var(--ac2),var(--ac));transition:width .5s ease;width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Odznaky -->
+    <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Odznaky</div>
+    <div id="pbadges"></div>
+
+    <!-- Referral -->
+    <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin:20px 0 12px">Pozvat kamaráda</div>
+    <div style="background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:16px;margin-bottom:8px">
+      <div style="font-size:.78rem;color:#888;margin-bottom:12px">Pošli kamarádovi odkaz — on dostane <strong style="color:var(--ac)">+10 kr</strong> a ty dostaneš <strong style="color:var(--ac)">+10 kr</strong>. Max 2 pozvánky.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:10px 14px;font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--ac);letter-spacing:.1em" id="prefcode">—</div>
+        <button class="bsm" onclick="navigator.clipboard.writeText(document.getElementById('prefcode').textContent);toast('📋 Kód zkopírován!')">Kopírovat</button>
+      </div>
+      <button class="bp" style="margin-top:0" onclick="shareReferral()">🔗 Sdílet odkaz</button>
+      <div style="font-size:.68rem;color:#444;text-align:center;margin-top:8px" id="prefcount"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TUTORIAL MODAL -->
+<div id="tutorial" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;align-items:center;justify-content:center;padding:20px">
+  <div style="width:100%;max-width:420px;background:#111;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden;position:relative">
+    <div style="height:3px;background:#1a1a1a"><div id="tprogress" style="height:100%;background:var(--ac);transition:width .4s ease;width:33%"></div></div>
+    <div class="tstep" id="tstep1" style="padding:28px">
+      <div style="font-size:2.5rem;margin-bottom:16px;text-align:center">⚡</div>
+      <h2 style="font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:10px;color:var(--ac)">Vítej v SnapClue!</h2>
+      <p style="font-size:.88rem;color:#888;text-align:center;line-height:1.6;margin-bottom:24px">Za 30 sekund se naučíš vše co potřebuješ vědět. Pojďme na to!</p>
+      <button class="bp" onclick="tNext(2)">Začít →</button>
+      <button class="bs" style="margin-top:8px;font-size:.78rem;padding:10px" onclick="tFinish()">Přeskočit</button>
+    </div>
+    <div class="tstep" id="tstep2" style="padding:28px;display:none">
+      <div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;text-align:center">Krok 1 ze 2 · Focení</div>
+      <div id="tsim" style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:16px;position:relative;overflow:hidden">
+        <div style="font-size:.7rem;color:#555;margin-bottom:8px">VZOROVÝ TEST</div>
+        <div id="tsimcontent" style="font-size:.78rem;color:#666;line-height:1.6">1. Kdy začala první světová válka?<br>2. Kdo napsal Babičku?<br>3. Vypočítej: 2x + 5 = 13</div>
+        <div id="tviewfinder" style="display:none;position:absolute;inset:0;border:3px solid var(--ac);border-radius:12px"></div>
+        <div id="tflash" style="display:none;position:absolute;inset:0;background:white;border-radius:12px"></div>
+      </div>
+      <div id="tsimtext" style="font-size:.82rem;color:#888;text-align:center;margin-bottom:16px">Klikni na tlačítko a simuluj focení testu</div>
+      <button class="bp" id="tshootbtn" onclick="tSimulateShoot()">📸 Vyfotit test</button>
+    </div>
+    <div class="tstep" id="tstep3" style="padding:28px;display:none">
+      <div style="font-size:.72rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;text-align:center">Krok 2 ze 2 · Tajný mód</div>
+      <div style="font-size:1.5rem;text-align:center;margin-bottom:12px">🕵️</div>
+      <h3 style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:8px">Panic Mode</h3>
+      <p style="font-size:.82rem;color:#888;text-align:center;line-height:1.6;margin-bottom:16px">Kdyby přišel učitel — <strong style="color:var(--ac)">2x rychle poklepej</strong> kdekoliv. Zobrazí se jen hodiny.</p>
+      <div style="background:#1a1a1a;border-radius:12px;padding:16px;text-align:center;margin-bottom:16px">
+        <div id="tpanicprompt" style="font-size:.82rem;color:#888;margin-bottom:10px">👇 Zkus to — 2x poklepej na tuto oblast</div>
+        <div id="tpanicarea" style="height:60px;border:2px dashed #333;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#555;cursor:pointer;user-select:none" ontouchend="tHandlePanic()" ondblclick="tHandlePanic()">Poklepej 2x sem</div>
+        <div id="tpanicsuccess" style="display:none;margin-top:8px;color:var(--gr);font-size:.82rem">✓ Parádní! Teď víš jak se schovat 😄</div>
+      </div>
+      <button class="bp" id="tpanicnext" style="opacity:.4;cursor:not-allowed" disabled onclick="tNext(4)">Pokračovat →</button>
+    </div>
+
+    <!-- Mini panic overlay uvnitř tutorialu -->
+    <div id="tpanicscreen" style="display:none;position:absolute;inset:0;background:#000;z-index:10;align-items:center;justify-content:center;flex-direction:column;border-radius:20px">
+      <div style="font-size:3rem;font-weight:200;color:#fff;letter-spacing:.05em;font-family:system-ui" id="tpanicclock"></div>
+      <div style="font-size:.72rem;color:#444;margin-top:16px;letter-spacing:.1em">Podržte 1s pro návrat zpět</div>
+      <div style="margin-top:8px;font-size:.7rem;color:#333">Parádní! Jsi v incognito módu 🕵️</div>
+    </div>
+    <div class="tstep" id="tstep4" style="padding:28px;display:none;text-align:center">
+      <div style="font-size:2rem;margin-bottom:12px">⌚</div>
+      <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Výsledky na Apple Watch?</h2>
+      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:20px">Můžeš si výsledky otevřít přímo na hodinkách v Safari — ostrý text, scrollování korunkou.</p>
+      <div style="background:#0a0a0a;border:1px solid #2a2a2a;border-radius:12px;padding:16px;margin-bottom:20px;text-align:left">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+          <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">1</div>
+          <div style="font-size:.82rem;color:#ccc">Vygeneruj výsledky a klikni na tlačítko <strong style="color:var(--ac)">⌚ Hodinky</strong></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+          <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">2</div>
+          <div style="font-size:.82rem;color:#ccc">Pošli odkaz <strong style="color:var(--ac)">sám sobě přes iMessage</strong></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <div style="background:#c4a96e;color:#000;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0;margin-top:2px">3</div>
+          <div style="font-size:.82rem;color:#ccc">Na hodinkách otevři zprávu → klikni na odkaz → <strong style="color:var(--ac)">Safari</strong> otevře výsledky</div>
+        </div>
+      </div>
+      <button class="bp" onclick="tNext(5)">Rozumím →</button>
+      <button class="bs" style="margin-top:8px;font-size:.78rem;padding:10px" onclick="tNext(5)">Přeskočit</button>
+    </div>
+    <div class="tstep" id="tstep5" style="padding:28px;display:none;text-align:center">
+      <div style="width:80px;height:80px;background:#1a1a1a;border:2px solid #333;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem">🎓</div>
+      <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--ac)">Nyní jsi připraven!</h2>
+      <div style="display:inline-block;background:#1a1a1a;border:1px solid #333;border-radius:100px;padding:6px 16px;font-size:.75rem;color:#888;letter-spacing:.1em;margin-bottom:16px">🎓 STUDENT</div>
+      <p style="font-size:.82rem;color:#888;line-height:1.6;margin-bottom:24px">Teď víš vše. Vyfot test, nech AI udělat výsledky a pokud přijde učitel — víš co dělat.</p>
+      <button class="bp" onclick="tFinish()">Jdeme na to! ⚡</button>
+    </div>
+  </div>
+</div>
+<style>
+.tstep{animation:fadeUp .3s ease both}
+@keyframes tflashanim{0%{opacity:.9}100%{opacity:0;display:none}}
+</style>
+
+<!-- VOP MODAL -->
+<div id="vopmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#111;border:1px solid #2a2a2a;border-radius:20px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto">
+    <div style="padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#111;border-bottom:1px solid #2a2a2a;padding-bottom:14px">
+      <div style="font-weight:700;font-size:.95rem">Podmínky užívání</div>
+      <button onclick="closeVOP()" style="background:none;border:none;color:var(--t2);font-size:1.2rem;cursor:pointer">✕</button>
+    </div>
+    <div style="padding:20px;font-size:.78rem;color:#888;line-height:1.8">
+      <p style="color:var(--ac);font-weight:600;margin-bottom:12px">SnapClue — Podmínky užívání služby</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">1. Studijní pomůcka</strong><br>SnapClue je studijní pomůcka určená k procvičování a přípravě na testy. Uživatel je plně zodpovědný za způsob využití vygenerovaného obsahu.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">2. Věk uživatele</strong><br>Používáním služby potvrzuješ, že jsi starší 13 let, nebo máš souhlas zákonného zástupce.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">3. Kredity a platby</strong><br>Zakoupené kredity jsou nevratné. Každé generování výsledků stojí 10 kreditů. Ceny jsou uvedeny v CZK včetně DPH.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">4. Ochrana dat</strong><br>Ukládáme pouze email, telefonní číslo a historii transakcí. Data nejsou prodávána třetím stranám.</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">5. Odpovědnost</strong><br>Provozovatel neodpovídá za způsob použití vygenerovaného obsahu. Uživatel nese plnou odpovědnost za své jednání.</p>
+      <p style="color:#555;font-size:.7rem;margin-top:16px">Poslední aktualizace: duben 2026. Podmínky mohou být aktualizovány — o změnách budou uživatelé informováni.</p>
+    </div>
+    <div style="padding:16px;border-top:1px solid #2a2a2a">
+      <button class="bp" onclick="acceptVOP()">Souhlasím ✓</button>
+    </div>
+  </div>
+</div>
+
+<div id="sm" onclick="if(event.target===this)closeSM()">
+  <div class="smbox">
+    <h3>Koupit kredity</h3>
+    <p class="ssub">Bezpečná platba přes Stripe</p>
+    <div class="ssum"><div><div class="scr" id="mkcr">100</div><div class="slbl">kreditů</div></div><div class="spr" id="mkpr">89 Kč</div></div>
+    <div class="fg"><label>Číslo karty</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="fg"><label>Platnost</label><input type="text" placeholder="MM/RR" maxlength="5"></div>
+      <div class="fg"><label>CVC</label><input type="text" placeholder="123" maxlength="3"></div>
+    </div>
+    <div class="sbtns"><button class="bc" onclick="closeSM()">Zrušit</button><button class="bp" style="flex:1;margin-top:0" id="paybtn" onclick="doPay()">Zaplatit</button></div>
+    <div class="snote">🔒 Platba je šifrována a zabezpečena.</div>
+  </div>
+</div>
+
+<div id="tdmodal">
+  <div class="tdinner">
+    <div class="tdtop"><div style="font-size:.95rem;font-weight:700;color:var(--ac)" id="tdtitle"></div><div style="display:flex;gap:8px"><button class="bsm" id="tdimgbtn">🖼 PNG</button><button class="bsm" id="tdpdfbtn">📄 PDF</button><button class="bsm" id="tdwatchbtn">⌚ Hodinky</button><button class="bsm" onclick="closeTD()">✕ Zavřít</button></div></div>
+    <div class="cc"><div id="tdcontent"></div></div>
+  </div>
+</div>
+
+<div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat výsledek?</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
+    <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeDelModal()">Zrušit</button>
+      <button style="flex:1;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px;font-size:.85rem;font-weight:700;color:var(--rd);cursor:pointer" id="delmodalbtn">Smazat</button>
+    </div>
+  </div>
+</div>
+<div id="delmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">Smazat výsledek?</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:6px" id="delmodaltitle"></div>
+    <div style="font-size:.75rem;color:var(--t3);margin-bottom:20px">Tato akce je nevratná.</div>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeDelModal()">Zrušit</button>
+      <button style="flex:1;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px;font-size:.85rem;font-weight:700;color:var(--rd);cursor:pointer" id="delmodalbtn">Smazat</button>
+    </div>
+  </div>
+</div>
+<div id="bugmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">🐛 Nahlásit problém</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:14px">Popiš co se stalo a my to co nejdříve opravíme.</div>
+    <textarea id="bugtext" placeholder="Např: Při generování se zobrazí chyba..." style="width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;font-size:.82rem;color:var(--t1);resize:none;height:100px;outline:none;margin-bottom:14px"></textarea>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeBug()">Zrušit</button>
+      <button class="bp" style="flex:1;margin-top:0" onclick="sendBug()">Odeslat →</button>
+    </div>
+  </div>
+</div>
+<div id="reportmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">🐛 Nahlásit problém</div>
+    <div style="font-size:.75rem;color:var(--t2);margin-bottom:14px">Popiš co se stalo a my to co nejdříve opravíme.</div>
+    <textarea id="reporttext" style="width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:12px;font-size:.82rem;color:var(--t1);resize:none;height:100px;outline:none;font-family:var(--ff)" placeholder="Např: Aplikace se zasekla při generování..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="bc" style="flex:1" onclick="closeReport()">Zrušit</button>
+      <button class="bp" style="flex:1;margin-top:0" onclick="sendReport()">Odeslat →</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/export.js"></script>
+<script src="js/credits.js"></script>
+<script src="js/history.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/badges.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/tutorial.js"></script>
+<script src="js/panic.js"></script>
+</body>
+</html>

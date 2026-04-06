@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>SnapCheat</title>
+<title>SnapClue</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="SnapCheat">
+<meta name="apple-mobile-web-app-title" content="SnapClue">
 <meta name="theme-color" content="#000000">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -174,7 +174,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 <div class="screen on" id="sa">
   <div class="abox">
     <div style="position:relative;margin-bottom:6px;display:inline-block">
-      <div class="logo" style="position:relative;display:flex;align-items:center;gap:8px"><svg width="44" height="58" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>Snap<span>Cheat</span></div>
+      <div class="logo" style="position:relative;display:flex;align-items:center;gap:8px"><svg style="margin-top:6px" width="50" height="66" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>Snap<span>Cheat</span></div>
     </div>
     <div class="tag">AI tahák z fotky za sekundy</div>
     <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center">
@@ -196,7 +196,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div class="fg hide" id="avopwrap" style="display:none">
       <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.78rem;color:var(--t2);text-transform:none;letter-spacing:0">
         <input type="checkbox" id="avop" style="margin-top:2px;width:16px;height:16px;accent-color:var(--ac);flex-shrink:0">
-        <span>Souhlasím s <span onclick="showVOP()" style="color:var(--ac);text-decoration:underline;cursor:pointer">Podmínkami užívání</span> a beru na vědomí že SnapCheat je studijní pomůcka</span>
+        <span>Souhlasím s <span onclick="showVOP()" style="color:var(--ac);text-decoration:underline;cursor:pointer">Podmínkami užívání</span> a beru na vědomí že SnapClue je studijní pomůcka</span>
       </label>
     </div>
     <div class="fg hide" id="arefwrap" style="display:none">
@@ -213,7 +213,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <div class="screen" id="sm2">
   <div class="top">
-    <div class="tlogo"><svg width="28" height="38" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapCheat</div>
+    <div class="tlogo"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div>
     <div class="tright">
       <div class="cbadge" onclick="goCredits()"><span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span></div>
       <div class="hbtn" onclick="openSidebar()"><span></span><span></span><span></span></div>
@@ -225,7 +225,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
         <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
         <div class="di">📸</div>
-        <h2>Vyfoť nebo nahraj test</h2>
+        <h2>Vyfoť nebo nahraj Problém</h2>
         <p>Klikni pro fotoaparát</p>
       </div>
       <div id="pw">
@@ -235,7 +235,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     </div>
     <div id="settbar">
       <div class="setthead" onclick="toggleSett()">
-        <span>⚙ Nastavení taháku</span>
+        <span>⚙ Nastavení odpovědi</span>
         <span class="settarrow" id="sarrow">▼</span>
       </div>
       <div class="settbody" id="sbody">
@@ -269,7 +269,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit →</span></div>
       <div class="errb" id="gerr"></div>
       <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
-      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−20 kr</span></button>
+      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT ODPOVĚĎ <span class="bcost">−20 kr</span></button>
     </div>
     <div id="rw">
       <div class="rh">
@@ -287,7 +287,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 </div>
 
 <div class="screen" id="scr">
-  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg width="28" height="38" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr2">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
     <div class="cbal"><div class="bnum" id="bnum">0</div><div class="blbl">Tvůj zůstatek kreditů</div></div>
@@ -303,11 +303,11 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 </div>
 
 <div class="screen" id="shist">
-  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg width="28" height="38" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:1.1rem;font-weight:800">Moje taháky</div>
+      <div style="font-size:1.1rem;font-weight:800">Moje odpovědi</div>
       <div id="hcount" style="font-size:.72rem;color:var(--t2)"></div>
     </div>
     <div id="hcards"></div>
@@ -323,7 +323,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div id="sbadge" style="margin-top:10px;display:inline-block;background:#0a0a0a;border:1px solid #333;border-radius:100px;padding:4px 12px;font-size:.72rem;color:#888;letter-spacing:.08em">🎓 Student</div>
   </div>
   <div class="sbitem" onclick="closeSidebar();goProfile()">👤 Můj profil & odznaky</div>
-  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje taháky</div>
+  <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje odpovědi</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
   <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
   <div class="sbitem" onclick="toggleBlackMode()">
@@ -335,7 +335,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
 
 <!-- PROFILE SCREEN -->
 <div class="screen" id="sprofile">
-  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg width="28" height="38" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapCheat</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
+  <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr4">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
 
@@ -399,7 +399,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div style="height:3px;background:#1a1a1a"><div id="tprogress" style="height:100%;background:var(--ac);transition:width .4s ease;width:33%"></div></div>
     <div class="tstep" id="tstep1" style="padding:28px">
       <div style="font-size:2.5rem;margin-bottom:16px;text-align:center">⚡</div>
-      <h2 style="font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:10px;color:var(--ac)">Vítej v SnapCheat!</h2>
+      <h2 style="font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:10px;color:var(--ac)">Vítej v SnapClue!</h2>
       <p style="font-size:.88rem;color:#888;text-align:center;line-height:1.6;margin-bottom:24px">Za 30 sekund se naučíš vše co potřebuješ vědět. Pojďme na to!</p>
       <button class="bp" onclick="tNext(2)">Začít →</button>
       <button class="bs" style="margin-top:8px;font-size:.78rem;padding:10px" onclick="tFinish()">Přeskočit</button>
@@ -477,8 +477,8 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <button onclick="closeVOP()" style="background:none;border:none;color:var(--t2);font-size:1.2rem;cursor:pointer">✕</button>
     </div>
     <div style="padding:20px;font-size:.78rem;color:#888;line-height:1.8">
-      <p style="color:var(--ac);font-weight:600;margin-bottom:12px">SnapCheat — Podmínky užívání služby</p>
-      <p style="margin-bottom:10px"><strong style="color:#ccc">1. Studijní pomůcka</strong><br>SnapCheat je studijní pomůcka určená k procvičování a přípravě na testy. Uživatel je plně zodpovědný za způsob využití vygenerovaného obsahu.</p>
+      <p style="color:var(--ac);font-weight:600;margin-bottom:12px">SnapClue — Podmínky užívání služby</p>
+      <p style="margin-bottom:10px"><strong style="color:#ccc">1. Studijní pomůcka</strong><br>SnapClue je studijní pomůcka určená k procvičování a přípravě na testy. Uživatel je plně zodpovědný za způsob využití vygenerovaného obsahu.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">2. Věk uživatele</strong><br>Používáním služby potvrzuješ, že jsi starší 13 let, nebo máš souhlas zákonného zástupce.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">3. Kredity a platby</strong><br>Zakoupené kredity jsou nevratné. Každé generování taháku stojí 20 kreditů. Ceny jsou uvedeny v CZK včetně DPH.</p>
       <p style="margin-bottom:10px"><strong style="color:#ccc">4. Ochrana dat</strong><br>Ukládáme pouze email, telefonní číslo a historii transakcí. Data nejsou prodávána třetím stranám.</p>
@@ -733,7 +733,7 @@ async function doAuth(){
 function demoLogin(){
   // Demo má jen 20 kreditů - přesně na 1 generování, žádné dobíjení
   const demoCredits=parseInt(localStorage.getItem('sc_demo_cr')||'20');
-  loginAs('demo@snapcheat.cz','demo',demoCredits,[{t:'plus',l:'Demo kredity',a:'+20 kr',d:today()}]);
+  loginAs('demo@snapclue.cz','demo',demoCredits,[{t:'plus',l:'Demo kredity',a:'+20 kr',d:today()}]);
   toast('👀 Demo mód — 1 tahák zdarma!');
 }
 
@@ -866,7 +866,7 @@ function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').in
 function doWatch(id){
   if(!id||typeof id!=='string'||id===String(Math.floor(id))){toast('⌚ Sdílení na hodinky není dostupné v demo módu');return}
   const url='https://satnik-api.marjansta90.workers.dev/watch/'+id;
-  if(navigator.share){navigator.share({title:'SnapCheat tahák',text:'Otevři na hodinkách v Safari:',url})}
+  if(navigator.share){navigator.share({title:'SnapClue tahák',text:'Otevři na hodinkách v Safari:',url})}
   else{navigator.clipboard.writeText(url);toast('📋 URL zkopírována — pošli si ji přes iMessage!')}
 }
 
@@ -929,7 +929,7 @@ async function doWatchIMG(){
     // Header
     ctx.fillStyle='#e8d5b0';
     ctx.font='bold 22px system-ui';
-    ctx.fillText('⚡ SnapCheat',PADDING,38);
+    ctx.fillText('⚡ SnapClue',PADDING,38);
     ctx.fillStyle='#333';
     ctx.fillRect(PADDING,48,W-PADDING*2,1);
 
@@ -950,7 +950,7 @@ async function doWatchIMG(){
     // Footer
     ctx.fillStyle='#222';ctx.fillRect(PADDING,H-footerH,W-PADDING*2,1);
     ctx.fillStyle='#444';ctx.font='12px system-ui';
-    ctx.fillText('snap-cheat.vercel.app',PADDING,H-12);
+    ctx.fillText('snap-clue.vercel.app',PADDING,H-12);
 
     // Download
     const link=document.createElement('a');
@@ -1204,7 +1204,7 @@ function shareReferral(){
   const code=getMyRefCode();
   const url=window.location.origin+window.location.pathname+'?ref='+code;
   if(navigator.share){
-    navigator.share({title:'SnapCheat',text:'Zkus SnapCheat — AI tahák z fotky za sekundy! Registruj se přes můj odkaz a dostaneš +10 kreditů zdarma 🎁',url});
+    navigator.share({title:'SnapClue',text:'Zkus SnapClue — AI tahák z fotky za sekundy! Registruj se přes můj odkaz a dostaneš +10 kreditů zdarma 🎁',url});
   }else{
     navigator.clipboard.writeText(url);
     toast('🔗 Odkaz zkopírován!');

@@ -1,11 +1,11 @@
 async function checkFormulasAccess(){
   if(!userId||userId==='demo')return false;
-  if(localStorage.getItem('sc_formulas_unlocked_'+userId)==='true')return true;
+  if(localStorage.getItem('sc_formulas_token_'+userId))return true;
 
   try{
-    const rows=await sbFetch('/rest/v1/users?id=eq.'+userId+'&select=formulas_unlocked');
-    if(rows&&rows[0]&&rows[0].formulas_unlocked===true){
-      localStorage.setItem('sc_formulas_unlocked_'+userId,'true');
+    const rows=await sbFetch('/rest/v1/users?id=eq.'+userId+'&select=formulas_token');
+    if(rows&&rows[0]&&rows[0].formulas_token){
+      localStorage.setItem('sc_formulas_token_'+userId,rows[0].formulas_token);
       return true;
     }
   }catch(e){}
@@ -134,8 +134,9 @@ async function unlockFormulas(){
   if(btn){btn.disabled=true;btn.textContent='Odemykám...'}
   try{
     credits-=100;
-    await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits,formulas_unlocked:true});
-    localStorage.setItem('sc_formulas_unlocked_'+userId,'true');
+    const token=crypto.randomUUID().replace(/-/g,'')+crypto.randomUUID().replace(/-/g,'');
+    await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits,formulas_token:token});
+    localStorage.setItem('sc_formulas_token_'+userId,token);
     updCr();
     await saveU();
     toast('🔓 Vzorečky odemčeny!');
@@ -150,7 +151,8 @@ async function unlockFormulas(){
 
 function doWatchFormulas(){
   const tab=document.getElementById('fcontent-math')&&document.getElementById('fcontent-math').style.display!=='none'?'math':'phys';
-  const watchUrl='https://satnik-api.marjansta90.workers.dev/formulas/'+tab+'?user='+userId;
+  const token=localStorage.getItem('sc_formulas_token_'+userId)||'';
+  const watchUrl='https://satnik-api.marjansta90.workers.dev/formulas/'+tab+'?token='+token;
   if(navigator.share){navigator.share({title:'SnapClue Vzorečky',text:'Otevři vzorečky na hodinkách:',url:watchUrl})}
   else{navigator.clipboard.writeText(watchUrl);toast('📋 URL zkopírována!')}
 }

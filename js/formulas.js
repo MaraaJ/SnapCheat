@@ -1,14 +1,130 @@
-function goFormulas(){
+async function checkFormulasAccess(){
+  const token=localStorage.getItem('sc_formulas_token');
+  const expiry=parseInt(localStorage.getItem('sc_formulas_expiry')||'0');
+  if(token&&expiry>Date.now())return true;
+
+  if(!userId||userId==='demo')return false;
+  try{
+    const rows=await sbFetch('/rest/v1/users?id=eq.'+userId+'&select=formulas_token,formulas_token_expiry');
+    if(rows&&rows[0]&&rows[0].formulas_token){
+      const dbExpiry=new Date(rows[0].formulas_token_expiry).getTime();
+      if(dbExpiry>Date.now()){
+        localStorage.setItem('sc_formulas_token',rows[0].formulas_token);
+        localStorage.setItem('sc_formulas_expiry',String(dbExpiry));
+        return true;
+      }
+    }
+  }catch(e){}
+  return false;
+}
+
+async function goFormulas(){
   document.getElementById('tcr5').textContent=credits;
-  showFTab('math');
+  const access=await checkFormulasAccess();
+  if(!access){
+    renderFormulasLocked();
+  }else{
+    renderFormulasUnlocked();
+    showFTab('math');
+  }
   show('sformulas');
 }
 
+function renderFormulasLocked(){
+  const con=document.querySelector('#sformulas .ccon');
+  con.innerHTML=`
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;gap:16px">
+      <div style="font-size:3rem">🔒</div>
+      <div style="font-size:1.1rem;font-weight:800">Vzorečky jsou prémiová funkce</div>
+      <div style="font-size:.82rem;color:var(--t2)">Odemkni přístup na 24 hodin</div>
+      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:12px;padding:14px 28px;font-size:1.4rem;font-weight:800;color:var(--ac)">100 kreditů</div>
+      <button class="bp" style="min-width:160px" onclick="unlockFormulas()">🔓 Odemknout</button>
+      <div style="font-size:.72rem;color:var(--t3)">Ty máš momentálně <span style="color:var(--t1)">${credits}</span> kreditů</div>
+    </div>
+  `;
+}
+
+function renderFormulasUnlocked(){
+  const con=document.querySelector('#sformulas .ccon');
+  con.innerHTML=`
+    <button class="backb" onclick="goMain()">← Zpět</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:1.1rem;font-weight:800">📐 Vzorečky</div>
+      <button class="bsm" onclick="doWatchFormulas()">⌚ Na hodinky</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button id="ftab-math" class="bp" style="flex:1;padding:10px;font-size:.82rem" onclick="showFTab('math')">📊 Matematika</button>
+      <button id="ftab-phys" class="bs" style="flex:1;padding:10px;font-size:.82rem" onclick="showFTab('phys')">⚡ Fyzika</button>
+    </div>
+    <div id="fcontent-math"><div class="cc">
+      <h2>Matematika</h2>
+      <h3>Obvody</h3>
+      <div class="highlight">Čtverec: o = 4a</div>
+      <div class="highlight">Obdélník: o = 2(a + b)</div>
+      <div class="highlight">Trojúhelník: o = a + b + c</div>
+      <div class="highlight">Kruh: o = 2πr</div>
+      <h3>Obsahy</h3>
+      <div class="highlight">Čtverec: S = a²</div>
+      <div class="highlight">Obdélník: S = a · b</div>
+      <div class="highlight">Trojúhelník: S = (a · v) / 2</div>
+      <div class="highlight">Kruh: S = πr²</div>
+      <h3>Objem</h3>
+      <div class="highlight">Krychle: V = a³</div>
+      <div class="highlight">Kvádr: V = a · b · c</div>
+      <div class="highlight">Válec: V = πr² · h</div>
+      <div class="highlight">Kužel: V = (πr² · h) / 3</div>
+      <div class="highlight">Koule: V = (4/3) · πr³</div>
+      <h3>Pythagorova věta</h3>
+      <div class="highlight">c² = a² + b²</div>
+      <h3>Kvadratická rovnice</h3>
+      <div class="highlight">ax² + bx + c = 0</div>
+      <div class="highlight">x = (−b ± √(b²−4ac)) / 2a</div>
+      <h3>Procenta</h3>
+      <div class="highlight">p% z x = x · p / 100</div>
+      <h3>Goniometrie</h3>
+      <div class="highlight">sin α = protilehlá / přepona</div>
+      <div class="highlight">cos α = přilehlá / přepona</div>
+      <div class="highlight">tan α = protilehlá / přilehlá</div>
+    </div></div>
+    <div id="fcontent-phys" style="display:none"><div class="cc">
+      <h2>Fyzika</h2>
+      <h3>Kinematika</h3>
+      <div class="highlight">Rychlost: v = s / t</div>
+      <div class="highlight">Zrychlení: a = Δv / t</div>
+      <div class="highlight">Dráha: s = v₀t + ½at²</div>
+      <div class="highlight">Volný pád: h = ½gt²</div>
+      <h3>Dynamika</h3>
+      <div class="highlight">F = m · a</div>
+      <div class="highlight">Tíhová síla: G = m · g</div>
+      <h3>Práce a energie</h3>
+      <div class="highlight">Práce: W = F · s</div>
+      <div class="highlight">Výkon: P = W / t</div>
+      <div class="highlight">Kinetická energie: E_k = ½mv²</div>
+      <div class="highlight">Potenciální energie: E_p = mgh</div>
+      <h3>Tlak</h3>
+      <div class="highlight">p = F / S</div>
+      <div class="highlight">Hydrostatický tlak: p = ρgh</div>
+      <h3>Elektřina</h3>
+      <div class="highlight">Ohmův zákon: U = R · I</div>
+      <div class="highlight">Výkon: P = U · I</div>
+      <h3>Teplo</h3>
+      <div class="highlight">Q = m · c · ΔT</div>
+      <h3>Hustota</h3>
+      <div class="highlight">ρ = m / V</div>
+    </div></div>
+  `;
+}
+
 function showFTab(tab){
-  document.getElementById('fcontent-math').style.display=tab==='math'?'block':'none';
-  document.getElementById('fcontent-phys').style.display=tab==='phys'?'block':'none';
+  const math=document.getElementById('fcontent-math');
+  const phys=document.getElementById('fcontent-phys');
+  if(!math||!phys)return;
+  math.style.display=tab==='math'?'block':'none';
+  phys.style.display=tab==='phys'?'block':'none';
   const mathBtn=document.getElementById('ftab-math');
   const physBtn=document.getElementById('ftab-phys');
+  if(!mathBtn||!physBtn)return;
   if(tab==='math'){
     mathBtn.className='bp';mathBtn.style.cssText='flex:1;padding:10px;font-size:.82rem';
     physBtn.className='bs';physBtn.style.cssText='flex:1;padding:10px;font-size:.82rem';
@@ -18,9 +134,33 @@ function showFTab(tab){
   }
 }
 
+async function unlockFormulas(){
+  if(credits<100){toast('❌ Nemáš dost kreditů! Potřebuješ 100 kr.');return}
+  const btn=document.querySelector('#sformulas .bp');
+  if(btn){btn.disabled=true;btn.textContent='Odemykám...'}
+  try{
+    credits-=100;
+    const token=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+    const expiry=new Date(Date.now()+24*60*60*1000).toISOString();
+    await sbFetch('/rest/v1/users?id=eq.'+userId,'PATCH',{credits,formulas_token:token,formulas_token_expiry:expiry});
+    localStorage.setItem('sc_formulas_token',token);
+    localStorage.setItem('sc_formulas_expiry',String(Date.now()+24*60*60*1000));
+    updCr();
+    await saveU();
+    toast('🔓 Vzorečky odemčeny na 24 hodin!');
+    renderFormulasUnlocked();
+    showFTab('math');
+  }catch(e){
+    credits+=100;
+    if(btn){btn.disabled=false;btn.textContent='🔓 Odemknout'}
+    toast('❌ Chyba: '+e.message);
+  }
+}
+
 function doWatchFormulas(){
-  const tab=document.getElementById('fcontent-math').style.display!=='none'?'math':'phys';
-  const watchUrl='https://satnik-api.marjansta90.workers.dev/formulas/'+tab;
+  const tab=document.getElementById('fcontent-math')&&document.getElementById('fcontent-math').style.display!=='none'?'math':'phys';
+  const token=localStorage.getItem('sc_formulas_token')||'';
+  const watchUrl='https://satnik-api.marjansta90.workers.dev/formulas/'+tab+(token?'?token='+token:'');
   if(navigator.share){navigator.share({title:'SnapClue Vzorečky',text:'Otevři vzorečky na hodinkách:',url:watchUrl})}
   else{navigator.clipboard.writeText(watchUrl);toast('📋 URL zkopírována!')}
 }

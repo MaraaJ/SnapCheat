@@ -269,7 +269,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
       <div id="nc">🪙 Nemáš dost kreditů! <span onclick="goCredits()">Koupit →</span></div>
       <div class="errb" id="gerr"></div>
       <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
-      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT VÝSLEDEK! <span class="bcost">−10 kr</span></button>
+      <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT TAHÁK <span class="bcost">−10 kr</span></button>
     </div>
     <div id="rw">
       <div class="rh">
@@ -326,6 +326,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
   <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje výsledky</div>
   <div class="sbitem" onclick="closeSidebar();goCredits()">🪙 Koupit kredity</div>
   <div class="sbitem" onclick="closeSidebar();startTutorial()">❓ Jak to funguje</div>
+  <div class="sbitem" onclick="closeSidebar();doReport()">🐛 Nahlásit problém</div>
   <div class="sbitem" onclick="toggleBlackMode()">
     <span>🖤 True Black mode</span>
     <span id="blacktoggle" style="font-size:.7rem;color:var(--t2)">OFF</span>
@@ -532,6 +533,28 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important}
     <div style="display:flex;gap:10px">
       <button class="bc" style="flex:1" onclick="closeDelModal()">Zrušit</button>
       <button style="flex:1;background:#2a1515;border:1px solid #5a2020;border-radius:10px;padding:12px;font-size:.85rem;font-weight:700;color:var(--rd);cursor:pointer" id="delmodalbtn">Smazat</button>
+    </div>
+  </div>
+</div>
+<div id="bugmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">🐛 Nahlásit problém</div>
+    <div style="font-size:.78rem;color:var(--t2);margin-bottom:14px">Popiš co se stalo a my to co nejdříve opravíme.</div>
+    <textarea id="bugtext" placeholder="Např: Při generování se zobrazí chyba..." style="width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px;font-size:.82rem;color:var(--t1);resize:none;height:100px;outline:none;margin-bottom:14px"></textarea>
+    <div style="display:flex;gap:10px">
+      <button class="bc" style="flex:1" onclick="closeBug()">Zrušit</button>
+      <button class="bp" style="flex:1;margin-top:0" onclick="sendBug()">Odeslat →</button>
+    </div>
+  </div>
+</div>
+<div id="reportmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:450;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:24px;width:100%;max-width:340px">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">🐛 Nahlásit problém</div>
+    <div style="font-size:.75rem;color:var(--t2);margin-bottom:14px">Popiš co se stalo a my to co nejdříve opravíme.</div>
+    <textarea id="reporttext" style="width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:12px;font-size:.82rem;color:var(--t1);resize:none;height:100px;outline:none;font-family:var(--ff)" placeholder="Např: Aplikace se zasekla při generování..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="bc" style="flex:1" onclick="closeReport()">Zrušit</button>
+      <button class="bp" style="flex:1;margin-top:0" onclick="sendReport()">Odeslat →</button>
     </div>
   </div>
 </div>
@@ -1113,6 +1136,33 @@ async function confirmDelTahak(){
 
 function showVOP(){document.getElementById('vopmodal').style.display='flex'}
 function closeVOP(){document.getElementById('vopmodal').style.display='none'}
+
+function doReport(){
+  const modal=document.getElementById('reportmodal');
+  modal.style.display='flex';
+  document.getElementById('reporttext').value='';
+}
+function closeReport(){document.getElementById('reportmodal').style.display='none'}
+function sendReport(){
+  const txt=document.getElementById('reporttext').value.trim();
+  if(!txt){toast('✏️ Napiš co se stalo');return}
+  const subject=encodeURIComponent('SnapClue — Nahlášený problém');
+  const body=encodeURIComponent('Uživatel: '+(user||'neznámý')+'\n\nPopis problému:\n'+txt);
+  window.open('mailto:snapcheat.app@gmail.com?subject='+subject+'&body='+body);
+  closeReport();
+  toast('📧 Otevřen emailový klient!');
+}
+
+function reportBug(){document.getElementById('bugmodal').style.display='flex';document.getElementById('bugtext').value=''}
+function closeBug(){document.getElementById('bugmodal').style.display='none'}
+function sendBug(){
+  const txt=document.getElementById('bugtext').value.trim();
+  if(!txt){toast('✏️ Popiš prosím problém');return}
+  const sub=encodeURIComponent('SnapClue - Nahlášený problém');
+  const body=encodeURIComponent('Uživatel: '+(user||'neznámý')+'\n\nProblém:\n'+txt);
+  window.open('mailto:snapcheat.app@gmail.com?subject='+sub+'&body='+body);
+  closeBug();toast('📧 Otevírám emailového klienta...');
+}
 function acceptVOP(){document.getElementById('avop').checked=true;closeVOP();toast('✓ Podmínky přijaty')}
 
 function toggleBlackMode(){
@@ -1350,6 +1400,12 @@ function tFinish(){
   document.getElementById('tutorial').style.display='none';
   localStorage.setItem('sc_tutorial_done','1');
   tPanicDone=false;tPanicTapCount=0;
+}
+
+function doReport(){
+  const subject=encodeURIComponent('SnapClue — Nahlášení problému');
+  const body=encodeURIComponent('Popis problému:\n\n\nUživatel: '+(user||'neznámý')+'\nVerze: snapclue.app');
+  window.location.href='mailto:snapcheat.app@gmail.com?subject='+subject+'&body='+body;
 }
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}

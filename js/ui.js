@@ -3,6 +3,7 @@ function show(id){document.querySelectorAll('.screen').forEach(s=>{s.classList.r
 function goMain(){show('sm2')}
 function goCredits(){updCrScreen();show('scr')}
 function goHistory(){loadTH();renderHistory();document.getElementById('tcr3').textContent=credits;show('shist')}
+function goFormulas(){document.getElementById('tcr5').textContent=credits;showFTab('math');show('sformulas')}
 
 function openSidebar(){document.getElementById('sidebar').classList.add('on');document.getElementById('soverlay').classList.add('on');document.getElementById('sbcr').textContent=credits}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('on');document.getElementById('soverlay').classList.remove('on')}

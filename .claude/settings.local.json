@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check js/formulas.js)",
+      "Bash(ls *.js)",
+      "Bash(grep -n \"init\\(\\)\\\\|DOMContentLoaded\\\\|window.onload\\\\|window.addEventListener\" index.html js/*.js)",
+      "Bash(grep -n \"initBlackMode\\\\|toggleBlackMode\\\\|blacktoggle\" js/*.js)",
+      "Bash(grep -n \"getElementById\\('sm'\\)\" js/*.js)",
+      "Bash(node -e ':*)"
+    ]
+  }
+}

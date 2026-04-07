@@ -12,6 +12,7 @@ async function goProfile(){
   document.getElementById('pspent').textContent=spent;
   document.getElementById('pearned').textContent=earned.length;
   document.getElementById('tcr4').textContent=credits;
+  loadStreak();
 
   // Join date from localStorage
   const session=JSON.parse(localStorage.getItem('sc_session')||'{}');

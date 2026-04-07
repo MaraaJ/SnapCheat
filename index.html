@@ -242,6 +242,7 @@
     <div class="sbnum" id="sbcr">0</div>
     <div class="sblbl">🪙 kreditů</div>
     <div id="sbadge" style="margin-top:10px;display:inline-block;background:#0a0a0a;border:1px solid #333;border-radius:100px;padding:4px 12px;font-size:.72rem;color:#888;letter-spacing:.08em">🎓 Student</div>
+    <div id="sbstreak" style="margin-top:6px;font-size:.75rem;color:#f59e0b;font-weight:700">🔥 0 dní</div>
   </div>
   <div class="sbitem" onclick="closeSidebar();goProfile()">👤 Můj profil & odznaky</div>
   <div class="sbitem" onclick="closeSidebar();goHistory()">📋 Moje výsledky</div>
@@ -271,6 +272,14 @@
       <div style="font-size:.65rem;color:#555;margin-top:6px" id="pjoindate"></div>
     </div>
 
+    <!-- Streak -->
+    <div style="background:linear-gradient(135deg,#1a1200 0%,#1a1505 100%);border:1px solid #4a3a10;border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px">
+      <div style="font-size:2.8rem;line-height:1">🔥</div>
+      <div>
+        <div style="font-size:2rem;font-weight:800;color:#f59e0b;line-height:1" id="pstreak">0</div>
+        <div style="font-size:.65rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Dní v řadě</div>
+      </div>
+    </div>
     <!-- Statistiky -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;text-align:center">
@@ -495,6 +504,7 @@
 <script src="js/tutorial.js"></script>
 <script src="js/panic.js"></script>
 <script src="js/formulas.js"></script>
+<script src="js/streak.js"></script>
 <script src="js/auth.js"></script>
 </body>
 </html>

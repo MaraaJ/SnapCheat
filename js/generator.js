@@ -37,6 +37,7 @@ async function doGen(){
     // Uložit demo kredity lokálně
     if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);
+    updateStreak();
     document.getElementById('rc').innerHTML=txt;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});

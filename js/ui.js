@@ -85,6 +85,9 @@ function rmImg2(){
 }
 
 function updCostPill(){
+  const cost=img2?COST2:COST;
   const lbl=document.getElementById('costlbl');
-  if(lbl)lbl.textContent=(img2?COST2:COST)+' kreditů';
+  if(lbl)lbl.textContent=cost+' kreditů';
+  const bcost=document.querySelector('#gbtn .bcost');
+  if(bcost)bcost.textContent='−'+cost+' kr';
 }

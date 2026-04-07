@@ -53,54 +53,6 @@ async function doGen(){
   finally{document.getElementById('gbtn').disabled=false;document.getElementById('glw').style.display='none'}
 }
 
-async function doLink(){
-  if(credits<COST_LINK){showErr('Nemáš dost kreditů! Potřebuješ '+COST_LINK+' kr.');return}
-  if(!img){showErr('Nahraj nejdříve fotku testu!');return}
-  document.getElementById('gerr').style.display='none';
-  document.getElementById('lbtn').disabled=true;
-  document.getElementById('glw').style.display='flex';
-  const b64=img.split(',')[1];const mt=img.split(';')[0].split(':')[1];
-  const linkPrompt=`Přečti tento test s otázkami a odpověďmi. Vytvoř přehlednou HTML stránku. Skupiny označené A měj nadpisy červeně (#ff4444) s background #1a0000, skupiny B oranžově (#f5a623) s background #1a0e00. Podotázky a,b,c zobraz jako .q třídu, odpovědi jako .ans s šipkou →. Styl: černé pozadí, font-size 12px, padding 10px. Vrať pouze HTML obsah těla stránky bez DOCTYPE a head tagů.`;
-  try{
-    if(!navigator.onLine)throw new Error('OFFLINE');
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,system:'Vrať pouze HTML obsah. Žádný markdown, žádný DOCTYPE, žádný <html> ani <head> tag.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:linkPrompt}]}]})}).catch(()=>{throw new Error('OFFLINE')});
-    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
-    const d=await res.json();
-    const txt=d.content?.map(b=>b.text||'').join('')||'';
-    if(!txt)throw new Error('Prázdná odpověď');
-    const title='Odkaz: '+today();
-    let watchId=null;
-    if(userId&&userId!=='demo'){
-      const saved=await sbFetch('/rest/v1/tahaky','POST',{user_id:userId,title,content:txt});
-      const s=Array.isArray(saved)?saved[0]:saved;
-      watchId=s?.id||null;
-      tahakyHistory.unshift({id:s.id,title,content:txt,date:today(),time:new Date().toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})});
-    }
-    credits-=COST_LINK;
-    txHistory.push({t:'minus',l:'Vytvoření odkazu',a:'-'+COST_LINK+' kr',d:today()});
-    await saveU();
-    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Vytvoření odkazu',amount:-COST_LINK,type:'minus'}).catch(()=>{});
-    saveSession();updCr();
-    if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
-    if(watchId){
-      const url='https://satnik-api.marjansta90.workers.dev/watch/'+watchId;
-      if(navigator.share){navigator.share({title:'SnapClue odkaz',text:'Otevři na hodinkách:',url})}
-      else{navigator.clipboard.writeText(url);toast('📎 Odkaz zkopírován! −'+COST_LINK+' kr')}
-    }else{
-      toast('📎 Odkaz vytvořen! −'+COST_LINK+' kr');
-    }
-  }catch(e){
-    if(e.message==='OFFLINE'||e.message.includes('fetch')||e.message.includes('Failed')){
-      showErr('📡 Žádné připojení. Kredity nebyly odečteny.');
-    }else{
-      showErr('Chyba: '+e.message);
-    }
-  }finally{
-    document.getElementById('lbtn').disabled=false;
-    document.getElementById('glw').style.display='none';
-  }
-}
-
 function showErr(m){const b=document.getElementById('gerr');b.textContent=m;b.style.display='block';document.getElementById('glw').style.display='none';document.getElementById('gbtn').disabled=false}
 
 async function saveU(){

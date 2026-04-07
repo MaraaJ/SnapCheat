@@ -80,6 +80,40 @@ function renderFormulasUnlocked(){
       <div class="highlight">sin α = protilehlá / přepona</div>
       <div class="highlight">cos α = přilehlá / přepona</div>
       <div class="highlight">tan α = protilehlá / přilehlá</div>
+      <table style="width:100%;border-collapse:collapse;background:#111;font-size:12px;margin-top:10px">
+        <tr>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">α</th>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">0°</th>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">30°</th>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">45°</th>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">60°</th>
+          <th style="border:1px solid #333;padding:6px;color:#f5a623">90°</th>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333;padding:6px;color:#f5a623">sin</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">0</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">1/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√2/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√3/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">1</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333;padding:6px;color:#f5a623">cos</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">1</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√3/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√2/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">1/2</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">0</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333;padding:6px;color:#f5a623">tan</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">0</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√3/3</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">1</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">√3</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">—</td>
+        </tr>
+      </table>
     </div></div>
     <div id="fcontent-phys" style="display:none"><div class="cc">
       <h2>Fyzika</h2>

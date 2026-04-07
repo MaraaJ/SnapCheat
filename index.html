@@ -16,26 +16,72 @@
 
 <div class="screen on" id="sa">
   <div class="abox">
-    <div style="position:relative;margin-bottom:6px;display:inline-block">
-      <div class="logo" style="position:relative;display:flex;align-items:center;gap:8px"><svg style="margin-top:6px" width="50" height="66" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>Snap<span>Clue</span></div>
+
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <svg width="50" height="66" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>
+      <div class="logo">Snap<span>Clue</span></div>
     </div>
-    <div class="tag">AI výsledky z fotky za sekundy</div>
-    <div style="display:flex;gap:8px;margin-bottom:28px;justify-content:center">
-      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">📸 Vyfot</div>
-      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
-      <div style="background:#1a1a1a;border-radius:100px;padding:5px 12px;font-size:.68rem;color:#666">⚡ AI</div>
-      <div style="color:#333;font-size:.8rem;line-height:2">→</div>
-      <div style="background:#1a1505;border:1px solid #4a3a10;border-radius:100px;padding:5px 12px;font-size:.68rem;color:var(--ac)">✓ Výsledky</div>
+
+    <!-- Tagline -->
+    <div class="tag" style="margin-bottom:28px">Vyfot test. Získej odpovědi. Za sekundy.</div>
+
+    <!-- Flow indikátor -->
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:36px;justify-content:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="width:48px;height:48px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">📸</div>
+        <div style="font-size:.6rem;color:#555;letter-spacing:.06em;text-transform:uppercase">Vyfot</div>
+      </div>
+      <div style="color:#2a2a2a;font-size:1.1rem;margin-bottom:18px">›</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="width:48px;height:48px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">⚡</div>
+        <div style="font-size:.6rem;color:#555;letter-spacing:.06em;text-transform:uppercase">AI</div>
+      </div>
+      <div style="color:#2a2a2a;font-size:1.1rem;margin-bottom:18px">›</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="width:48px;height:48px;background:#1a1505;border:1px solid #4a3a10;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">✓</div>
+        <div style="font-size:.6rem;color:var(--ac);letter-spacing:.06em;text-transform:uppercase">Výsledky</div>
+      </div>
     </div>
-    <div class="atabs">
+
+    <!-- Tabs -->
+    <div class="atabs" style="margin-bottom:24px">
       <button class="atab on" onclick="atab('login',this)">Přihlásit se</button>
       <button class="atab" onclick="atab('reg',this)">Registrovat</button>
     </div>
+
     <div class="aerr" id="aerr"></div>
-    <div class="fg"><label>E-mail</label><input type="email" id="aemail" placeholder="tvuj@email.cz"></div>
-    <div class="fg"><label>Heslo</label><input type="password" id="apass" placeholder="••••••••"></div>
-    <div class="fg hide" id="aphwrap"><label>Telefonní číslo</label><input type="tel" id="aphone" placeholder="+420 123 456 789"><div class="hint">Jedno číslo = jeden účet</div></div>
-    <div class="fg hide" id="acwrap"><label>Potvrdit heslo</label><input type="password" id="aconf" placeholder="••••••••"></div>
+
+    <!-- Pole s ikonami -->
+    <div class="fg">
+      <label>E-mail</label>
+      <div class="finput-wrap">
+        <span class="finput-icon">✉️</span>
+        <input type="email" id="aemail" placeholder="tvuj@email.cz">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Heslo</label>
+      <div class="finput-wrap">
+        <span class="finput-icon">🔒</span>
+        <input type="password" id="apass" placeholder="••••••••">
+      </div>
+    </div>
+    <div class="fg hide" id="aphwrap">
+      <label>Telefonní číslo</label>
+      <div class="finput-wrap">
+        <span class="finput-icon">📱</span>
+        <input type="tel" id="aphone" placeholder="+420 123 456 789">
+      </div>
+      <div class="hint">Jedno číslo = jeden účet</div>
+    </div>
+    <div class="fg hide" id="acwrap">
+      <label>Potvrdit heslo</label>
+      <div class="finput-wrap">
+        <span class="finput-icon">🔒</span>
+        <input type="password" id="aconf" placeholder="••••••••">
+      </div>
+    </div>
     <div class="fg hide" id="avopwrap" style="display:none">
       <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.78rem;color:var(--t2);text-transform:none;letter-spacing:0">
         <input type="checkbox" id="avop" style="margin-top:2px;width:16px;height:16px;accent-color:var(--ac);flex-shrink:0">
@@ -47,10 +93,22 @@
       <input type="text" id="aref" placeholder="Kód od kamaráda" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
       <div class="hint">+10 kreditů navíc za platný kód</div>
     </div>
-    <button class="bp" id="abtn" onclick="doAuth()">Přihlásit se</button>
-    <div class="adiv">nebo pokračuj jako host</div>
-    <button class="bs" onclick="demoLogin()">👀 Vyzkoušet demo</button>
-    <div style="text-align:center;margin-top:20px;font-size:.65rem;color:#333">Nový účet = 10 kreditů zdarma 🎁</div>
+
+    <!-- Přihlásit -->
+    <button class="bp abp" id="abtn" onclick="doAuth()" style="margin-top:8px">Přihlásit se</button>
+
+    <div class="adiv" style="margin:20px 0">nebo pokračuj jako host</div>
+
+    <!-- Demo -->
+    <button class="bs" onclick="demoLogin()" style="margin-top:0">👀 Vyzkoušet demo</button>
+    <div style="text-align:center;margin-top:6px;font-size:.68rem;color:#444">Bez registrace · 1 výsledek zdarma</div>
+
+    <!-- Bonus banner -->
+    <div style="text-align:center;margin-top:28px;background:linear-gradient(135deg,#1a1200,#1a1505);border:1px solid #3a2e08;border-radius:12px;padding:12px 16px">
+      <span style="font-size:1.1rem">🎁</span>
+      <span style="font-size:.78rem;color:var(--ac);font-weight:700;margin-left:6px">Nový účet = 10 kreditů zdarma</span>
+    </div>
+
   </div>
 </div>
 

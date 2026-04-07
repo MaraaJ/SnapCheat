@@ -38,7 +38,7 @@ async function doGen(){
     if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);
     updateStreak();
-    document.getElementById('rc').innerHTML=txt;
+    document.getElementById('rc').innerHTML=txt+`<div style="margin-top:24px;padding-top:12px;border-top:1px solid #222;font-size:.65rem;color:#333;text-align:right">Vygenerováno pro ${user} · snapclue.app</div>`;
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
     if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);

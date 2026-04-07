@@ -7,6 +7,7 @@ function buildP(){
 }
 
 async function doGen(){
+  toast('📵 Nezavírej appku během generování!');
   if(credits<COST){document.getElementById('nc').style.display='block';return}
   if(!img){showErr('Nahraj nejdříve fotku testu!');return}
   document.getElementById('gerr').style.display='none';

@@ -50,4 +50,3 @@ document.addEventListener('touchend',e=>{
 },{passive:true});
 
 initBlackMode();
-init();

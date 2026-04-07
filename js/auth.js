@@ -190,3 +190,4 @@ function doLogout(){
   document.getElementById('dz').style.display='flex';
   closeSidebar();show('sa');
 }
+init();

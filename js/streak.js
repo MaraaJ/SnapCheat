@@ -65,4 +65,8 @@ function updStreakUI(){
   if(el)el.textContent='🔥 '+currentStreak+' dní';
   const pel=document.getElementById('pstreak');
   if(pel)pel.textContent=currentStreak;
+  const tnum=document.getElementById('tstreaknum');
+  if(tnum)tnum.textContent=currentStreak;
+  const twrap=document.getElementById('tstreak');
+  if(twrap)twrap.style.display=currentStreak>0?'flex':'none';
 }

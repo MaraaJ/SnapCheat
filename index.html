@@ -116,18 +116,19 @@
   <div class="top">
     <div class="tlogo"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div>
     <div class="tright">
-      <div class="cbadge" onclick="goCredits()"><span>🪙</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span></div>
+      <div id="tstreak" style="font-size:.8rem;font-weight:700;color:#f59e0b;display:none">🔥 <span id="tstreaknum">0</span></div>
+      <div class="cbadge" onclick="goCredits()"><span>⚡</span><span class="amt" id="tcr">0</span><span class="lbl">kr</span></div>
       <div class="hbtn" onclick="openSidebar()"><span></span><span></span><span></span></div>
     </div>
   </div>
   <div class="mc">
     <div id="dzwrap">
-      <div class="costpill"><span class="cl">Cena generování</span><span class="cv" id="costlbl">10 kreditů</span></div>
+      <div class="costpill"><span class="cl">Cena generování</span><span class="cv" id="costlbl">⚡ 10 kreditů</span></div>
       <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
         <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
         <div class="di">📸</div>
-        <h2>Vyfoť nebo nahraj test</h2>
-        <p>Klikni pro fotoaparát</p>
+        <h2>Klikni nebo přetáhni fotku testu</h2>
+        <p>Podporuje JPG, PNG</p>
       </div>
       <div id="pw">
         <img id="pimg" src="" alt="">
@@ -144,7 +145,7 @@
     </div>
     <div id="settbar">
       <div class="setthead" onclick="toggleSett()">
-        <span>⚙ Nastavení výsledků</span>
+        <span>⚙️ Nastavení výsledků</span>
         <span class="settarrow" id="sarrow">▼</span>
       </div>
       <div class="settbody" id="sbody">
@@ -179,6 +180,7 @@
       <div class="errb" id="gerr"></div>
       <div class="lw" id="glw"><div class="sp2"></div><p>AI analyzuje test...</p></div>
       <button id="gbtn" onclick="doGen()">⚡ VYGENEROVAT VÝSLEDEK! <span class="bcost">−10 kr</span></button>
+      <button id="lbtn" class="bs" onclick="doLink()" style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px">📎 VYTVOŘIT ODKAZ <span style="background:rgba(255,255,255,.07);border-radius:100px;padding:3px 10px;font-size:.72rem">−5 kr</span></button>
     </div>
     <div id="rw">
       <div class="rh">

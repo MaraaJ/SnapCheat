@@ -28,7 +28,7 @@ function dzOut(){document.getElementById('dz').classList.remove('ov')}
 function dzDrop(e){e.preventDefault();dzOut();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))loadF(f)}
 function dzFile(e){if(e.target.files[0])loadF(e.target.files[0])}
 
-function loadF(f){
+function resizeImg(f,cb){
   const r=new FileReader();
   r.onload=e=>{
     const canvas=document.createElement('canvas');
@@ -37,14 +37,54 @@ function loadF(f){
       const MAX=1200;let w=image.width,h=image.height;
       if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX}else{w=Math.round(w*MAX/h);h=MAX}}
       canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(image,0,0,w,h);
-      img=canvas.toDataURL('image/jpeg',0.85);
-      document.getElementById('pimg').src=img;
-      document.getElementById('pw').style.display='block';
-      document.getElementById('dz').style.display='none';
+      cb(canvas.toDataURL('image/jpeg',0.85));
     };
     image.src=e.target.result;
   };
   r.readAsDataURL(f);
 }
 
-function rmImg(){img=null;document.getElementById('pw').style.display='none';document.getElementById('dz').style.display='flex';document.getElementById('dz').querySelector('input').value=''}
+function loadF(f){
+  resizeImg(f,data=>{
+    img=data;
+    document.getElementById('pimg').src=img;
+    document.getElementById('pw').style.display='block';
+    document.getElementById('dz').style.display='none';
+    document.getElementById('add2btn').style.display='flex';
+    updCostPill();
+  });
+}
+
+function rmImg(){
+  img=null;
+  document.getElementById('pw').style.display='none';
+  document.getElementById('dz').style.display='flex';
+  document.getElementById('dz').querySelector('input').value='';
+  document.getElementById('add2btn').style.display='none';
+  rmImg2();
+}
+
+function dzFile2(e){if(e.target.files[0])loadF2(e.target.files[0])}
+
+function loadF2(f){
+  resizeImg(f,data=>{
+    img2=data;
+    document.getElementById('pimg2').src=img2;
+    document.getElementById('pw2').style.display='block';
+    document.getElementById('add2btn').style.display='none';
+    updCostPill();
+  });
+}
+
+function rmImg2(){
+  img2=null;
+  document.getElementById('pw2').style.display='none';
+  document.getElementById('pimg2').src='';
+  if(img)document.getElementById('add2btn').style.display='flex';
+  updCostPill();
+}
+
+function updCostPill(){
+  const lbl=document.getElementById('costlbl');
+  if(lbl)lbl.textContent=(img2?COST2:COST)+' kreditů';
+}

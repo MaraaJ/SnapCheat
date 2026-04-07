@@ -1,7 +1,8 @@
 
 const WU='https://satnik-api.marjansta90.workers.dev/';
 const COST=10;
-let user=null,userId=null,credits=0,txHistory=[],img=null,selPkg=null,tahakyHistory=[],_lastTahakId=null;
+const COST2=15;
+let user=null,userId=null,credits=0,txHistory=[],img=null,img2=null,selPkg=null,tahakyHistory=[],_lastTahakId=null;
 const opts={lang:'česky',len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.'};
 
 function updCounter(){

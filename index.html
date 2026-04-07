@@ -64,7 +64,7 @@
   </div>
   <div class="mc">
     <div id="dzwrap">
-      <div class="costpill"><span class="cl">Cena generování</span><span class="cv">10 kreditů</span></div>
+      <div class="costpill"><span class="cl">Cena generování</span><span class="cv" id="costlbl">10 kreditů</span></div>
       <div id="dz" ondragover="dzOver(event)" ondragleave="dzOut()" ondrop="dzDrop(event)">
         <input type="file" accept="image/*" capture="environment" onchange="dzFile(event)">
         <div class="di">📸</div>
@@ -74,6 +74,14 @@
       <div id="pw">
         <img id="pimg" src="" alt="">
         <button class="rmb" onclick="rmImg()">✕</button>
+      </div>
+      <label id="add2btn" style="display:none;align-items:center;justify-content:center;gap:8px;padding:10px 16px;background:var(--s2);border:1px dashed var(--b2);border-radius:12px;cursor:pointer;font-size:.8rem;color:var(--t2);touch-action:manipulation">
+        <span>+ Přidat druhou fotku</span><span style="font-size:.7rem;color:var(--t3)">(volitelné · +5 kr)</span>
+        <input type="file" accept="image/*" onchange="dzFile2(event)" style="display:none">
+      </label>
+      <div id="pw2" style="display:none;position:relative;min-height:200px">
+        <img id="pimg2" src="" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px;display:block">
+        <button class="rmb" onclick="rmImg2()">✕</button>
       </div>
     </div>
     <div id="settbar">

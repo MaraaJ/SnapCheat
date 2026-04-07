@@ -8,26 +8,30 @@ function buildP(){
 
 async function doGen(){
   toast('📵 Nezavírej appku během generování!');
-  if(credits<COST){document.getElementById('nc').style.display='block';return}
+  const cost=img2?COST2:COST;
+  if(credits<cost){document.getElementById('nc').style.display='block';return}
   if(!img){showErr('Nahraj nejdříve fotku testu!');return}
   document.getElementById('gerr').style.display='none';
   document.getElementById('gbtn').disabled=true;
   document.getElementById('glw').style.display='flex';
   document.getElementById('rw').style.display='none';
   const b64=img.split(',')[1];const mt=img.split(';')[0].split(':')[1];
+  const imgContent=[{type:'image',source:{type:'base64',media_type:mt,data:b64}}];
+  if(img2){const b642=img2.split(',')[1];const mt2=img2.split(';')[0].split(':')[1];imgContent.push({type:'image',source:{type:'base64',media_type:mt2,data:b642}})}
+  imgContent.push({type:'text',text:buildP()});
   try{
     // Check network first
     if(!navigator.onLine)throw new Error('OFFLINE');
-    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,system:'Jsi expert na výsledky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:buildP()}]}]})}).catch(e=>{throw new Error('OFFLINE')});
+    const res=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:6000,system:'Jsi expert na výsledky a technické diagramy. Odpovídej v zadaném jazyce. PŘÍMÉ ODPOVĚDI. HTML tagy: <h2>,<h3>,<ul><li>,<strong>,<div class="highlight">,<div class="step"><span class="stepnum">Krok N</span>text</div>. SVG diagramy VŽDY v <div class="diagram-wrap"><p class="diagram-label">název</p>SVG</div>. SVG musí mít viewBox="0 0 600 380", pozadí rect fill="#1a1a1a", osy stroke="#555", popisky fill="#888" font-family="system-ui", data stroke="#e8d5b0", mřížka stroke="#2a2a2a". Nikdy nevkládej prázdné nebo nefunkční SVG.',messages:[{role:'user',content:imgContent}]})}).catch(e=>{throw new Error('OFFLINE')});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'HTTP '+res.status)}
     const d=await res.json();
     const txt=d.content?.map(b=>b.text||'').join('')||'';
     if(!txt)throw new Error('Prázdná odpověď: '+JSON.stringify(d).substring(0,150));
     // ✅ Kredity se odečítají POUZE po úspěšné odpovědi
     const prevCount=getTotalTahaky();
-    credits-=COST;txHistory.push({t:'minus',l:'Generování výsledků',a:'-'+COST+' kr',d:today()});
+    credits-=cost;txHistory.push({t:'minus',l:'Generování výsledků',a:'-'+cost+' kr',d:today()});
     await saveU();
-    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování výsledků',amount:-COST,type:'minus'}).catch(()=>{});
+    if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování výsledků',amount:-cost,type:'minus'}).catch(()=>{});
     saveSession();updCr();await saveTH(txt);
     _lastTahakId=tahakyHistory[0]?.id||null;
     // Uložit demo kredity lokálně
@@ -37,7 +41,7 @@ async function doGen(){
     document.getElementById('rw').style.display='block';
     document.getElementById('rw').scrollIntoView({behavior:'smooth'});
     if(navigator.vibrate)navigator.vibrate([100,50,100,50,100]);
-    toast('✓ Výsledky připraven! −'+COST+' kreditů');
+    toast('✓ Výsledky připraven! −'+cost+' kreditů');
   }catch(e){
     if(e.message==='OFFLINE'||e.message.includes('fetch')||e.message.includes('network')||e.message.includes('Failed')){
       showErr('📡 Žádné připojení k internetu. Kredity nebyly odečteny — zkus to znovu.');

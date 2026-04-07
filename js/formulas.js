@@ -89,6 +89,14 @@ function renderFormulasUnlocked(){
           <th style="border:1px solid #333;padding:6px;color:#f5a623">60°</th>
           <th style="border:1px solid #333;padding:6px;color:#f5a623">90°</th>
         </tr>
+        <tr style="background:#0a0a0a">
+          <td style="border:1px solid #333;padding:6px;color:#f5a623">rad</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">0</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">π/6</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">π/4</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">π/3</td>
+          <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">π/2</td>
+        </tr>
         <tr>
           <td style="border:1px solid #333;padding:6px;color:#f5a623">sin</td>
           <td style="border:1px solid #333;padding:6px;color:#fff;text-align:center">0</td>

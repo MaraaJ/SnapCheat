@@ -16,6 +16,23 @@ async function doGen(){
   document.getElementById('glw').style.display='flex';
   document.getElementById('rw').style.display='none';
   const b64=img.split(',')[1];const mt=img.split(';')[0].split(':')[1];
+
+  // Validace obrázku
+  try{
+    if(!navigator.onLine)throw new Error('OFFLINE');
+    const vres=await fetch(WU,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mt,data:b64}},{type:'text',text:'Je toto obrázek testu, písemky nebo zkoušky s otázkami? Odpověz pouze YES nebo NO.'}]}]})}).catch(()=>{throw new Error('OFFLINE')});
+    if(vres.ok){
+      const vd=await vres.json();
+      const vtxt=(vd.content?.map(b=>b.text||'').join('')||'').trim().toUpperCase();
+      if(vtxt.includes('NO')){
+        showErr('❌ Toto nevypadá jako test! Nahraj fotku písemky nebo testu s otázkami.');
+        return;
+      }
+    }
+  }catch(e){
+    if(e.message==='OFFLINE'){showErr('📡 Žádné připojení k internetu.');return;}
+    // Jiná chyba validace — pokračuj dál
+  }
   const imgContent=[{type:'image',source:{type:'base64',media_type:mt,data:b64}}];
   if(img2){const b642=img2.split(',')[1];const mt2=img2.split(';')[0].split(':')[1];imgContent.push({type:'image',source:{type:'base64',media_type:mt2,data:b642}})}
   imgContent.push({type:'text',text:buildP()});

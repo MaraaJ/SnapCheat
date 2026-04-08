@@ -217,9 +217,13 @@
   <div class="top"><div class="tlogo clickable" onclick="goMain()"><svg style="margin-top:4px" width="32" height="42" viewBox="0 0 80 80" fill="none"><path d="M59 5 L37 41 L49 41 L43 69 L67 31 L55 31 Z" fill="#c47d10" opacity=".18"/><path d="M54 6 L32 42 L44 42 L38 70 L62 32 L50 32 Z" fill="#c47d10" opacity=".12"/><path d="M48 8 L26 44 L38 44 L32 72 L56 34 L44 34 Z" fill="#f5a623"/></svg>SnapClue</div><div class="tright"><div class="cbadge"><span>🪙</span><span class="amt" id="tcr3">0</span><span class="lbl">kr</span></div></div></div>
   <div class="ccon">
     <button class="backb" onclick="goMain()">← Zpět</button>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
       <div style="font-size:1.1rem;font-weight:800">Moje výsledky</div>
       <div id="hcount" style="font-size:.72rem;color:var(--t2)"></div>
+    </div>
+    <div style="position:relative;margin-bottom:16px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none">🔍</span>
+      <input id="hsearch" type="text" placeholder="Hledat v historii..." oninput="filterHistory()" style="width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:11px 14px 11px 36px;font-size:.85rem;color:var(--t1);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--ac2)'" onblur="this.style.borderColor='var(--b1)'">
     </div>
     <div id="hcards"></div>
   </div>
@@ -370,6 +374,23 @@
     <!-- Odznaky -->
     <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Odznaky</div>
     <div id="pbadges"></div>
+
+    <!-- Statistiky -->
+    <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin:24px 0 12px">📊 Statistiky</div>
+    <div id="pstats" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px">
+        <div style="font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Nejaktivnější den</div>
+        <div style="font-size:1.1rem;font-weight:800;color:var(--ac)" id="pbestday">—</div>
+      </div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px">
+        <div style="font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Průměr / týden</div>
+        <div style="font-size:1.1rem;font-weight:800;color:var(--ac)" id="pavgweek">—</div>
+      </div>
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;grid-column:1/-1">
+        <div style="font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Nejčastější předmět</div>
+        <div style="font-size:1.1rem;font-weight:800;color:var(--ac)" id="ptopsubject">—</div>
+      </div>
+    </div>
 
     <!-- Referral -->
     <div style="font-size:.8rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.1em;margin:20px 0 12px">Pozvat kamaráda</div>

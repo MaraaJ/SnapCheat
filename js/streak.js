@@ -50,11 +50,15 @@ async function updateStreak(){
 }
 
 async function loadStreak(){
-  if(!userId||userId==='demo')return;
+  if(!userId||userId==='demo'){updStreakUI();return;}
   try{
     const rows=await sbFetch('/rest/v1/users?id=eq.'+userId+'&select=streak_days,streak_last_date');
     if(rows&&rows[0]){
-      currentStreak=rows[0].streak_days||0;
+      const last=rows[0].streak_last_date;
+      const days=rows[0].streak_days||0;
+      // Streak je platný pouze pokud byl aktualizován dnes nebo včera
+      const isValid=last===todayStr()||last===yesterdayStr();
+      currentStreak=isValid?days:0;
       updStreakUI();
     }
   }catch(e){}

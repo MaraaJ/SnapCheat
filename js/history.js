@@ -36,11 +36,60 @@ async function saveTH(content){
   }
 }
 
-function renderHistory(){
+function subjectEmoji(title){
+  const t=title.toLowerCase();
+  if(/mat(ema|ika|h)|algebr|geometr|vzorec|počet/.test(t))return'📊';
+  if(/fyz|newton|síla|energie|vlnění|elektr|optik/.test(t))return'⚡';
+  if(/češt|jazyk|literatura|sloh|gram|pravopis|čeština/.test(t))return'📝';
+  if(/chemi|prvk|sloučen|reakc|atom|molek/.test(t))return'🧪';
+  if(/bio|buňk|evol|živočich|rostlin|ekolog|geneti/.test(t))return'🌿';
+  if(/histor|válk|období|dějin|letopočet|civilization/.test(t))return'🏛';
+  if(/zeměp|kontinen|stát|řek|hory|klimat|geograf/.test(t))return'🌍';
+  if(/angličt|english|němčin|deutsch|španěl|french|jazyk/.test(t))return'🌐';
+  if(/ekonom|účetnic|finance|trh|hrp|inflac/.test(t))return'💰';
+  if(/informati|program|kód|algorit|počítač/.test(t))return'💻';
+  return'📋';
+}
+
+function fmtDate(dateStr){
+  const d=new Date(dateStr);if(isNaN(d))return dateStr;
+  const now=new Date();
+  const diff=Math.floor((now-d)/86400000);
+  if(diff===0)return'Dnes';
+  if(diff===1)return'Včera';
+  if(diff<7)return'Před '+diff+' dny';
+  return d.toLocaleDateString('cs',{day:'numeric',month:'short'});
+}
+
+function renderHistory(filter=''){
   const cont=document.getElementById('hcards');
-  document.getElementById('hcount').textContent=tahakyHistory.length+' taháků';
-  if(!tahakyHistory.length){cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné taháky.</div></div>';return}
-  cont.innerHTML=tahakyHistory.map((t,i)=>`<div class="hcard" onclick="openTahak(${i})"><div style="flex:1;min-width:0"><div class="hcard-title">${t.title}</div><div class="hcard-meta">${t.date} · ${t.time}</div></div><div style="display:flex;gap:6px;flex-shrink:0"><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${i}].content)" title="PNG">🖼</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${i}].content)" title="PDF">📄</button><button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doWatch(tahakyHistory[${i}].id)" title="Hodinky">⌚</button><button class="hdelbtn" onclick="delTahak(${i},event)">✕</button></div></div>`).join('');
+  const list=filter?tahakyHistory.filter(t=>t.title.toLowerCase().includes(filter.toLowerCase())):tahakyHistory;
+  document.getElementById('hcount').textContent=tahakyHistory.length+' výsledků';
+  if(!tahakyHistory.length){cont.innerHTML='<div class="hempty"><div>📋</div><div>Zatím žádné výsledky.</div></div>';return}
+  if(!list.length){cont.innerHTML='<div class="hempty"><div>🔍</div><div>Nic nenalezeno.</div></div>';return}
+  cont.innerHTML=list.map((t,i)=>{
+    const realIdx=tahakyHistory.indexOf(t);
+    const emoji=subjectEmoji(t.title);
+    const date=fmtDate(t.date||'');
+    return`<div class="hcard" onclick="openTahak(${realIdx})">
+      <div style="font-size:1.6rem;flex-shrink:0">${emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="hcard-title">${t.title}</div>
+        <div class="hcard-meta">${date}${t.time?' · '+t.time:''}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${realIdx}].content)" title="PNG">🖼</button>
+        <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${realIdx}].content)" title="PDF">📄</button>
+        <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doWatch(tahakyHistory[${realIdx}].id)" title="Hodinky">⌚</button>
+        <button class="hdelbtn" onclick="delTahak(${realIdx},event)">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterHistory(){
+  const q=document.getElementById('hsearch')?.value||'';
+  renderHistory(q);
 }
 
 function openTahak(i){

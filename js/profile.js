@@ -47,6 +47,9 @@ async function goProfile(){
     </div>`;
   }).join('');
 
+  // Statistiky
+  renderProfileStats();
+
   // Referral
   const refCode=getMyRefCode();
   document.getElementById('prefcode').textContent=refCode;
@@ -57,5 +60,52 @@ async function goProfile(){
   show('sprofile');
 }
 
+
+function renderProfileStats(){
+  const days=['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota'];
+  const dayCounts=[0,0,0,0,0,0,0];
+  const subjects={};
+
+  tahakyHistory.forEach(t=>{
+    // Den v týdnu
+    const d=new Date(t.date);
+    if(!isNaN(d))dayCounts[d.getDay()]++;
+    // Předmět
+    const s=detectSubject(t.title);
+    subjects[s]=(subjects[s]||0)+1;
+  });
+
+  // Nejaktivnější den
+  const maxDay=dayCounts.indexOf(Math.max(...dayCounts));
+  const bestDay=dayCounts[maxDay]>0?days[maxDay]:'—';
+
+  // Průměr za týden (poslední 4 týdny)
+  const fourWeeksAgo=new Date();fourWeeksAgo.setDate(fourWeeksAgo.getDate()-28);
+  const recent=tahakyHistory.filter(t=>new Date(t.date)>=fourWeeksAgo).length;
+  const avgWeek=tahakyHistory.length?Math.round(recent/4*10)/10:0;
+
+  // Nejčastější předmět
+  const topSubject=Object.entries(subjects).sort((a,b)=>b[1]-a[1])[0];
+
+  const el=n=>document.getElementById(n);
+  if(el('pbestday'))el('pbestday').textContent=bestDay;
+  if(el('pavgweek'))el('pavgweek').textContent=avgWeek+' výsledků';
+  if(el('ptopsubject'))el('ptopsubject').textContent=topSubject?topSubject[0]:'—';
+}
+
+function detectSubject(title){
+  const t=title.toLowerCase();
+  if(/mat(ema|ika|h)|algebr|geometr|vzorec|počet/.test(t))return'📊 Matematika';
+  if(/fyz|newton|síla|energie|vlnění|elektr|optik/.test(t))return'⚡ Fyzika';
+  if(/češt|literatura|sloh|gram|pravopis/.test(t))return'📝 Čeština';
+  if(/chemi|prvk|sloučen|reakc|atom|molek/.test(t))return'🧪 Chemie';
+  if(/bio|buňk|evol|živočich|rostlin|ekolog|geneti/.test(t))return'🌿 Biologie';
+  if(/histor|válk|dějin|letopočet/.test(t))return'🏛 Dějepis';
+  if(/zeměp|kontinen|stát|řek|hory|klimat|geograf/.test(t))return'🌍 Zeměpis';
+  if(/angličt|english|němčin|deutsch|španěl|french/.test(t))return'🌐 Cizí jazyk';
+  if(/ekonom|účetnic|finance|trh/.test(t))return'💰 Ekonomie';
+  if(/informati|program|kód|algorit/.test(t))return'💻 Informatika';
+  return'📋 Ostatní';
+}
 
 let tPanicTapCount=0,tPanicLastTap=0,tPanicDone=false;

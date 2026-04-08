@@ -4,9 +4,9 @@ async function loadTH(){
     return;
   }
   try{
-    const rows=await sbFetch('/rest/v1/tahaky?user_id=eq.'+userId+'&order=created_at.desc&limit=30');
+    const rows=await sbFetch('/rest/v1/tahaky?user_id=eq.'+userId+'&select=id,title,content,note,created_at&order=created_at.desc&limit=30');
     tahakyHistory=(rows||[]).map(r=>({
-      id:r.id,title:r.title,content:r.content,
+      id:r.id,title:r.title,content:r.content,note:r.note||'',
       date:new Date(r.created_at).toLocaleDateString('cs'),
       time:new Date(r.created_at).toLocaleTimeString('cs',{hour:'2-digit',minute:'2-digit'})
     }));
@@ -75,9 +75,11 @@ function renderHistory(filter=''){
       <div style="font-size:1.6rem;flex-shrink:0">${emoji}</div>
       <div style="flex:1;min-width:0">
         <div class="hcard-title">${t.title}</div>
+        ${t.note?`<div style="font-size:.7rem;color:var(--t3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">📝 ${t.note}</div>`:''}
         <div class="hcard-meta">${date}${t.time?' · '+t.time:''}</div>
       </div>
       <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();openNoteModal(${realIdx})" title="Poznámka">✏️</button>
         <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doIMG(tahakyHistory[${realIdx}].content)" title="PNG">🖼</button>
         <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doPDF(tahakyHistory[${realIdx}].content)" title="PDF">📄</button>
         <button class="hdelbtn" style="color:var(--t2)" onclick="event.stopPropagation();doWatch(tahakyHistory[${realIdx}].id)" title="Hodinky">⌚</button>
@@ -102,6 +104,32 @@ function openTahak(i){
   document.getElementById('tdmodal').style.display='block';
 }
 function closeTD(){document.getElementById('tdmodal').style.display='none'}
+
+let _noteIdx=null;
+function openNoteModal(i){
+  _noteIdx=i;
+  const t=tahakyHistory[i];
+  document.getElementById('notemodaltitle').textContent=t.title;
+  const ta=document.getElementById('notetextarea');
+  ta.value=t.note||'';
+  document.getElementById('notecounter').textContent=ta.value.length;
+  ta.oninput=()=>document.getElementById('notecounter').textContent=ta.value.length;
+  document.getElementById('notemodal').style.display='flex';
+  setTimeout(()=>ta.focus(),100);
+}
+function closeNoteModal(){document.getElementById('notemodal').style.display='none';_noteIdx=null;}
+async function saveNote(){
+  if(_noteIdx===null)return;
+  const note=document.getElementById('notetextarea').value.trim();
+  const t=tahakyHistory[_noteIdx];
+  t.note=note;
+  closeNoteModal();
+  if(userId&&userId!=='demo'&&t.id){
+    await sbFetch('/rest/v1/tahaky?id=eq.'+t.id,'PATCH',{note}).catch(()=>{});
+  }
+  renderHistory(document.getElementById('hsearch')?.value||'');
+  toast('📝 Poznámka uložena');
+}
 
 let _delIdx=null;
 function delTahak(i,e){

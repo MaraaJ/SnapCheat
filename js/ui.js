@@ -7,7 +7,43 @@ function goHistory(){loadTH();renderHistory();document.getElementById('tcr3').te
 function openSidebar(){document.getElementById('sidebar').classList.add('on');document.getElementById('soverlay').classList.add('on');document.getElementById('sbcr').textContent=credits}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('on');document.getElementById('soverlay').classList.remove('on')}
 
-function toggleSett(){document.getElementById('sbody').classList.toggle('on');document.getElementById('sarrow').classList.toggle('open')}
+const PRESETS={
+  matika:{len:'Buď maximálně stručný.',form:'STEP_BY_STEP',extra:'Ověř zadání před výpočtem. Každý krok očísluj.'},
+  dejepis:{len:'Piš středně podrobně.',form:'Formátuj jako tahák s odrážkami.',extra:'Datumy a jména piš tučně.'},
+  cestina:{len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',extra:'Literární pojmy a autory zvýrazni.'},
+  fyzika:{len:'Buď maximálně stručný.',form:'STEP_BY_STEP',extra:'Vzorce zvýrazni, jednotky vždy uváděj.'},
+  chemie:{len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.',extra:'Chemické vzorce a rovnice zvýrazni.'},
+  vlastni:{len:'Piš středně podrobně.',form:'Formátuj jako tahák s odrážkami.',extra:''}
+};
+
+function setPreset(name){
+  // Highlight selected preset button
+  document.querySelectorAll('.prbtn').forEach(b=>b.classList.remove('on'));
+  event.currentTarget.classList.add('on');
+
+  const p=PRESETS[name];
+  opts.lang='česky';
+  opts.len=p.len;
+  opts.form=p.form;
+
+  // Sync len buttons
+  document.querySelectorAll('#so-len .ob').forEach(b=>{
+    b.classList.toggle('on',b.getAttribute('onclick').includes(p.len.replace(/'/g,"\'")));
+  });
+  // Sync form buttons
+  document.querySelectorAll('#so-form .ob').forEach(b=>{
+    b.classList.toggle('on',b.getAttribute('onclick').includes(p.form));
+  });
+
+  // Fill extra textarea
+  const ta=document.getElementById('extra');
+  ta.value=p.extra;
+  document.getElementById('excounter').textContent=p.extra.length;
+
+  // Open panel
+  document.getElementById('settpanel').classList.add('open');
+}
+
 function setOpt(k,v,btn){opts[k]=v;btn.closest('.so').querySelectorAll('.ob').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 
 function updCr(){

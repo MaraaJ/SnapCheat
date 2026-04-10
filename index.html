@@ -145,34 +145,39 @@
       </div>
     </div>
     <div id="settbar">
-      <div class="setthead" onclick="toggleSett()">
-        <span>⚙️ Nastavení výsledků</span>
-        <span class="settarrow" id="sarrow">▼</span>
+      <div id="presetrow">
+        <button class="prbtn" onclick="setPreset('matika')">📊 Matika</button>
+        <button class="prbtn" onclick="setPreset('dejepis')">📜 Dějepis</button>
+        <button class="prbtn" onclick="setPreset('cestina')">📝 Čeština</button>
+        <button class="prbtn" onclick="setPreset('fyzika')">⚡ Fyzika</button>
+        <button class="prbtn" onclick="setPreset('chemie')">🧪 Chemie</button>
+        <button class="prbtn" onclick="setPreset('vlastni')">⚙️ Vlastní</button>
       </div>
-      <div class="settbody" id="sbody">
-        <div class="sr"><div class="sl">Jazyk</div><div class="so">
-          <button class="ob on" onclick="setOpt('lang','česky',this)">🇨🇿 CZ</button>
-          <button class="ob" onclick="setOpt('lang','in English',this)">🇬🇧 EN</button>
-          <button class="ob" onclick="setOpt('lang','auf Deutsch',this)">🇩🇪 DE</button>
-          <button class="ob" onclick="setOpt('lang','en español',this)">🇪🇸 ES</button>
-          <button class="ob" onclick="setOpt('lang','en français',this)">🇫🇷 FR</button>
-        </div></div>
-        <div class="sr"><div class="sl">Délka</div><div class="so">
-          <button class="ob on" onclick="setOpt('len','Buď maximálně stručný.',this)">⚡ Stručně</button>
-          <button class="ob" onclick="setOpt('len','Piš středně podrobně.',this)">📄 Středně</button>
-          <button class="ob" onclick="setOpt('len','Piš velmi podrobně.',this)">📚 Podrobně</button>
-        </div></div>
-        <div class="sr"><div class="sl">Forma</div><div class="so">
-          <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Výsledky</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako esej.',this)">✍ Esej</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako stromový seznam.',this)">🌲 Strom</button>
-          <button class="ob" onclick="setOpt('form','Formátuj jako Q&A.',this)">❓ Q&A</button>
-          <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Krok za krokem</button>
-        </div></div>
-        <div class="sr"><div class="sl">Vlastní instrukce <span style="color:var(--t3)">(volitelné)</span></div>
-          <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..." maxlength="300" oninput="updCounter()"></textarea>
-          <div style="text-align:right;font-size:.68rem;margin-top:4px;font-family:var(--fm)"><span id="excounter" style="color:var(--t2)">0</span><span style="color:var(--t3)">/300</span></div>
+      <div id="settpanel">
+        <div id="sbody">
+          <div class="sr"><div class="sl">Jazyk</div><div class="so" id="so-lang">
+            <button class="ob on" onclick="setOpt('lang','česky',this)">🇨🇿 CZ</button>
+            <button class="ob" onclick="setOpt('lang','in English',this)">🇬🇧 EN</button>
+            <button class="ob" onclick="setOpt('lang','auf Deutsch',this)">🇩🇪 DE</button>
+            <button class="ob" onclick="setOpt('lang','en español',this)">🇪🇸 ES</button>
+            <button class="ob" onclick="setOpt('lang','en français',this)">🇫🇷 FR</button>
+          </div></div>
+          <div class="sr"><div class="sl">Délka</div><div class="so" id="so-len">
+            <button class="ob on" onclick="setOpt('len','Buď maximálně stručný.',this)">⚡ Stručně</button>
+            <button class="ob" onclick="setOpt('len','Piš středně podrobně.',this)">📄 Středně</button>
+            <button class="ob" onclick="setOpt('len','Piš velmi podrobně.',this)">📚 Podrobně</button>
+          </div></div>
+          <div class="sr"><div class="sl">Forma</div><div class="so" id="so-form">
+            <button class="ob on" onclick="setOpt('form','Formátuj jako tahák s odrážkami.',this)">• Tahák</button>
+            <button class="ob" onclick="setOpt('form','Formátuj jako Q&A.',this)">❓ Q&A</button>
+            <button class="ob" onclick="setOpt('form','STEP_BY_STEP',this)">🔢 Kroky</button>
+            <button class="ob" onclick="setOpt('form','Formátuj jako tabulky.',this)">⊞ Tabulka</button>
+            <button class="ob" onclick="setOpt('form','Formátuj jako esej.',this)">✍ Esej</button>
+          </div></div>
+          <div class="sr"><div class="sl">Vlastní instrukce <span style="color:var(--t3);text-transform:none;letter-spacing:0">(volitelné)</span></div>
+            <textarea class="ep" id="extra" placeholder="Např: Zaměř se na vzorce..." maxlength="300" oninput="updCounter()"></textarea>
+            <div style="text-align:right;font-size:.68rem;margin-top:4px;font-family:var(--fm)"><span id="excounter" style="color:var(--t2)">0</span><span style="color:var(--t3)">/300</span></div>
+          </div>
         </div>
       </div>
     </div>

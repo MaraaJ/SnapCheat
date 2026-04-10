@@ -102,8 +102,8 @@ async function sendResultEmail(tahakId,title,content){
     }else{
       // Apple / Samsung: HTML email with watch link
       const url='https://satnik-api.marjansta90.workers.dev/watch/'+tahakId;
-      subject='SnapClue: '+title;
-      body={type:'html',subject,html:`<div style="font-family:system-ui;max-width:500px;margin:0 auto;padding:20px;background:#000;color:#f0ede8"><h2 style="color:#f5a623;margin-bottom:8px">${title}</h2><p style="color:#888;font-size:13px;margin-bottom:20px">Výsledky jsou připraveny na hodinkách</p><a href="${url}" style="display:inline-block;background:#f5a623;color:#000;padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px">Otevřít na hodinkách →</a><p style="color:#444;font-size:11px;margin-top:20px">SnapClue · snapclue.app</p></div>`};
+      subject=`⚡ ${title} — otevři na hodinkách`;
+      body={type:'html',subject,html:`<div style="font-family:system-ui;background:#000;color:#fff;padding:24px;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:#f5a623;margin-bottom:8px">⚡ SnapClue</div><div style="font-size:1rem;margin-bottom:20px">${title}</div><a href="${url}" style="display:inline-block;background:#f5a623;color:#000;padding:14px 28px;border-radius:12px;font-weight:700;text-decoration:none;font-size:1rem">Otevřít výsledky ⌚</a><div style="font-size:.75rem;color:#555;margin-top:16px">Klikni pro otevření v Safari na Apple Watch</div></div>`};
     }
     await fetch('https://satnik-api.marjansta90.workers.dev/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:user,...body})}).catch(()=>{});
   }catch(e){console.error('Email:',e)}

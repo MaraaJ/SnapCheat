@@ -57,7 +57,11 @@ async function init(){
           document.getElementById('sbemail').textContent=user;
           document.getElementById('sbcr').textContent=credits;
           setTimeout(()=>updBadgeUI(),500);
-          show('sm2');return;
+          show('sm2');
+          if(!localStorage.getItem('sc_watch_type_'+userId)){
+            setTimeout(()=>{document.getElementById('watchmodal').style.display='flex';},800);
+          }
+          return;
         }
       }
     }catch(e){}

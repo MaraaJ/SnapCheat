@@ -8,16 +8,24 @@ function openSidebar(){document.getElementById('sidebar').classList.add('on');do
 function closeSidebar(){document.getElementById('sidebar').classList.remove('on');document.getElementById('soverlay').classList.remove('on')}
 
 const PRESETS={
-  matika:{len:'Buď maximálně stručný.',form:'STEP_BY_STEP',extra:'Ověř zadání před výpočtem. Každý krok očísluj.'},
-  dejepis:{len:'Piš středně podrobně.',form:'Formátuj jako tahák s odrážkami.',extra:'Datumy a jména piš tučně.'},
-  cestina:{len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',extra:'Literární pojmy a autory zvýrazni.'},
-  fyzika:{len:'Buď maximálně stručný.',form:'STEP_BY_STEP',extra:'Vzorce zvýrazni, jednotky vždy uváděj.'},
-  chemie:{len:'Buď maximálně stručný.',form:'Formátuj jako tahák s odrážkami.',extra:'Chemické vzorce a rovnice zvýrazni.'},
-  vlastni:{len:'Piš středně podrobně.',form:'Formátuj jako tahák s odrážkami.',extra:''}
+  matika:    {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Ověř zadání před výpočtem. Každý krok očísluj.'},
+  fyzika:    {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Vzorce zvýrazni, jednotky vždy uváděj.'},
+  chemie:    {len:'Buď maximálně stručný.',  form:'Formátuj jako tahák s odrážkami.',    extra:'Chemické vzorce a rovnice zvýrazni.'},
+  algebra:   {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Každý krok výpočtu očísluj, výsledek zvýrazni.'},
+  it:        {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Kód formátuj jako code block, kroky očísluj.'},
+  cestina:   {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',                  extra:'Literární pojmy a autory zvýrazni.'},
+  dejepis:   {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Datumy a jména piš tučně.'},
+  zempis:    {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Státy, hlavní města a geografické pojmy piš tučně.'},
+  biologie:  {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Latinské názvy zvýrazni, procesy očísluj.'},
+  obcanka:   {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',                  extra:'Právní pojmy a paragrafy zvýrazni.'},
+  anglictina:   {len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej anglicky, gramatické jevy zvýrazni.'},
+  spanelstina:  {len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej španělsky, gramatické jevy zvýrazni.'},
+  francouzstina:{len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej francouzsky, gramatické jevy zvýrazni.'},
+  umeni:     {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Umělecké směry, autory a díla zvýrazni tučně.'},
+  vlastni:   {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:''}
 };
 
 function setPreset(name){
-  // Highlight selected preset button
   document.querySelectorAll('.prbtn').forEach(b=>b.classList.remove('on'));
   event.currentTarget.classList.add('on');
 

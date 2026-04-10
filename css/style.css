@@ -77,9 +77,8 @@ button:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
 .costpill .cl{color:var(--t2)}
 .costpill .cv{font-weight:800;color:var(--ac);font-size:.88rem}
 #settbar{background:var(--s1);border-top:1px solid var(--b1)}
-#presetrow{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-#presetrow::-webkit-scrollbar{display:none}
-.prbtn{flex-shrink:0;background:var(--s2);border:1px solid var(--b1);border-radius:20px;color:var(--t2);font-size:.78rem;padding:8px 14px;min-height:36px;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s;touch-action:manipulation;white-space:nowrap}
+#presetgrid{display:flex;flex-wrap:wrap;gap:7px;padding:12px 16px 10px}
+.prbtn{background:var(--s2);border:1px solid var(--b1);border-radius:20px;color:var(--t2);font-size:.7rem;padding:7px 11px;min-height:34px;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s;touch-action:manipulation;white-space:nowrap;line-height:1}
 .prbtn:active{transform:scale(.95)}
 .prbtn.on{background:#1a1505;border-color:var(--ac2);color:var(--ac);font-weight:700}
 #settpanel{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease}

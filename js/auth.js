@@ -180,6 +180,10 @@ async function loginAs(email,uid,cr,hist){
   saveSession();
   setTimeout(updBadgeUI,500);
   show('sm2');
+  // Show watch onboarding if not yet set
+  if(uid&&uid!=='demo'&&!localStorage.getItem('sc_watch_type_'+uid)){
+    setTimeout(()=>{document.getElementById('watchmodal').style.display='flex';},800);
+  }
 }
 
 function doLogout(){

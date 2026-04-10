@@ -51,6 +51,7 @@ async function doGen(){
     if(userId&&userId!=='demo')await sbFetch('/rest/v1/transactions','POST',{user_id:userId,label:'Generování výsledků',amount:-cost,type:'minus'}).catch(()=>{});
     saveSession();updCr();await saveTH(txt);
     _lastTahakId=tahakyHistory[0]?.id||null;
+    sendResultEmail(_lastTahakId,tahakyHistory[0]?.title||'Výsledky',txt);
     // Uložit demo kredity lokálně
     if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);
@@ -78,6 +79,35 @@ async function saveU(){
 }
 
 function doCopy(){navigator.clipboard.writeText(document.getElementById('rc').innerText);toast('📋 Zkopírováno!')}
+
+function setWatchType(type){
+  if(userId&&userId!=='demo')localStorage.setItem('sc_watch_type_'+userId,type);
+  document.getElementById('watchmodal').style.display='none';
+  if(type!=='none')toast('⌚ Výsledky ti budeme posílat na '+{apple:'Apple Watch',garmin:'Garmin',samsung:'Samsung Watch'}[type]);
+}
+
+async function sendResultEmail(tahakId,title,content){
+  if(!userId||userId==='demo'||!user)return;
+  const watchType=localStorage.getItem('sc_watch_type_'+userId);
+  if(!watchType||watchType==='none')return;
+  try{
+    let body,subject;
+    if(watchType==='garmin'){
+      // Garmin: plain text, max 400 chars, key answers only
+      const tmp=document.createElement('div');tmp.innerHTML=content;
+      const items=[...tmp.querySelectorAll('li,h3,.highlight')].map(el=>el.textContent.trim()).filter(Boolean);
+      const short=items.join(' | ').substring(0,380);
+      subject=items.slice(0,3).join(' · ').substring(0,60)||title;
+      body={type:'text',text:short,subject};
+    }else{
+      // Apple / Samsung: HTML email with watch link
+      const url='https://satnik-api.marjansta90.workers.dev/watch/'+tahakId;
+      subject='SnapClue: '+title;
+      body={type:'html',subject,html:`<div style="font-family:system-ui;max-width:500px;margin:0 auto;padding:20px;background:#000;color:#f0ede8"><h2 style="color:#f5a623;margin-bottom:8px">${title}</h2><p style="color:#888;font-size:13px;margin-bottom:20px">Výsledky jsou připraveny na hodinkách</p><a href="${url}" style="display:inline-block;background:#f5a623;color:#000;padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px">Otevřít na hodinkách →</a><p style="color:#444;font-size:11px;margin-top:20px">SnapClue · snapclue.app</p></div>`};
+    }
+    await fetch('https://satnik-api.marjansta90.workers.dev/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to:user,...body})}).catch(()=>{});
+  }catch(e){console.error('Email:',e)}
+}
 
 function doWatch(id){
   if(!id||typeof id!=='string'||id===String(Math.floor(id))){toast('⌚ Sdílení na hodinky není dostupné v demo módu');return}

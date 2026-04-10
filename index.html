@@ -582,6 +582,19 @@
     </div>
   </div>
 </div>
+<div id="watchmodal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:28px 24px;width:100%;max-width:340px">
+    <div style="font-size:1.4rem;text-align:center;margin-bottom:6px">⌚</div>
+    <div style="font-size:1.05rem;font-weight:700;text-align:center;margin-bottom:6px">Máš chytré hodinky?</div>
+    <div style="font-size:.75rem;color:var(--t2);text-align:center;margin-bottom:22px">Vybereme správný formát pro odeslání výsledků na hodinky.</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button onclick="setWatchType('apple')" style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;font-size:.88rem;color:var(--t1);cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;touch-action:manipulation"><span style="font-size:1.3rem"></span><div><div style="font-weight:600">Apple Watch</div><div style="font-size:.72rem;color:var(--t3);margin-top:2px">Safari · iMessage</div></div></button>
+      <button onclick="setWatchType('garmin')" style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;font-size:.88rem;color:var(--t1);cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;touch-action:manipulation"><span style="font-size:1.3rem">🟢</span><div><div style="font-weight:600">Garmin</div><div style="font-size:.72rem;color:var(--t3);margin-top:2px">Smart Notifications · krátký text</div></div></button>
+      <button onclick="setWatchType('samsung')" style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 16px;font-size:.88rem;color:var(--t1);cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;touch-action:manipulation"><span style="font-size:1.3rem">🔵</span><div><div style="font-weight:600">Samsung Galaxy Watch</div><div style="font-size:.72rem;color:var(--t3);margin-top:2px">Gmail · odkaz v emailu</div></div></button>
+      <button onclick="setWatchType('none')" style="background:transparent;border:none;padding:10px;font-size:.8rem;color:var(--t3);cursor:pointer;touch-action:manipulation">Nemám hodinky</button>
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 

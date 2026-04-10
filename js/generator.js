@@ -53,6 +53,8 @@ async function doGen(){
     saveSession();updCr();await saveTH(txt);
     _lastTahakId=tahakyHistory[0]?.id||null;
     sendResultEmail(_lastTahakId,tahakyHistory[0]?.title||'Výsledky',txt);
+    incSubjectCount(_currentPreset);
+    renderPresetButtons(true);
     // Uložit demo kredity lokálně
     if(userId==='demo')localStorage.setItem('sc_demo_cr',String(credits));
     checkNewBadges(prevCount);

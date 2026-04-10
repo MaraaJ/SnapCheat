@@ -8,47 +8,89 @@ function openSidebar(){document.getElementById('sidebar').classList.add('on');do
 function closeSidebar(){document.getElementById('sidebar').classList.remove('on');document.getElementById('soverlay').classList.remove('on')}
 
 const PRESETS={
-  matika:    {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Ověř zadání před výpočtem. Každý krok očísluj.'},
-  fyzika:    {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Vzorce zvýrazni, jednotky vždy uváděj.'},
-  chemie:    {len:'Buď maximálně stručný.',  form:'Formátuj jako tahák s odrážkami.',    extra:'Chemické vzorce a rovnice zvýrazni.'},
-  algebra:   {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Každý krok výpočtu očísluj, výsledek zvýrazni.'},
-  it:        {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                        extra:'Kód formátuj jako code block, kroky očísluj.'},
-  cestina:   {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',                  extra:'Literární pojmy a autory zvýrazni.'},
-  dejepis:   {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Datumy a jména piš tučně.'},
-  zempis:    {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Státy, hlavní města a geografické pojmy piš tučně.'},
-  biologie:  {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Latinské názvy zvýrazni, procesy očísluj.'},
-  obcanka:   {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',                  extra:'Právní pojmy a paragrafy zvýrazni.'},
-  anglictina:   {len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej anglicky, gramatické jevy zvýrazni.'},
-  spanelstina:  {len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej španělsky, gramatické jevy zvýrazni.'},
-  francouzstina:{len:'Piš středně podrobně.',form:'Formátuj jako Q&A.',                  extra:'Odpovídej francouzsky, gramatické jevy zvýrazni.'},
-  umeni:     {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:'Umělecké směry, autory a díla zvýrazni tučně.'},
-  vlastni:   {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.',    extra:''}
+  matika:       {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                     extra:'Ověř zadání před výpočtem. Každý krok očísluj.'},
+  fyzika:       {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                     extra:'Vzorce zvýrazni, jednotky vždy uváděj.'},
+  chemie:       {len:'Buď maximálně stručný.',  form:'Formátuj jako tahák s odrážkami.', extra:'Chemické vzorce a rovnice zvýrazni.'},
+  algebra:      {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                     extra:'Každý krok výpočtu očísluj, výsledek zvýrazni.'},
+  it:           {len:'Buď maximálně stručný.',  form:'STEP_BY_STEP',                     extra:'Kód formátuj jako code block, kroky očísluj.'},
+  cestina:      {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',               extra:'Literární pojmy a autory zvýrazni.'},
+  dejepis:      {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.', extra:'Datumy a jména piš tučně.'},
+  zempis:       {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.', extra:'Státy, hlavní města a geografické pojmy piš tučně.'},
+  biologie:     {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.', extra:'Latinské názvy zvýrazni, procesy očísluj.'},
+  obcanka:      {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',               extra:'Právní pojmy a paragrafy zvýrazni.'},
+  anglictina:   {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',               extra:'Odpovídej anglicky, gramatické jevy zvýrazni.'},
+  spanelstina:  {len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',               extra:'Odpovídej španělsky, gramatické jevy zvýrazni.'},
+  francouzstina:{len:'Piš středně podrobně.',   form:'Formátuj jako Q&A.',               extra:'Odpovídej francouzsky, gramatické jevy zvýrazni.'},
+  umeni:        {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.', extra:'Umělecké směry, autory a díla zvýrazni tučně.'},
+  vlastni:      {len:'Piš středně podrobně.',   form:'Formátuj jako tahák s odrážkami.', extra:''}
 };
 
+const PRESET_ORDER_DEFAULT=['matika','dejepis','cestina','fyzika','chemie','zempis','biologie','obcanka','algebra','anglictina','spanelstina','francouzstina','it','umeni','vlastni'];
+const PRESET_META={
+  matika:'📊 Matika',fyzika:'⚡ Fyzika',chemie:'🧪 Chemie',algebra:'🔢 Algebra',it:'💻 IT',
+  cestina:'📝 Čeština',dejepis:'📜 Dějepis',zempis:'🌍 Zeměpis',biologie:'🧬 Biologie',
+  obcanka:'🏛️ Občanka',anglictina:'🇬🇧 Angličtina',spanelstina:'🇪🇸 Španělština',
+  francouzstina:'🇫🇷 Francouzština',umeni:'🎨 Umění',vlastni:'⚙️ Vlastní'
+};
+
+let _currentPreset=null;
+
+function getSubjectCounts(){
+  if(!userId||userId==='demo')return{};
+  return JSON.parse(localStorage.getItem('sc_subject_count_'+userId)||'{}');
+}
+function incSubjectCount(name){
+  if(!name||!userId||userId==='demo')return;
+  const c=getSubjectCounts();
+  c[name]=(c[name]||0)+1;
+  localStorage.setItem('sc_subject_count_'+userId,JSON.stringify(c));
+}
+function _prLevel(n){return n===0?'prl0':n<=2?'prl1':n<=5?'prl2':n<=10?'prl3':'prl4'}
+
+function renderPresetButtons(animate){
+  const grid=document.getElementById('presetgrid');
+  if(!grid)return;
+  const counts=getSubjectCounts();
+  const sorted=[...PRESET_ORDER_DEFAULT].sort((a,b)=>{
+    const diff=(counts[b]||0)-(counts[a]||0);
+    return diff!==0?diff:PRESET_ORDER_DEFAULT.indexOf(a)-PRESET_ORDER_DEFAULT.indexOf(b);
+  });
+  const build=()=>{
+    grid.innerHTML=sorted.map(name=>{
+      const n=counts[name]||0;
+      const fire=n>10?'🔥 ':'';
+      const lvl=_prLevel(n);
+      const on=_currentPreset===name?' on':'';
+      return`<button class="prbtn ${lvl}${on}" onclick="setPreset('${name}')" title="${n} použití">${fire}${PRESET_META[name]}</button>`;
+    }).join('');
+  };
+  if(animate){
+    grid.style.opacity='0';grid.style.transform='translateY(-3px)';
+    setTimeout(()=>{build();grid.style.transition='opacity .22s ease,transform .22s ease';grid.style.opacity='1';grid.style.transform='translateY(0)';setTimeout(()=>{grid.style.transition='';},250);},160);
+  }else{
+    build();
+  }
+}
+
 function setPreset(name){
-  document.querySelectorAll('.prbtn').forEach(b=>b.classList.remove('on'));
-  event.currentTarget.classList.add('on');
+  _currentPreset=name;
+  renderPresetButtons();
 
   const p=PRESETS[name];
   opts.lang='česky';
   opts.len=p.len;
   opts.form=p.form;
 
-  // Sync len buttons
   document.querySelectorAll('#so-len .ob').forEach(b=>{
-    b.classList.toggle('on',b.getAttribute('onclick').includes(p.len.replace(/'/g,"\'")));
+    b.classList.toggle('on',b.getAttribute('onclick').includes(p.len));
   });
-  // Sync form buttons
   document.querySelectorAll('#so-form .ob').forEach(b=>{
     b.classList.toggle('on',b.getAttribute('onclick').includes(p.form));
   });
 
-  // Fill extra textarea
   const ta=document.getElementById('extra');
   ta.value=p.extra;
   document.getElementById('excounter').textContent=p.extra.length;
-
-  // Open panel
   document.getElementById('settpanel').classList.add('open');
 }
 

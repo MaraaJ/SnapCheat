@@ -80,7 +80,12 @@ button:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
 #presetgrid{display:flex;flex-wrap:wrap;gap:7px;padding:12px 16px 10px}
 .prbtn{background:var(--s2);border:1px solid var(--b1);border-radius:20px;color:var(--t2);font-size:.7rem;padding:7px 11px;min-height:34px;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s;touch-action:manipulation;white-space:nowrap;line-height:1}
 .prbtn:active{transform:scale(.95)}
-.prbtn.on{background:#1a1505;border-color:var(--ac2);color:var(--ac);font-weight:700}
+.prbtn.on{background:#1a1505;border-color:var(--ac2);color:var(--ac);font-weight:700;opacity:1}
+.prl0{opacity:.45}
+.prl2{border-color:var(--ac2);color:var(--ac)}
+.prl3{border-color:var(--ac2);color:var(--ac);background:#1a1505;box-shadow:0 0 8px rgba(245,166,35,.4)}
+.prl4{background:linear-gradient(135deg,#c47d10,#f5a623);color:#000;border-color:transparent;box-shadow:0 0 16px rgba(245,166,35,.7)}
+.prl4.on{background:#3a2000;color:var(--ac);box-shadow:0 0 12px rgba(245,166,35,.5)}
 #settpanel{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease}
 #settpanel.open{max-height:520px}
 #sbody{padding:4px 16px 18px;border-top:1px solid var(--b1)}

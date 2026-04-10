@@ -5,9 +5,10 @@ async function goProfile(){
   const earned=getEarnedBadges();
   const spent=txHistory.filter(t=>t.t==='minus').length*COST;
 
+  const shadow=hasShadowBadge();
   document.getElementById('pemail').textContent=user||'—';
   document.getElementById('pbadgeicon').textContent=cur.icon;
-  document.getElementById('pcurrentbadge').textContent=cur.name;
+  document.getElementById('pcurrentbadge').textContent=cur.name+(shadow?' · 🕵️ Shadow':'');
   document.getElementById('ptotal').textContent=total;
   document.getElementById('pspent').textContent=spent;
   document.getElementById('pearned').textContent=earned.length;

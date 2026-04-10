@@ -21,8 +21,15 @@ function getEarnedBadges(){
 }
 
 function getCurrentBadge(){
-  const earned=getEarnedBadges();
+  // Returns highest earned RANK badge (reg/count only — excludes panic easter egg)
+  const total=getTotalTahaky();
+  const rankBadges=BADGES.filter(b=>b.type==='reg'||b.type==='count');
+  const earned=rankBadges.filter(b=>b.type==='reg'||total>=b.req);
   return earned[earned.length-1]||BADGES[0];
+}
+
+function hasShadowBadge(){
+  return localStorage.getItem('sc_panic_used_'+userId)==='1';
 }
 
 function checkNewBadges(prevCount){
@@ -49,7 +56,7 @@ function showBadgeToast(b){
 function updBadgeUI(){
   const cur=getCurrentBadge();
   const el=document.getElementById('sbadge');
-  if(el)el.textContent=cur.icon+' '+cur.name;
+  if(el)el.textContent=cur.icon+' '+cur.name+(hasShadowBadge()?' 🕵️':'');
 }
 
 function genRefCode(seed){
